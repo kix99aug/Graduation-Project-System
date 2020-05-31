@@ -42,7 +42,8 @@ router
     })
     .get('/hello', async ctx => {
         await ctx.render("index", {
-            title: "fuck"
+            title: "高雄大學資訊工程學系",
+            topic: "畢業專題交流平台"
         })
     })
     .get("/loginCallback", async ctx => {

@@ -1,3 +1,41 @@
 body {
     background-image: url("/static/images/mczh-tw1920x1920_large24959_173078990923.jpg");
-   }
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.title {
+    text-align: center;
+    margin: 62px;
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 56px;
+}
+
+marquee {
+    text-align: center;
+}
+
+.login {
+    display: table;
+    height: 731.31px;
+    width: 770.38px;
+    background-image: url(/static/images/icon.png);
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: 50%;
+    margin: auto;
+}
+
+.google {
+    display: block;
+    margin: auto;
+    margin-top: 33%;
+    z-index: 2;
+}
+
+.guest {
+    display: block;
+    margin: auto;
+    z-index: 2;
+}
