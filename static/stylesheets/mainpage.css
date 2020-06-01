@@ -1,0 +1,29 @@
+.search{
+    background-color: #888888;
+    display: flex;
+    font-size: 40px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color:white;
+    height: 118px;
+    align-items:center;
+    /* justify-content: space-between; */
+    padding: 20px;  
+}
+.form-control{
+    padding: 20px !important;
+    font-size: 40px !important;
+    border-radius: 39px !important;
+    background-color: #888888 !important;
+}
+.inputarea{
+    margin-top: 15px;
+    padding: 20px;
+}
+::placeholder{
+    color: white !important;
+    opacity: 0.4 !important;
+}
+.username{
+margin-left: auto;
+margin-right: 0;
+}

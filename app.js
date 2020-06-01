@@ -43,7 +43,14 @@ router
     .get('/hello', async ctx => {
         await ctx.render("index", {
             title: "高雄大學資訊工程學系",
-            topic: "畢業專題交流平台"
+            topic: "畢業專題交流平台",
+            
+        })
+    })
+    .get('/mainpage',async ctx=>{
+        await ctx.render("mainpage",{
+            topic: "畢業專題交流平台",
+            username: '王逼八'
         })
     })
     .get("/loginCallback", async ctx => {

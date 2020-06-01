@@ -2,9 +2,8 @@
 <html>
 
 <head>
-    <title><%= title %></title>
-    <link rel="stylesheet" href="/static/stylesheets/login.css">
-    <script defer="defer" src="/static/script/login.js"></script>
+    <link rel="stylesheet" href="/static/stylesheets/mainpage.css">
+    <script defer="defer" src="/static/script/mainpage.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -19,23 +18,22 @@
 </head>
 
 <body>
-    <h1 class="title"><%= title %><br><%= topic %></h1>
 
-
-    <div class="login">
-        <figure id="google">
-            <img src="/static/images/google.png" alt="" class="google">
-        </figure>
-        <figure id="guest">
-            <img src="/static/images/guest.png" alt="" class="guest">
-        </figure>
-
-
+    <div class="search">
+        <%= topic%>
+        <div class="md-form active-cyan-2 mb-3 inputarea" >
+            
+            <input class="form-control" type="text" placeholder="搜尋" aria-label="Search" >
+        </div>
+        <div class="username">
+            <%= username%>
+        </div>
+        
     </div>
 
+
+
 </body>
-<footer>
-    <marquee behavior="behavior" loop="10">全球最大資工專題網上線了!!!!!!!!!!!!!!!!!!!!!!!!!</marquee>
-</footer>
+
 
 </html>
