@@ -26,7 +26,13 @@ marquee {
     background-position: 50%;
     margin: auto;
 }
-
+.login figure img{
+    opacity: 1;
+    -webkit-transition: 0.2s ease-in-out;
+}
+.login figure:hover img{
+    opacity: 0.3;
+}
 .google {
     display: block;
     margin: auto;
@@ -38,4 +44,8 @@ marquee {
     display: block;
     margin: auto;
     z-index: 2;
+}
+figure{
+    margin: 0;
+    padding: 0%;
 }

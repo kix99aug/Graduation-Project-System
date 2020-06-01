@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title><%= title %></title>
     <link rel="stylesheet" href="/static/stylesheets/style.css">
-    <script src="/static/script/script.js"></script>
+    <script defer="defer" src="/static/script/script.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 </head>
@@ -36,7 +37,7 @@
             function k() {
                 r = u.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
                     n = u.height = window.innerHeight || document.documentElement.clientHeight || document.body
-                    .clientHeight
+                        .clientHeight
             }
 
             function b() {
@@ -51,7 +52,7 @@
                         if (i !== x && null !== x.x && null !== x.y) {
                             B = i.x - x.x, z = i.y - x.y, y = B * B + z * z;
                             y < x.max && (x === f && y >= x.max / 2 && (i.x -= 0.03 * B, i.y -= 0.03 * z), A = (
-                                    x.max - y) / x.max, e.beginPath(), e.lineWidth = A / 2, e.strokeStyle =
+                                x.max - y) / x.max, e.beginPath(), e.lineWidth = A / 2, e.strokeStyle =
                                 "rgba(" + s.c + "," + (A + 0.2) + ")", e.moveTo(i.x, i.y), e.lineTo(x.x, x
                                     .y), e.stroke())
                         }
@@ -64,10 +65,10 @@
                 c = "c_n" + s.l,
                 e = u.getContext("2d"),
                 r, n, m = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window
-                .mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
-                function (i) {
-                    window.setTimeout(i, 1000 / 45)
-                },
+                    .mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+                    function (i) {
+                        window.setTimeout(i, 1000 / 45)
+                    },
                 a = Math.random,
                 f = {
                     x: null,
@@ -103,20 +104,27 @@
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-    </script>
+        </script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-    </script>
+        </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
-    </script>
+        </script>
     <div class="login">
-        <img src="/static/images/google.png" alt="" class="google" >
-        <img src="/static/images/guest.png" alt="" class="guest">
+        <figure id="google">
+            <img src="/static/images/google.png" alt="" class="google">
+        </figure>
+        <figure id="guest">
+            <img src="/static/images/guest.png" alt="" class="guest">
+        </figure>
+       
+
     </div>
 
 </body>
 <footer>
-    <marquee behavior="behavior"  loop="10">全球最大資工專題網上線了!!!!!!!!!!!!!!!!!!!!!!!!!</marquee>
+    <marquee behavior="behavior" loop="10">全球最大資工專題網上線了!!!!!!!!!!!!!!!!!!!!!!!!!</marquee>
 </footer>
+
 </html>
