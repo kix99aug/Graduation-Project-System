@@ -13,14 +13,16 @@ const MongooseStore = require("koa-session-mongoose")
 
 const app = new Koa()
 const router = new Router()
-
 app.keys = [crypto.randomBytes(20).toString('hex')];
-mongoose.connect("mongodb://127.0.0.1:27017/", {
+mongoose.connect("mongodb://localhost:27017/gps", {
     useCreateIndex: true,
     useFindAndModify: false,
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
+
+const client_id = "712826989675-rs5ej0evsmp78hsphju6sudhhn3pb38s.apps.googleusercontent.com"
+const client_secret = "zlT87D-MtpTF5ltC3w5k2hKN"
 
 app.use(views(path.join(__dirname, './views'), {
     extension: 'ejs'
@@ -29,64 +31,85 @@ app.use(bodyParser());
 
 router
     .get('/', async ctx => {
-        ctx.session.count = ctx.session.count + 1
-        ctx.body = ctx.session
+        await ctx.render("index")
     })
     .get('/login', async ctx => {
-        var url = "https://accounts.google.com/o/oauth2/v2/auth?" +
-            "scope=email%20profile&" +
-            "redirect_uri=http://localhost:3000/loginCallback&" +
-            "response_type=code&" +
-            "client_id=" + "712826989675-rs5ej0evsmp78hsphju6sudhhn3pb38s.apps.googleusercontent.com";
+        var url = `https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&redirect_uri=http://localhost:3000/loginCallback&response_type=code&client_id=${client_id}`
         ctx.redirect(url)
     })
-    .get('/hello', async ctx => {
-        await ctx.render("index", {
-            title: "高雄大學資訊工程學系",
-            topic: "畢業專題交流平台",
-            
+    .get('/mainpage', async ctx => {
+        await ctx.render("mainpage", {
+            title: "畢業專題交流平台",
+            name: ctx.session.name? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
-    .get('/mainpage',async ctx=>{
-        await ctx.render("mainpage",{
-            topic: "畢業專題交流平台",
-            username: '王逼八'
+    .get('/profile', async ctx => {
+        await ctx.render("profile", {
+            title: "畢業專題交流平台",
+            name: ctx.session.name? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+        })
+    })
+    .get('/project', async ctx => {
+        await ctx.render("project", {
+            title: "畢業專題交流平台",
+            name: ctx.session.name? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
     .get("/loginCallback", async ctx => {
-        if (!ctx.query.code) {
-            ctx.throw(400)
-            ctx.body = { error: "Request Error: Google access code is required." }
-            return
-        }
         let formData = {
             code: ctx.query.code,
-            client_id: "712826989675-rs5ej0evsmp78hsphju6sudhhn3pb38s.apps.googleusercontent.com",
-            client_secret: "zlT87D-MtpTF5ltC3w5k2hKN",
+            client_id: client_id,
+            client_secret: client_secret,
             grant_type: "authorization_code",
             redirect_uri: "http://localhost:3000/loginCallback"
         }
-        fetch("https://www.googleapis.com/oauth2/v4/token", {
-            method: 'POST',
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: Object.keys(formData).map(keyName => {
-                return encodeURIComponent(keyName) + '=' + encodeURIComponent(formData[keyName])
-            }).join('&')
-        })
-            .then(res => {
-                return res.json()
+        let json = await (
+            await fetch("https://www.googleapis.com/oauth2/v4/token", {
+                method: 'POST',
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: Object.keys(formData).map(keyName => {
+                    return encodeURIComponent(keyName) + '=' + encodeURIComponent(formData[keyName])
+                }).join('&')
             })
-            .then(json => {
-                fetch(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${json.access_token}`)
-                    .then(res => {
-                        return res.json()
-                    })
-                    .then(json => console.log(json))
-            })
+        ).json()
+        let googleData = await (
+            await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${json.access_token}`)
+        ).json()
+        if (googleData.hd === "mail.nuk.edu.tw" || googleData.hd === "go.nuk.edu.tw") {
+            // 確認資料庫
+            ctx.session.login = true
+            ctx.session.id = googleData.id
+            ctx.session.name = googleData.name
+            ctx.redirect("/mainpage")
+        } else {
+            // 回傳錯誤
+            ctx.throw(400)
+        }
     })
 
 
 app.use(session({ store: new MongooseStore() }, app))
+app.use(async (ctx, next) => {
+    ctx.set('Server', 'Koa 2.12.0')
+    await next()
+})
+app.use(async (ctx, next) => {
+    try {
+        await next()
+        const status = ctx.status || 404
+        if (status === 404) {
+            ctx.throw(404)
+        }
+    } catch (err) {
+        ctx.status = err.status || 500
+        if (ctx.status != 200) {
+            await ctx.render('error')
+        }
+    }
+})
 app.use(router.routes())
 app.use(mount('/static', serve('./static')))
 
