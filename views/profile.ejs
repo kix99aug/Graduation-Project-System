@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('header') -%>
+    <link rel="stylesheet" href="/static/stylesheets/profile.css">
+</head>
+
+<body style="height: 100vh;">
+    <%- include('nav') -%>
+    <div class=" d-flex row align-items-center h-100 justify-content-center">
+        <img src=<%= image %> >
+        <div class="flex-column bx-5">
+            <div class="flex-row">
+                姓名：<span ><%= name %></span> 同學
+            </div>
+            <div>
+                系級：<span>110</span> 級
+            </div>
+            <div>
+                指導教授：<span>張寶貝</span> 教授
+            </div>
+        </div>
+    </div>
+    <div>
+
+    </div>
+    <%-include('footer'); -%>
+</body>

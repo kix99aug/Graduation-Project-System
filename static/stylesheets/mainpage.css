@@ -1,9 +1,0 @@
-.form-control{
-    padding-left:80 px !important;
-    border-radius: 39px !important;
-    background-color: #343a40 !important;
-}
-::placeholder{
-    color: white !important;
-    opacity: 0.4 !important;
-}
