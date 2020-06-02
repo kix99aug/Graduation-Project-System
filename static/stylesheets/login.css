@@ -1,14 +1,15 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
 body {
     background-image: url("/static/images/mczh-tw1920x1920_large24959_173078990923.jpg");
     background-repeat: no-repeat;
     background-size: cover;
+    font-family: 'Noto Sans TC', sans-serif;
 }
 
 .title {
     text-align: center;
     margin: 62px;
     font-weight: bold;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 56px;
 }
 

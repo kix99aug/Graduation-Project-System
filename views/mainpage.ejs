@@ -18,22 +18,82 @@
 </head>
 
 <body>
+    <nav id="desktop"
+        class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-dark border-bottom shadow-sm">
+        <h1 class="my-0 text-light mr-5 font-weight-normal"><%= topic %></h1>
+        <div class="md-form active-cyan-2 mb-3 ml-0 mr-auto d-flex align-items-center">
+            <input class="form-control ml-8 my-auto" style="font-size: 1.5rem;" type="text" placeholder="搜尋" aria-label="Search">
+        </div>
+        <button type="button" class="btn btn-light d-flex" role="button" id="logoutMenu" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <span class="p-2 text-dark" style="margin:auto 10px auto 0">{{data['name']}}</span>
+            <img class="img-fluid rounded-circle float-right" src="{{data['picture']}}" style="height:50px"
+                alt=""></img>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="logoutMenu" style="margin-top:10px">
+            <a class="dropdown-item" href="/">主頁</a>
+            <a class="dropdown-item" href="/">我的團隊</a>
+            <a class="dropdown-item" href="/">我的資料</a>
+            <a class="dropdown-item" href="/">登出</a>
 
-    <div class="search">
-        <%= topic%>
-        <div class="md-form active-cyan-2 mb-3 inputarea" >
-            
-            <input class="form-control" type="text" placeholder="搜尋" aria-label="Search" >
         </div>
-        <div class="username">
-            <%= username%>
-        </div>
-        
+    </nav>
+
+
+    <div id="head" class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">找個人聊天吧</h1>
+        <p class="lead">孤單寂寞覺得冷嗎？</p>
+        <p class="lead">Let's chat 帶你找到最好聊的那個人！</p>
     </div>
 
+    <div class="container">
+        <div class="card-deck mb-3 text-center">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">公共廣場</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title"><i class="fas fa-users"></i></h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>進來跟大家聊聊天吧</li>
+                        <li>閒話家常或是吐苦水都可以</li>
+                        <li>或許會找到你的知音唷</li>
+                    </ul>
+                    <a href="/public" role="button" class="btn btn-lg btn-block btn-outline-primary">馬上進入</a>
+                </div>
+            </div>
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">找人對聊</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title"><i class="fas fa-user-friends"></i></h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>有甚麼事情在心裡想跟人分享嗎</li>
+                        <li>或是有甚麼問題想找人解決嗎</li>
+                        <li>來找個人來幫幫你吧</li>
+                    </ul>
+                    <button href="/#" type="button" class="btn btn-lg btn-block btn-outline-secondary"
+                        disabled>尚未開放</button>
+                </div>
+            </div>
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">編輯個人檔案</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title"><i class="fas fa-user-edit"></i></h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>總是找不到人聊聊嗎</li>
+                        <li>或許是個人檔案不夠有吸引力</li>
+                        <li>快來增添一下新的色彩吧</li>
+                    </ul>
+                    <a href="/edit" role="button" class="btn btn-lg btn-block btn-outline-primary">開始編輯</a>
+                </div>
+            </div>
+        </div>
 
-
+    </div>
 </body>
-
 
 </html>
