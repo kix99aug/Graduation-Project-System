@@ -3,27 +3,37 @@
 
 <head>
     <%- include('header') -%>
-    <link rel="stylesheet" href="/static/stylesheets/profile.css">
+    <link rel="stylesheet" href="/static/stylesheets/common.css">
 </head>
 
 <body style="height: 100vh;">
     <%- include('nav') -%>
-    <div class=" d-flex row align-items-center h-100 justify-content-center">
-        <img src=<%= image %> >
-        <div class="flex-column bx-5">
-            <div class="flex-row">
-                姓名：<span ><%= name %></span> 同學
+    <div class="d-flex align-items-center h-100 justify-content-center">
+        <div class="container" >
+            <div class="row "style="height: 427px;">
+                <div class="col d-flex align-items-center h-100 justify-content-center">
+                    <img class="profileicon" src="<%= image %>">
+                </div>
+                <div class="col d-flex flex-column align-items-left justify-content-around" >
+                    <h1 class="row">
+                        姓名：<span class="" ><%= name %></span> 同學
+                    </h1>
+                    <h1 class="row" >
+                        系級：<span><%= grade %></span> 級
+                    </h1>
+                    <h1 class="row" >
+                        指導教授：<span><%= professor %></span> 教授
+                    </h1>
+                </div>
             </div>
-            <div>
-                系級：<span>110</span> 級
-            </div>
-            <div>
-                指導教授：<span>張寶貝</span> 教授
-            </div>
+            <h1 class="row " style="margin: 20px;">
+                個人簡介：
+                
+            </h1>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" style="font-size:40px;"></textarea>
         </div>
-    </div>
-    <div>
 
     </div>
+
     <%-include('footer'); -%>
 </body>

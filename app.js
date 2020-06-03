@@ -1,6 +1,5 @@
 const path = require('path')
 const crypto = require('crypto')
-const mongoose = require("mongoose");
 const fetch = require("node-fetch");
 const Koa = require('koa')
 const Router = require('koa-router')
@@ -10,16 +9,11 @@ const mount = require('koa-mount')
 const session = require("koa-session");
 const bodyParser = require('koa-bodyparser');
 const MongooseStore = require("koa-session-mongoose")
+const Models = require("./models")
 
 const app = new Koa()
 const router = new Router()
 app.keys = [crypto.randomBytes(20).toString('hex')];
-mongoose.connect("mongodb://localhost:27017/gps", {
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
 
 const client_id = "712826989675-rs5ej0evsmp78hsphju6sudhhn3pb38s.apps.googleusercontent.com"
 const client_secret = "zlT87D-MtpTF5ltC3w5k2hKN"
@@ -31,6 +25,12 @@ app.use(bodyParser());
 
 router
     .get('/', async ctx => {
+        let student = new Models.student({
+            id: parseInt(Math.random()*100),
+            name: "aaa",
+            email: "bbb",
+        })
+        await student.save()
         await ctx.render("index")
     })
     .get('/login', async ctx => {
@@ -48,7 +48,9 @@ router
         await ctx.render("profile", {
             title: "畢業專題交流平台",
             name: ctx.session.name? ctx.session.name : "訪客",
-            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            grade: "避不了業",
+            professor:  "沒人要你"
         })
     })
     .get('/project', async ctx => {

@@ -1,8 +1,8 @@
-.form-control{
+nav .form-control{
     border-radius: 40px;
     background-color: #343a40 !important;
 }
-.form-control::placeholder{
+nav .form-control::placeholder{
     color: white;
     opacity: 0.4;
 }
