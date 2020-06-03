@@ -9,28 +9,60 @@
 <body style="height: 100vh;">
     <%- include('nav') -%>
     <div class="d-flex align-items-center h-100 justify-content-center">
-        <div class="container" >
-            <div class="row "style="height: 427px;">
+        <div class="container">
+            <div class="row " style="height: 427px;">
                 <div class="col d-flex align-items-center h-100 justify-content-center">
                     <img class="profileicon" src="<%= image %>">
                 </div>
-                <div class="col d-flex flex-column align-items-left justify-content-around" >
-                    <h1 class="row">
-                        姓名：<span class="" ><%= name %></span> 同學
+                <div class="col d-flex flex-column align-items-left justify-content-around">
+                    <h1 class="row border-bottom  d-flex flex-row align-items-left justify-content-between">
+                        <div>
+                            <img src="/static/images/Polygon 5.png" alt="">
+                            姓名：
+                        </div>
+                        <span class=""><%= name %></span>
+                        <div>
+                            同學
+                            <img src="/static/images/Polygon 4.png" alt="">
+                        </div>
+
                     </h1>
-                    <h1 class="row" >
-                        系級：<span><%= grade %></span> 級
+                    <h1 class="row border-bottom  d-flex flex-row align-items-left justify-content-between">
+                        <div>
+                            <img src="/static/images/Polygon 5.png" alt="">
+                            系級：
+                        </div><span><%= grade %></span>
+                        <div>
+                            級
+                            <img src="/static/images/Polygon 4.png" alt="">
+                        </div>
                     </h1>
-                    <h1 class="row" >
-                        指導教授：<span><%= professor %></span> 教授
+                    <h1 class="row border-bottom  d-flex flex-row align-items-left justify-content-between">
+                        <div>
+                            <img src="/static/images/Polygon 5.png" alt="">
+                            指導教授：
+                        </div>
+                        <span><%= professor %> </span>
+                        <div>
+                            教授
+                            <img src="/static/images/Polygon 4.png" alt="">
+                        </div>
+
                     </h1>
                 </div>
             </div>
-            <h1 class="row " style="margin: 20px;">
-                個人簡介：
-                
-            </h1>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" style="font-size:40px;"></textarea>
+            <form action="post">
+                <h1 class="row border-bottom" style="margin: 20px;">
+                    <img class="mx-3" src="/static/images/Polygon 5.png" alt="">
+                    個人簡介：
+
+                </h1>
+                <textarea class="form-control border-bottom" id="exampleFormControlTextarea1" rows="3"
+                    style="font-size:30px;"><%= introduction %>
+                </textarea>
+
+            </form>
+
         </div>
 
     </div>

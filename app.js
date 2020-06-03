@@ -50,7 +50,8 @@ router
             name: ctx.session.name? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             grade: "避不了業",
-            professor:  "沒人要你"
+            professor:  "沒人要你",
+            introduction: ctx.session.introduction ? ctx.session.introduction :"我是大雞雞，又香又甜又好吃"
         })
     })
     .get('/project', async ctx => {
