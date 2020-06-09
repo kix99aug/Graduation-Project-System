@@ -47,7 +47,7 @@ const remind_mailSchema = mongoose.Schema({
 })
 
 module.exports = {
-    user:mongoose.model('Users', studentSchema),
+    user:mongoose.model('Users', userSchema),
     comment:mongoose.model('Comments', commentSchema),
     communication:mongoose.model('Communications', communicationSchema),
     team:mongoose.model('Teams', teamSchema),
