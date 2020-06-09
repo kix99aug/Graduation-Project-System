@@ -25,10 +25,7 @@ app.use(bodyParser());
 
 router
     .get('/', async ctx => {
-        let student = new Models.student({
-            id: parseInt(Math.random()*100),
-            name: "aaa",
-            email: "bbb",
+        await ctx.render("index", {
         })
         await student.save()
         await ctx.render("index")
