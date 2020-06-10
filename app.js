@@ -25,9 +25,6 @@ app.use(bodyParser());
 
 router
     .get('/', async ctx => {
-        await ctx.render("index", {
-        })
-        await student.save()
         await ctx.render("index")
     })
     .get('/login', async ctx => {
@@ -49,6 +46,15 @@ router
             grade: "避不了業",
             professor:  "沒人要你",
             introduction: ctx.session.introduction ? ctx.session.introduction :"我是大雞雞，又香又甜又好吃"
+        })
+    })
+
+    .get('/browseProject' , async ctx => {
+        await ctx.render("browseProject", {
+            title: "畢業專題交流平台",
+            name: ctx.session.name? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+
         })
     })
     .get('/project', async ctx => {
