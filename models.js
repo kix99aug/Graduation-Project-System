@@ -8,48 +8,52 @@ mongoose.connect("mongodb://localhost:27017/gps", {
 });
 
 const userSchema = mongoose.Schema({
-    t_flag: Boolean,
-    u_id: Number,
+    account: String,
     name: String,
+    avatar:String,          //storage._id
+    group: Number,          //1:Admin 2:Teacher 3:Student 4:User
     email: String,
-    t_id: Number,       //所屬的 team 的 id
-
-    d_level: Number,    //學生才擁有，系級
-
-    pro_link: String,   //老師才擁有，自介的link
+    team: Number,           //team._id
+    grade: Number,          //學生才擁有，系級
+    link: String,           //個人網站的link
 })
 
 const commentSchema = mongoose.Schema({
-    m_id: Number,
-    message: String,
-    c_name: String,     //訊息的傳送者
+    content: String,
+    sender: Number,         //訊息的傳送者,user._id
+    time: Date,             //訊息傳送時間
 })
 
-const communicationSchema = mongoose.Schema({
-    m_id: Number,
-    message: String,
-    c_name: String,     //訊息的傳送者
-    p_link: String,     //圖片連結
-    time: String,       //訊息傳送時間
+const messageSchema = mongoose.Schema({
+    type: String,           //1:Text 2:Image
+    content: String,        //1:Text 2:storage._id
+    sender: Number,         //訊息的傳送者,user.id
+    time: Date,             //訊息傳送時間
 })
 
 const teamSchema = mongoose.Schema({
-    t_id: Number,
-    g_teacher_name: String, //指導老師的名字
-    d_level: Number,        //該組別的系級
-    work_info: String,      //該組別之作品編碼
+    name:String,
+    grade: Number,          //該組別的系級
+    teacher: Number,        //user._id
+    poster:String,          //storage._id
+    report:String,          //storage._id
+    code:String,            //storage._id
+})
+ 
+const reminderSchema = mongoose.Schema({
+    message: String,
+    time: Date,             //要提醒user(老師)的時間
 })
 
-const remind_mailSchema = mongoose.Schema({
-    m_id: Number,
-    message: String,
-    time: String,     //要提醒user(老師)的時間
+const storageSchema = mongoose.Schema({
+    filename:String,
 })
 
 module.exports = {
-    user:mongoose.model('Users', userSchema),
-    comment:mongoose.model('Comments', commentSchema),
-    communication:mongoose.model('Communications', communicationSchema),
-    team:mongoose.model('Teams', teamSchema),
-    remind_mail:mongoose.model('Remind_mails', remind_mailSchema),
+    user: mongoose.model('Users', userSchema),
+    comment: mongoose.model('Comments', commentSchema),
+    messages: mongoose.model('Messages', messageSchema),
+    team: mongoose.model('Teams', teamSchema),
+    reminder: mongoose.model('Reminders', reminderSchema),
+    storage: mongoose.model('Storages', storageSchema),
 }
