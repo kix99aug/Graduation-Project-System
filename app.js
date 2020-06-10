@@ -49,11 +49,13 @@ router
         })
     })
 
-    .get('/browseProject' , async ctx => {
-        await ctx.render("browseProject", {
+    .get('/projects' , async ctx => {
+        await ctx.render("projects", {
             title: "畢業專題交流平台",
             name: ctx.session.name? ctx.session.name : "訪客",
-            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            projectName:"行車安全警示系統",
+            projectInfo:"啊我就怕被罵啊幹你娘鄵",
 
         })
     })

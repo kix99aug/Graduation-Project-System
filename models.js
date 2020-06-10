@@ -38,6 +38,7 @@ const teamSchema = mongoose.Schema({
     poster:String,          //storage._id
     report:String,          //storage._id
     code:String,            //storage._id
+    info:String             //專題簡介
 })
  
 const reminderSchema = mongoose.Schema({
