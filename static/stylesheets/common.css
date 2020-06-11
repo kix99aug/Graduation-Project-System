@@ -1,8 +1,7 @@
-
 @import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
 
-body{
-  font-family: 'Noto Sans TC', sans-serif;
+body {
+  font-family: "Noto Sans TC", sans-serif;
 }
 
 .messageicon {
@@ -21,9 +20,11 @@ body{
   object-fit: cover;
 }
 .discuss {
-  background: rgba(255,255,210);
+  background: rgba(255, 255, 210);
 }
+
 .profileicon{
+  background: rgba(255, 255, 210);
   width: 20rem;
   height: 20rem;
   object-fit: cover;
@@ -38,14 +39,65 @@ body{
 .wrapper > .content {
   height: 90vh;
   overflow: auto;
+  background-origin: content-box;
+}
+
+.note {
+  width: 10vw;
+  height: 10vw;
+  padding: 0.5vw 0.5vw 3vw .5vw;
+  position: absolute;
+  background: url("/static/images/note.png");
+  background-size: cover;
+  z-index: 1;
+}
+
+.note:hover{
+  cursor: move;
+}
+
+.note textarea,.note p{
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: none;
+  resize: none;
+  outline: none;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+
+.note textarea,.note p:hover{
+  cursor: text;
 }
 
 /*project and team management*/
 .manageBg {
-  width: 700px;
-  height: 620px;
-  background-color: white;
-  margin-left: 315px;
-  margin-top: 35px;
+  width: 50%;
+  height: auto;
   box-shadow: 0px 0px 10px rgba(0,0,0,0.35);
+}
+
+.project-list {
+  display: flex;
+  width: 625px;
+  height: 480px;
+  margin: auto;
+  margin-top: 110px;
+  background-color: white;
+  border: 1px #707070 solid;
+  flex-direction: column;
+}
+
+.projects-item {
+  background-color: white;
+  padding-left: 5px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  color: #707070;
+  font-size: 1.5rem;
+  border-bottom: 1px #707070 solid;
+  width: 623px;
+  height: 50px;
 }
