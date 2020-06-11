@@ -43,18 +43,19 @@ body {
 .note {
   width: 10vw;
   height: 10vw;
-  padding: 0.5vw 0.5vw 3vw .5vw;
+  padding: 0.5vw 0.5vw 3vw 0.5vw;
   position: absolute;
   background: url("/static/images/note.png");
   background-size: cover;
   z-index: 1;
 }
 
-.note:hover{
+.note:hover {
   cursor: move;
 }
 
-.note textarea,.note p{
+.note textarea,
+.note div {
   width: 100%;
   height: 100%;
   border: none;
@@ -63,10 +64,25 @@ body {
   outline: none;
   word-wrap: break-word;
   overflow: hidden;
+  z-index: 2;
 }
 
-.note textarea,.note p:hover{
+.note textarea {
+  display: none;
+}
+
+.note textarea,
+.note div:hover {
   cursor: text;
+}
+
+.content.blackboard {
+  position: relative;
+  width: 100%;
+  background: url("/static/images/blackboard.png");
+  background-size: 90%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /*project and team management*/
@@ -76,7 +92,7 @@ body {
   background-color: white;
   margin-left: 315px;
   margin-top: 35px;
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.35);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.35);
 }
 
 .project-list {

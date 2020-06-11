@@ -23,6 +23,15 @@ app.use(views(path.join(__dirname, './views'), {
 }))
 app.use(bodyParser());
 
+let notes =
+{
+    1: { x: .1, y: .1, content: "123" },
+    2: { x: .2, y: .2, content: "123" },
+    3: { x: .3, y: .3, content: "123" },
+    4: { x: .4, y: .4, content: "123" },
+}
+
+
 router
     .get('/', async ctx => {
         await ctx.render("index", {
@@ -36,34 +45,34 @@ router
     .get('/mainpage', async ctx => {
         await ctx.render("mainpage", {
             title: "畢業專題交流平台",
-            name: ctx.session.name? ctx.session.name : "訪客",
+            name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
     .get('/profile', async ctx => {
         await ctx.render("profile", {
             title: "畢業專題交流平台",
-            name: ctx.session.name? ctx.session.name : "訪客",
+            name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             grade: "避不了業",
-            professor:  "沒人要你",
-            introduction: ctx.session.introduction ? ctx.session.introduction :"我是大雞雞，又香又甜又好吃"
+            professor: "沒人要你",
+            introduction: ctx.session.introduction ? ctx.session.introduction : "我是大雞雞，又香又甜又好吃"
         })
     })
-    .get('/projects' , async ctx => {
+    .get('/projects', async ctx => {
         await ctx.render("projects", {
             title: "畢業專題交流平台",
-            name: ctx.session.name? ctx.session.name : "訪客",
+            name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
-            projectName:"行車安全警示系統",
-            projectInfo:"啊我就怕被罵啊幹你娘鄵",
+            projectName: "行車安全警示系統",
+            projectInfo: "啊我就怕被罵啊幹你娘鄵",
 
         })
     })
     .get('/project', async ctx => {
         await ctx.render("project", {
             title: "畢業專題交流平台",
-            name: ctx.session.name? ctx.session.name : "訪客",
+            name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
@@ -104,7 +113,7 @@ router
         await ctx.render("schedule", {
             title: "行程表",
             subtitle: "行程表",
-            name: ctx.session.name? ctx.session.name : "訪客",
+            name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
@@ -112,7 +121,7 @@ router
         await ctx.render("blackboard", {
             title: "留言板",
             subtitle: "留言板",
-            name: ctx.session.name? ctx.session.name : "訪客",
+            name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
@@ -120,7 +129,7 @@ router
     .get('/mainpageAdministrator', async ctx => {
         await ctx.render("mainpageAdministrator", {
             title: "畢業專題交流平台",
-            name: ctx.session.name? ctx.session.name : "訪客",
+            name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
@@ -128,9 +137,35 @@ router
         await ctx.render("projectAndteamManagement", {
             title: "畢業專題交流平台",
             subtitle: "管理專題 & 團隊",
-            name: ctx.session.name? ctx.session.name : "訪客",
+            name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
+    })
+    // apis
+    .get('/api/blackboard/all', async ctx => {
+        ctx.body = {
+            result: true,
+            data: notes
+        }
+    })
+    .get('/api/blackboard/remove/:id', async ctx => {
+        delete notes[ctx.params.id] 
+        ctx.body = {
+            result: true
+        }
+    })
+    .post('/api/blackboard/modify/:id', async ctx => {
+        notes[ctx.params.id] = ctx.request.body
+        console.log(notes)
+        ctx.body = {
+            result: true
+        }
+    })
+    .get('/api/blackboard/new', async ctx => {
+        ctx.body = {
+            result: true,
+            id:parseInt(Math.random()*Number.MAX_SAFE_INTEGER)
+        }
     })
 
 app.use(session({ store: new MongooseStore() }, app))
