@@ -73,11 +73,8 @@ body {
 
 /*project and team management*/
 .manageBg {
-  width: 700px;
-  height: 620px;
-  background-color: white;
-  margin-left: 315px;
-  margin-top: 35px;
+  width: 50%;
+  height: auto;
   box-shadow: 0px 0px 10px rgba(0,0,0,0.35);
 }
 

@@ -132,6 +132,15 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
+    .get('/patm/editPj', async ctx => {
+        await ctx.render("editingProjectInfo", {
+            title: "畢業專題交流平台",
+            subtitle: "管理專題 & 團隊",
+            name: ctx.session.name? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+        })
+    })
+
 
 app.use(session({ store: new MongooseStore() }, app))
 app.use(async (ctx, next) => {
