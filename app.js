@@ -40,13 +40,6 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
-    .get('/mainpageAdministrator', async ctx => {
-        await ctx.render("mainpageAdministrator", {
-            title: "畢業專題交流平台",
-            name: ctx.session.name? ctx.session.name : "訪客",
-            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
-        })
-    })
     .get('/profile', async ctx => {
         await ctx.render("profile", {
             title: "畢業專題交流平台",
@@ -57,7 +50,6 @@ router
             introduction: ctx.session.introduction ? ctx.session.introduction :"我是大雞雞，又香又甜又好吃"
         })
     })
-
     .get('/projects' , async ctx => {
         await ctx.render("projects", {
             title: "畢業專題交流平台",
@@ -122,7 +114,21 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
-
+    //Backend
+    .get('/mainpageAdministrator', async ctx => {
+        await ctx.render("mainpageAdministrator", {
+            title: "畢業專題交流平台",
+            name: ctx.session.name? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+        })
+    })
+    .get('/projectAndteamManagement', async ctx => {
+        await ctx.render("projectAndteamManagement", {
+            title: "畢業專題交流平台",
+            name: ctx.session.name? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+        })
+    })
 
 app.use(session({ store: new MongooseStore() }, app))
 app.use(async (ctx, next) => {
