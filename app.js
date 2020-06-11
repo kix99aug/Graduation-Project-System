@@ -103,6 +103,7 @@ router
     .get('/team/schedule', async ctx => {
         await ctx.render("schedule", {
             title: "行程表",
+            subtitle: "行程表",
             name: ctx.session.name? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
