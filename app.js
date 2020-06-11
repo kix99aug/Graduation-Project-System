@@ -25,13 +25,9 @@ app.use(bodyParser());
 
 router
     .get('/', async ctx => {
-        let student = new Models.student({
-            id: parseInt(Math.random()*100),
-            name: "aaa",
-            email: "bbb",
+        await ctx.render("index", {
+            title: "高雄大學資訊工程學系 畢業專題交流平台"
         })
-        await student.save()
-        await ctx.render("index")
     })
     .get('/login', async ctx => {
         var url = `https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&redirect_uri=http://localhost:3000/loginCallback&response_type=code&client_id=${client_id}`
@@ -52,6 +48,17 @@ router
             grade: "避不了業",
             professor:  "沒人要你",
             introduction: ctx.session.introduction ? ctx.session.introduction :"我是大雞雞，又香又甜又好吃"
+        })
+    })
+
+    .get('/projects' , async ctx => {
+        await ctx.render("projects", {
+            title: "畢業專題交流平台",
+            name: ctx.session.name? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            projectName:"行車安全警示系統",
+            projectInfo:"啊我就怕被罵啊幹你娘鄵",
+
         })
     })
     .get('/project', async ctx => {
@@ -83,9 +90,11 @@ router
         ).json()
         if (googleData.hd === "mail.nuk.edu.tw" || googleData.hd === "go.nuk.edu.tw") {
             // 確認資料庫
+            console.log(googleData)
             ctx.session.login = true
             ctx.session.id = googleData.id
             ctx.session.name = googleData.name
+            ctx.session.image = googleData.picture
             ctx.redirect("/mainpage")
         } else {
             // 回傳錯誤
@@ -94,6 +103,13 @@ router
     })
     .get('/schedule', async ctx => {
         await ctx.render("schedule", {
+            title: "畢業專題交流平台",
+            name: ctx.session.name? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+        })
+    })
+    .get('/messageBoard', async ctx => {
+        await ctx.render("messageBoard", {
             title: "畢業專題交流平台",
             name: ctx.session.name? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
