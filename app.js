@@ -102,7 +102,11 @@ router
     })
     .get('/team/schedule', async ctx => {
         await ctx.render("schedule", {
+<<<<<<< HEAD
+            title: "行程表",
+=======
             title: "畢業專題交流平台",
+>>>>>>> db06432db716e325d47913face504b2aa268e632
             subtitle: "行程表",
             name: ctx.session.name? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
@@ -114,6 +118,15 @@ router
             subtitle: "留言板",
             name: ctx.session.name? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+        })
+    })
+    .get('/team/projectGrade', async ctx => {
+        await ctx.render("projectGrade", {
+            title: "畢業專題交流平台",
+            subtitle: "留言板",
+            name: ctx.session.name? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            studentName: ctx.session.studentName ? ctx.session.studentName : "胡帥哥",
         })
     })
     //Backend
