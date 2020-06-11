@@ -1,8 +1,13 @@
-<nav id="desktop" class="d-flex flex-row align-items-center p-3 bg-dark sticky-top">
-    <a href="/mainpage"><h1 class="text-light m-0 mx-3"><%= title %></h1></a>
-    <div class="mx-auto w-50">
-        <input class="form-control ml-1 my-auto px-4" style="font-size: 1.25rem;" type="text" placeholder="搜尋"
-            aria-label="Search">
+<nav id="desktop" class="d-flex flex-row align-items-center p-3 bg-color sticky-top mb-5">
+    <a href="/mainpage">
+        <h1 class="text-light m-0 mx-3"><%= title %></h1>
+    </a>
+    <div class="input-group mx-auto w-50">
+        <input class="form-control px-3 text-light" type="text" placeholder="搜尋" aria-label="Search">
+        <div class="input-group-append bg-transparent ">
+            <button class="btn btn-outline-light " type="button"><i class="fas fa-search bg-transparent "></i>
+            </button>
+        </div>
     </div>
     <button type="button" class="btn btn-light d-flex" role="button" id="logoutMenu" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">

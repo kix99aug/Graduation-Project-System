@@ -25,7 +25,9 @@ app.use(bodyParser());
 
 router
     .get('/', async ctx => {
-        await ctx.render("index")
+        await ctx.render("index", {
+            title: "高雄大學資訊工程學系 畢業專題交流平台"
+        })
     })
     .get('/login', async ctx => {
         var url = `https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&redirect_uri=http://localhost:3000/loginCallback&response_type=code&client_id=${client_id}`
