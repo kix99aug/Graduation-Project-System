@@ -40,6 +40,13 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
+    .get('/mainpageAdministrator', async ctx => {
+        await ctx.render("mainpageAdministrator", {
+            title: "畢業專題交流平台",
+            name: ctx.session.name? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+        })
+    })
     .get('/profile', async ctx => {
         await ctx.render("profile", {
             title: "畢業專題交流平台",
