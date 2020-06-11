@@ -91,8 +91,9 @@ body {
 
 .projects-item {
   background-color: white;
+  padding-left: 5px;
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
   color: #707070;
   font-size: 1.5rem;
