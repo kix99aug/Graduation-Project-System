@@ -2,11 +2,14 @@
     background: #3CB371;
 }
 
-nav .input-group *{
+nav#desktop .input-group *{
     background:rgba(255, 255, 255, 0.5);
-    border-radius: 2rem;
 }
 
-nav a:hover {
+nav#desktop a:hover {
     text-decoration: none;
+}
+
+nav#desktop {
+    height: 10vh;
 }

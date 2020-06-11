@@ -28,6 +28,28 @@ body{
     height: 20rem;
   object-fit: cover;
 }
-.blackboard{
- 
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+.wrapper > .content {
+  height: 90vh;
+  overflow: auto;
+}
+
+nav#sidebar {
+  min-width: 200px;
+  max-width: 200px;
+  height: 90vh;
+}
+
+nav#sidebar > ul > li > img {
+  width: 2rem;
+}
+
+nav#sidebar > ul > li.highlight {
+  background: rgba(255,255,0);
 }
