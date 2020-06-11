@@ -3,67 +3,45 @@
 
 <head>
     <%- include('header') -%>
+    <style>
+        .list-row::before{
+            content: url("/static/images/Polygon 5.png");
+        }
+        .list-row::after{
+            content: url("/static/images/Polygon 4.png");
+        }
+        .post-row::before{
+            content: url("/static/images/Polygon 5.png");
+            margin-right: 0.5em;
+        }
+    </style>
 </head>
 
-<body style="height: 100vh;">
+<body >
     <%- include('nav') -%>
-    <div class="d-flex align-items-center h-100 justify-content-center">
-        <div class="container">
-            <div class="row " style="height: 427px;">
-                <div class="col d-flex align-items-center h-100 justify-content-center">
-                    <img class="profileicon" src="<%= image %>">
-                </div>
-                <div class="col d-flex flex-column align-items-left justify-content-around">
-                    <h1 class="row border-bottom  d-flex flex-row align-items-left justify-content-between">
-                        <div>
-                            <img src="/static/images/Polygon 5.png" alt="">
-                            姓名：
-                        </div>
-                        <span class=""><%= name %></span>
-                        <div>
-                            同學
-                            <img src="/static/images/Polygon 4.png" alt="">
-                        </div>
-
-                    </h1>
-                    <h1 class="row border-bottom  d-flex flex-row align-items-left justify-content-between">
-                        <div>
-                            <img src="/static/images/Polygon 5.png" alt="">
-                            系級：
-                        </div><span><%= grade %></span>
-                        <div>
-                            級
-                            <img src="/static/images/Polygon 4.png" alt="">
-                        </div>
-                    </h1>
-                    <h1 class="row border-bottom  d-flex flex-row align-items-left justify-content-between">
-                        <div>
-                            <img src="/static/images/Polygon 5.png" alt="">
-                            指導教授：
-                        </div>
-                        <span><%= professor %> </span>
-                        <div>
-                            教授
-                            <img src="/static/images/Polygon 4.png" alt="">
-                        </div>
-
-                    </h1>
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class="col d-flex align-items-center h-100 justify-content-center">
+                <img class="profileicon rounded-circle border border-dark" src="<%= image %>">
             </div>
-            <form action="post">
-                <h1 class="row border-bottom" style="margin: 20px;">
-                    <img class="mx-3" src="/static/images/Polygon 5.png" alt="">
-                    個人簡介：
-
-                </h1>
-                <textarea class="form-control border-bottom" id="exampleFormControlTextarea1" rows="3"
-                    style="font-size:30px;"><%= introduction %>
-                </textarea>
-
-            </form>
-
+            <div class="col d-flex flex-column align-items-left justify-content-around">
+                <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    姓名：<span class=""><%= name %></span>同學
+                </h3>
+                <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    系級：<span><%= grade %></span>級
+                </h3>
+                <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    指導教授：<span><%= professor %> </span>教授
+                </h3>
+            </div>
         </div>
-
+        <div class="row">
+            <div class="col m-5">
+                    <h3 class="row post-row">個人簡介：</h3>
+                    <p><%= introduction %></p>
+            </div>
+        </div>
     </div>
 
     <%-include('footer'); -%>

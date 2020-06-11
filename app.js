@@ -25,7 +25,9 @@ app.use(bodyParser());
 
 router
     .get('/', async ctx => {
-        await ctx.render("index")
+        await ctx.render("index", {
+            title: "高雄大學資訊工程學系 畢業專題交流平台"
+        })
     })
     .get('/login', async ctx => {
         var url = `https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&redirect_uri=http://localhost:3000/loginCallback&response_type=code&client_id=${client_id}`
@@ -88,9 +90,11 @@ router
         ).json()
         if (googleData.hd === "mail.nuk.edu.tw" || googleData.hd === "go.nuk.edu.tw") {
             // 確認資料庫
+            console.log(googleData)
             ctx.session.login = true
             ctx.session.id = googleData.id
             ctx.session.name = googleData.name
+            ctx.session.image = googleData.picture
             ctx.redirect("/mainpage")
         } else {
             // 回傳錯誤

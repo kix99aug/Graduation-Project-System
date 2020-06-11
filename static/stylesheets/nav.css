@@ -1,8 +1,12 @@
-nav .form-control{
-    border-radius: 40px;
-    background-color: #343a40 !important;
+.bg-color {
+    background: #3CB371;
 }
-nav .form-control::placeholder{
-    color: white;
-    opacity: 0.4;
+
+nav .input-group *{
+    background:rgba(255, 255, 255, 0.5);
+    border-radius: 2rem;
+}
+
+nav a:hover {
+    text-decoration: none;
 }
