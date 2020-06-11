@@ -2,23 +2,48 @@
 <html>
 
 <head>
-    <%- include('header') -%>
+  <%- include('header') -%>
 </head>
 
 <body>
-    <%- include('nav') -%>
-    <div class="container">
-        <div class="media bg-light p-3 border rounded">
-            <div class="media-body">
-              <h3 class="text-center"><%= projectName%></h3>
-              <hr>
-              <h5>簡介：</h5>
-              <%= projectInfo%>
-              <br ><div class="w-100 h-25 d-flex justify-content-end">
-                <a href="/project" type="button" class="btn btn-warning border border-dark rounded-pill border">Read More</a>
-              </div>
-            </div>
-          </div>
+  <%- include('nav') -%>
+  <div class="container">
+    <div class="media bg-light p-3 mb-5 border rounded">
+      <div class="media-body">
+        <h3 class="text-center"><%= projectName%></h3>
+        <hr>
+        <h5>簡介：</h5>
+        <%= projectInfo%>
+        <br>
+        <div class="w-100 h-25 d-flex justify-content-end">
+          <a href="/project" type="button" class="btn btn-warning border border-dark rounded-pill border">Read More</a>
+        </div>
+      </div>
     </div>
-    <%- include('footer'); -%>
+    <div class="media bg-light p-3 mb-5 border rounded">
+      <div class="media-body">
+        <h3 class="text-center"><%= projectName%></h3>
+        <hr>
+        <h5>簡介：</h5>
+        <%= projectInfo%>
+        <br>
+        <div class="w-100 h-25 d-flex justify-content-end">
+          <a href="/project" type="button" class="btn btn-warning border border-dark rounded-pill border">Read More</a>
+        </div>
+      </div>
+    </div>
+    <div class="media bg-light p-3 mb-5 border rounded">
+      <div class="media-body">
+        <h3 class="text-center"><%= projectName%></h3>
+        <hr>
+        <h5>簡介：</h5>
+        <%= projectInfo%>
+        <br>
+        <div class="w-100 h-25 d-flex justify-content-end">
+          <a href="/project" type="button" class="btn btn-warning border border-dark rounded-pill border">Read More</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%- include('footer'); -%>
 </body>

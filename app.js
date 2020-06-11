@@ -107,8 +107,8 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
-    .get('/messageBoard', async ctx => {
-        await ctx.render("messageBoard", {
+    .get('/blackboard', async ctx => {
+        await ctx.render("blackboard", {
             title: "畢業專題交流平台",
             name: ctx.session.name? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
