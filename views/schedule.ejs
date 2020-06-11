@@ -3,15 +3,18 @@
 
 <head>
     <%- include('header') -%>
-    <script src="/static/script/schedule.js" defer="defer" ></script>
+    <script src="/static/script/schedule.js" defer="defer"></script>
 </head>
 
-<body style="">
+<body style="height: 100vh;">
     <%- include('nav') -%>
-    <div class="d-flex align-items-center  h-100 mx-5">
-        <%- include('TeacherIndex') -%>
-        <canvas class="px-3" id="timeline" width="1200px" height="500px" >123</canvas>
-        
+    <div class="wrapper mt-n5">
+        <%- include('sidebar') -%>
+        <div class="content p-5">
+            <canvas class="px-3" id="timeline" width="1200px" height="300px" >123</canvas>
+        </div>
     </div>
+    </div>
+    <script src="/static/script/blackboard.js"></script>
     <%- include('footer'); -%>
 </body>

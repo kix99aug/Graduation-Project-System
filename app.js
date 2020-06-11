@@ -100,16 +100,16 @@ router
             ctx.throw(400)
         }
     })
-    .get('/schedule', async ctx => {
+    .get('/team/schedule', async ctx => {
         await ctx.render("schedule", {
-            title: "畢業專題交流平台",
+            title: "行程表",
             name: ctx.session.name? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
-    .get('/blackboard', async ctx => {
+    .get('/team/blackboard', async ctx => {
         await ctx.render("blackboard", {
-            title: "畢業專題交流平台",
+            title: "留言板",
             name: ctx.session.name? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
@@ -125,6 +125,7 @@ router
     .get('/projectAndteamManagement', async ctx => {
         await ctx.render("projectAndteamManagement", {
             title: "畢業專題交流平台",
+            subtitle: "管理專題 & 團隊",
             name: ctx.session.name? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })

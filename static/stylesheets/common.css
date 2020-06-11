@@ -20,9 +20,15 @@ body {
   object-fit: cover;
 }
 .discuss {
+<<<<<<< HEAD
   background: rgba(255, 255, 210);
 }
 .profileicon {
+=======
+  background: rgba(255,255,210);
+}
+.profileicon{
+>>>>>>> 1a39bb9b40f3eec65057e6b3d4d18a3f294d4f60
   width: 20rem;
   height: 20rem;
   object-fit: cover;
@@ -67,4 +73,37 @@ body {
 
 .note textarea,.note p:hover{
   cursor: text;
+}
+
+/*project and team management*/
+.manageBg {
+  width: 700px;
+  height: 620px;
+  background-color: white;
+  margin-left: 315px;
+  margin-top: 35px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.35);
+}
+
+.project-list {
+  display: flex;
+  width: 625px;
+  height: 480px;
+  margin: auto;
+  margin-top: 110px;
+  background-color: white;
+  border: 1px #707070 solid;
+  flex-direction: column;
+}
+
+.projects-item {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #707070;
+  font-size: 1.5rem;
+  border-bottom: 1px #707070 solid;
+  width: 623px;
+  height: 50px;
 }
