@@ -20,15 +20,11 @@ body {
   object-fit: cover;
 }
 .discuss {
-<<<<<<< HEAD
   background: rgba(255, 255, 210);
 }
-.profileicon {
-=======
-  background: rgba(255,255,210);
-}
+
 .profileicon{
->>>>>>> 1a39bb9b40f3eec65057e6b3d4d18a3f294d4f60
+  background: rgba(255, 255, 210);
   width: 20rem;
   height: 20rem;
   object-fit: cover;
