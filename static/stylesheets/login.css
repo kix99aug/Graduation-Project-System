@@ -1,52 +1,18 @@
-@import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
 body {
     background-image: url("/static/images/mczh-tw1920x1920_large24959_173078990923.jpg");
     background-repeat: no-repeat;
     background-size: cover;
-    font-family: 'Noto Sans TC', sans-serif;
-}
-
-.title {
-    text-align: center;
-    margin: 62px;
-    font-weight: bold;
-    font-size: 56px;
-}
-
-marquee {
-    text-align: center;
 }
 
 .login {
-    display: table;
-    height: 731.31px;
-    width: 770.38px;
+    align-items: center;
+    justify-content: center;
     background-image: url(/static/images/icon.png);
     background-repeat: no-repeat;
-    background-size: auto;
-    background-position: 50%;
-    margin: auto;
-}
-.login img{
-    opacity: 1;
-    -webkit-transition: 0.2s ease-in-out;
+    background-size: contain;
+    background-position: center;
+    padding: 17% 0;
 }
 .login img:hover{
     opacity: 0.3;
-}
-.google {
-    display: block;
-    margin: auto;
-    margin-top: 33%;
-    z-index: 2;
-}
-
-.guest {
-    display: block;
-    margin: auto;
-    z-index: 2;
-}
-figure{
-    margin: 0;
-    padding: 0%;
 }
