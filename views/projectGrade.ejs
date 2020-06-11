@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('header') -%>
+</head>
+
+<body style="height: 100vh;">
+    <%- include('nav') -%>
+    <div class="wrapper mt-n5">
+        <nav id="sidebar" class="border-right bg-white">
+            <ul class="list-unstyled components">
+                <li class="p-3 py-4 text-left" href="/public" role="button">
+                    <img class="img-fluid mx-1" src="/static/images/calendar (1).png" alt="">
+                    行程表
+                </li>
+                <li class="p-3 py-4 text-left" href="/public" role="button">
+                    <img class="img-fluid mx-1" src="/static/images/folder.png" alt="">
+                    專題資料
+                </li>
+                <li class="p-3 py-4 text-left " href="/public" role="button">
+                    <img class="img-fluid mx-1" src="/static/images/message.png" alt="">
+                    留言板
+                </li>
+                <li class="p-3 py-4 text-left" href="/public" role="button">
+                    <img class="img-fluid mx-1" src="/static/images/candidates.png" alt="">
+                    線上交流平台
+                </li>
+                <li class="p-3 py-4 text-left highlight" href="/projectGrade" role="button">
+                    <img class="img-fluid mx-1" src="/static/images/qualification.png" alt="">
+                    專題評分
+                </li>
+            </ul>
+        </nav>
+        <div class="content p-5">
+            <div class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="container ">
+                            <div class="row">
+                                <div class="col-2 ml-5">
+                                    <img src="/static/images/grade_person.png" class="img-fluid ml-5 mt-1" alt="">
+                                </div>
+                                <div class="col">
+                                    <h4 class="p-3">指導學生個人成績</h4>
+                                </div>
+                            </div>
+                        </div>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="container">
+                        <div class="row mt-2">
+                            <div class="nav col-3 justify-content-end">
+                                <i class="fas fa-arrow-right py-2"></i>
+                            </div>
+                            <div class="col-3 mt-1">
+                              <h5>a1065526</h5>
+                            </div>
+                            <div class="col-3 mt-1">
+                              <h5 class="px-2">胡帥哥</h5>
+                            </div>
+                            <div class="col-3">
+                                <input class="form-control " type="text" placeholder="分數">
+                            </div>
+                        </div>
+                      </div>
+                      <div class="container">
+                        <div class="row mt-2">
+                            <div class="nav col-3 justify-content-end">
+                                <i class="fas fa-arrow-right py-2"></i>
+                            </div>
+                            <div class="col-3 mt-1">
+                              <h5>a1065526</h5>
+                            </div>
+                            <div class="col-3 mt-1">
+                              <h5 class="px-2">胡帥哥</h5>
+                            </div>
+                            <div class="col-3">
+                                <input class="form-control " type="text" placeholder="分數">
+                            </div>
+                        </div>
+                      </div>
+                      <div class="container">
+                        <div class="row mt-2">
+                            <div class="nav col-3 justify-content-end">
+                                <i class="fas fa-arrow-right py-2"></i>
+                            </div>
+                            <div class="col-3 mt-1">
+                              <h5>a1065526</h5>
+                            </div>
+                            <div class="col-3 mt-1 ">
+                              <h5 class="px-2">胡帥哥</h5>
+                            </div>
+                            <div class="col-3">
+                                <input class="form-control " type="text" placeholder="分數">
+                            </div>
+                        </div>
+                      </div>
+                      <div class="container">
+                        <div class="row mt-2">
+                            <div class="nav col-3 justify-content-end">
+                                <i class="fas fa-arrow-right py-2"></i>
+                            </div>
+                            <div class="col-3 mt-1">
+                              <h5>a1065526</h5>
+                            </div>
+                            <div class="col-3 mt-1 ">
+                              <h5 class="px-2">胡帥哥</h5>
+                            </div>
+                            <div class="col-3">
+                                <input class="form-control " type="text" placeholder="分數">
+                            </div>
+                        </div>
+                      </div>
+                      
+                      <div class="container py-2">
+                        <div class="row">
+                            <div class="col-2 ml-3">
+                                <img src="/static/images/grade.png" class="img-fluid ml-5 mt-1" alt="">
+                            </div>
+                            <div class="col">
+                                <h4 class="p-3 ml-5">專題總成績</h4>
+                            </div>
+                            <div class="col-3 py-2">
+                                <input class="form-control " type="text" placeholder="分數">
+                            </div>
+                        </div>
+                    </div>
+
+                      <div class="container py-3">
+                        <div class="row justify-content-center">
+                            <button type="button" class="btn btn-primary rounded">提交</button>
+                        </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+    </div>
+    <script src="/static/script/projectGrade.js"></script>
+
+    <%- include('footer'); -%>
+</body>
