@@ -10,8 +10,65 @@
     <div class="wrapper mt-n5 ">
         <%- include('administratorOptions') -%>
         <div class=" d-flex justify-content-center" style=" width: 100%; height: auto;">
-            <div class="manageBg bg-white mx-5 my-5">
-                
+            <div class="manageBg bg-white mx-5 my-4">
+                <div class=" d-flex flex-row">
+                    <p class=" mt-4 ml-5 mr-3" style="font-size: 1.5rem;">
+                        專題資訊
+                    </p>
+                    <p class=" mt-4 border-right border-left px-4" style="font-size: 1.5rem;">
+                        專題檔案
+                    </p>
+                </div>
+                <div class="px-4 pb-3 pt-1 d-flex flex-row justify-content-start">
+                    <div>
+                        <img src="/static/images/favicon_sad.png" class="img-fluid ml-3 mt-2" style="width: 3rem;" alt="">
+                    </div>
+                    <p class="mx-2 my-2" style="font-size: 2rem;">
+                        專題資料設定
+                    </p>
+
+                </div>
+                <div class="container">
+
+                    <div class="row d-flex flex-row px-5 pb-0">
+                        <i class="fas fa-arrow-right mt-2"></i>
+                        <p class="px-3" style="font-size: 24px;">專題名稱</p>
+                        <input type="text" style="width: 50%;" class="form-control">
+                    </div>
+                    <div class="col px-5 pb-0">
+                        <div class="row py-1">
+                            <i class="fas fa-arrow-right mt-2"></i>
+                            <p class="px-3" style="font-size: 24px;">專題成員</p>
+                        </div>
+                        <div class="row ">
+                            <input type="text" style="width: 50%;" class="form-control">
+                          
+                        </div>
+
+                    </div>
+                    <div class="col  px-5 pb-0">
+                        <div class="row py-1">
+                            <i class="fas fa-arrow-right mt-2"></i>
+                            <p class="px-3" style="font-size: 24px;">指導老師</p>
+                        </div>
+                        <div class="row">
+                            <input type="text" style="width: 50%;"  class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="col px-5 pb-0">
+                        <div class="row">
+                            <i class="fas fa-arrow-right mt-2"></i>
+                            <p class="px-3 "style="font-size: 24px;">簡介</p>
+                        </div>
+                        <div class="row">
+                            <textarea name="" id="" cols="50" rows="4" class="form-control"></textarea>
+                        </div>
+                        <div class="row w-100 justify-content-right ">
+                            <button class="btn btn-primary  ml-auto mr-0 my-2" style="">更新！</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
