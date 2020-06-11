@@ -22,7 +22,9 @@ body {
 .discuss {
   background: rgba(255, 255, 210);
 }
-.profileicon {
+
+.profileicon{
+  background: rgba(255, 255, 210);
   width: 20rem;
   height: 20rem;
   object-fit: cover;
@@ -87,20 +89,17 @@ body {
 
 /*project and team management*/
 .manageBg {
-  width: 700px;
-  height: 620px;
-  background-color: white;
-  margin-left: 315px;
-  margin-top: 35px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.35);
+  width: 50%;
+  height: auto;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.35);
 }
 
 .project-list {
   display: flex;
-  width: 625px;
-  height: 480px;
+  width: 575px;
+  height: 500px;
   margin: auto;
-  margin-top: 110px;
+  margin-top: 10px;
   background-color: white;
   border: 1px #707070 solid;
   flex-direction: column;
@@ -108,12 +107,29 @@ body {
 
 .projects-item {
   background-color: white;
+  padding-left: 5px;
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
   color: #707070;
   font-size: 1.5rem;
   border-bottom: 1px #707070 solid;
-  width: 623px;
+  width: 573px;
   height: 50px;
+}
+
+#add{
+  margin-left: 30px;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  border:1px #707070 solid;
+}
+
+.selectBtn{
+  margin-right: 27px;
+}
+
+#select, #delete{
+  margin:5px;
+  border:1px #707070 solid;
 }

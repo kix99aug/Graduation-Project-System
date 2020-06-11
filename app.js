@@ -111,7 +111,7 @@ router
     })
     .get('/team/schedule', async ctx => {
         await ctx.render("schedule", {
-            title: "行程表",
+            title: "畢業專題交流平台",
             subtitle: "行程表",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
@@ -119,21 +119,30 @@ router
     })
     .get('/team/blackboard', async ctx => {
         await ctx.render("blackboard", {
-            title: "留言板",
+            title: "畢業專題交流平台",
             subtitle: "留言板",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
+    .get('/team/projectGrade', async ctx => {
+        await ctx.render("projectGrade", {
+            title: "畢業專題交流平台",
+            subtitle: "留言板",
+            name: ctx.session.name? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            studentName: ctx.session.studentName ? ctx.session.studentName : "胡帥哥",
+        })
+    })
     //Backend
-    .get('/mainpageAdministrator', async ctx => {
+    .get('/mainpageA', async ctx => {
         await ctx.render("mainpageAdministrator", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
-    .get('/projectAndteamManagement', async ctx => {
+    .get('/patm/managePT', async ctx => {
         await ctx.render("projectAndteamManagement", {
             title: "畢業專題交流平台",
             subtitle: "管理專題 & 團隊",
@@ -167,6 +176,15 @@ router
             id:parseInt(Math.random()*Number.MAX_SAFE_INTEGER)
         }
     })
+    .get('/patm/editPj', async ctx => {
+        await ctx.render("editingProjectInfo", {
+            title: "畢業專題交流平台",
+            subtitle: "管理專題 & 團隊",
+            name: ctx.session.name? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+        })
+    })
+
 
 app.use(session({ store: new MongooseStore() }, app))
 app.use(async (ctx, next) => {
