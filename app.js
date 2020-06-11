@@ -116,6 +116,15 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
+    .get('/team/projectGrade', async ctx => {
+        await ctx.render("projectGrade", {
+            title: "畢業專題交流平台",
+            subtitle: "留言板",
+            name: ctx.session.name? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            studentName: ctx.session.studentName ? ctx.session.studentName : "胡帥哥",
+        })
+    })
     //Backend
     .get('/mainpageA', async ctx => {
         await ctx.render("mainpageAdministrator", {
