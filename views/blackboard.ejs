@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('header') -%>
+</head>
+
+<body>
+    <%- include('nav') -%>
+    <div class="container mw-100">
+        <div class="row">
+            <div class="col-2">
+                <div class="my-2 py-2 text-center" href="/public" role="button"><img class="img-fluid mx-1"
+                        style="width: 15%;" src="/static/images/calendar (1).png" alt=""> 行程表</div>
+                <div class="my-2 py-2 text-center" href="/public" role="button"><img class="img-fluid mx-1"
+                        style="width: 15%;" src="/static/images/folder.png" alt="">專題資料</div>
+                <div class="my-2 py-2 text-center" href="/public" role="button"><img class="img-fluid mx-1"
+                        style="width: 15%;" src="/static/images/message.png" alt="">留言板</div>
+                <div class="my-2 py-2 text-center" href="/public" role="button"><img class="img-fluid mx-1"
+                        style="width: 15%;" src="/static/images/candidates.png" alt="">線上交流平台</div>
+                <div class="my-2 py-2 text-center" href="/public" role="button"><img class="img-fluid mx-1"
+                        style="width: 15%;" src="/static/images/qualification.png" alt="">專題評分</div>
+            </div>
+            <div class="col-9">
+                <canvas id="blackboard" class="img-fluid">
+
+                </canvas></div>
+
+        </div>
+    </div>
+        <script src="/static/script/messageBoard.js"></script>
+    <%- include('footer'); -%>
+</body>
