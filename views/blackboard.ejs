@@ -9,10 +9,11 @@
     <%- include('nav') -%>
     <div class="wrapper mt-n5">
         <%- include('sidebar') -%>
-        <div class="content p-5">
-            <canvas id="blackboard" class="img-fluid">
-
-            </canvas>
+        <div class="content" style="position: relative; width: 100%; background: url('/static/images/blackboard.png'); background-size: 95%; background-position: center; background-repeat: no-repeat;">
+            <div class="note">
+                <p class="border-0">SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS</p>
+                <textarea style="display: none;">SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS</textarea>
+            </div>
         </div>
     </div>
     <script src="/static/script/blackboard.js"></script>
