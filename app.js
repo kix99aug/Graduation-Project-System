@@ -88,9 +88,11 @@ router
         ).json()
         if (googleData.hd === "mail.nuk.edu.tw" || googleData.hd === "go.nuk.edu.tw") {
             // 確認資料庫
+            console.log(googleData)
             ctx.session.login = true
             ctx.session.id = googleData.id
             ctx.session.name = googleData.name
+            ctx.session.image = googleData.picture
             ctx.redirect("/mainpage")
         } else {
             // 回傳錯誤

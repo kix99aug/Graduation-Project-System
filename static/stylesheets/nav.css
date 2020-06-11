@@ -6,3 +6,7 @@ nav .form-control::placeholder{
     color: white;
     opacity: 0.4;
 }
+
+nav a:hover {
+    text-decoration: none;
+}
