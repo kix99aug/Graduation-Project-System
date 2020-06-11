@@ -3,30 +3,15 @@
 
 <head>
     <%- include('header') -%>
-    <link rel="stylesheet" href="jquery.eeyellow.Timeline.css">
-
+    <script src="/static/script/schedule.js" defer="defer" ></script>
 </head>
 
-<body style="height: 100vh;">
+<body style="">
     <%- include('nav') -%>
     <div class="d-flex align-items-center  h-100 mx-5">
         <%- include('TeacherIndex') -%>
-        <div>
-            <section class="timeline">
-                <ol>
-                  <li>
-                    <div>
-                      <time>1934</time>
-                      Some content here
-                    </div>
-                  </li>
-                    
-                  <!-- more list items here -->
-                   
-                  <li></li>
-                </ol>
-            </section>
-        </div>
+        <canvas class="px-3" id="timeline" width="1200px" height="500px" >123</canvas>
+        
     </div>
     <%- include('footer'); -%>
 </body>
