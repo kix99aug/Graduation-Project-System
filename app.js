@@ -125,23 +125,24 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
-    .get('/team/projectGrade', async ctx => {
-        await ctx.render("projectGrade", {
+    .get('/team/judge', async ctx => {
+        await ctx.render("judge", {
             title: "畢業專題交流平台",
-            subtitle: "留言板",
+            subtitle: "專題評分",
             name: ctx.session.name? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             studentName: ctx.session.studentName ? ctx.session.studentName : "胡帥哥",
         })
     })
 
-    .get('/team/projectInfo', async ctx => {
-        await ctx.render("projectInfo", {
+    .get('/team/info', async ctx => {
+        await ctx.render("info", {
             title: "畢業專題交流平台",
-            subtitle: "留言板",
+            subtitle: "專題資訊",
             name: ctx.session.name? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
-            studentName: ctx.session.studentName ? ctx.session.studentName : "胡帥哥",
+            teamMateName: ctx.session.teamMateName ? ctx.session.teamMateName : "黃翰俞",
+            guideTeacherName: ctx.session.guideTeacherName ? ctx.session.guideTeacherName : "張寶榮",
         })
     })
     //Backend

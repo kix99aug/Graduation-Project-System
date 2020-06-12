@@ -1,6 +1,14 @@
 <nav id="sidebar" class="border-right bg-white">
     <ul class="list-unstyled components">
         <a class="p-3 py-4 text-left 
+        <% if (subtitle == '專題資訊') { %>
+            highlight
+            " <% } else { %> "
+        href=" /team/info" <% } %>>
+            <img class="img-fluid mx-1" src="/static/images/qualification.png" alt="">
+            專題資訊
+        </a>
+        <a class="p-3 py-4 text-left 
         <% if (subtitle == '行程表') { %>
             highlight
             " <% } else { %> "
@@ -9,12 +17,12 @@
             行程表
         </a>
         <a class="p-3 py-4 text-left 
-        <% if (subtitle == '專題資料') { %>
+        <% if (subtitle == '檔案上傳') { %>
             highlight
             " <% } else { %> "
         href=" /team/data" <% } %>>
             <img class="img-fluid mx-1" src="/static/images/folder.png" alt="">
-            專題資料
+            檔案上傳
         </a>
         <a class="p-3 py-4 text-left 
         <% if (subtitle == '留言板') { %>
@@ -25,12 +33,12 @@
             留言板
         </a>
         <a class="p-3 py-4 text-left 
-        <% if (subtitle == '線上交流平台') { %>
+        <% if (subtitle == '線上會議') { %>
             highlight
             " <% } else { %> "
         href=" /team/conference" <% } %>>
             <img class="img-fluid mx-1" src="/static/images/candidates.png" alt="">
-            線上交流平台
+            線上會議
         </a>
         <a class="p-3 py-4 text-left 
         <% if (subtitle == '專題評分') { %>
