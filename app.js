@@ -134,6 +134,8 @@ router
             studentName: ctx.session.studentName ? ctx.session.studentName : "胡帥哥",
         })
     })
+
+
     //Backend
     .get('/mainpageA', async ctx => {
         await ctx.render("mainpageAdministrator", {
@@ -150,6 +152,16 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
+    .get('/patm/editPj', async ctx => {
+        await ctx.render("editingProjectInfo", {
+            title: "畢業專題交流平台",
+            subtitle: "管理專題 & 團隊",
+            name: ctx.session.name? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+        })
+    })
+
+    
     // apis
     .get('/api/blackboard/all', async ctx => {
         ctx.body = {
@@ -165,24 +177,17 @@ router
     })
     .post('/api/blackboard/modify/:id', async ctx => {
         notes[ctx.params.id] = ctx.request.body
-        console.log(notes)
         ctx.body = {
             result: true
         }
     })
-    .get('/api/blackboard/new', async ctx => {
+    .post('/api/blackboard/new', async ctx => {
+        let newKey = parseInt(Math.random()*Number.MAX_SAFE_INTEGER)
+        notes[newKey] = ctx.request.body
         ctx.body = {
             result: true,
-            id:parseInt(Math.random()*Number.MAX_SAFE_INTEGER)
+            id:newKey
         }
-    })
-    .get('/patm/editPj', async ctx => {
-        await ctx.render("editingProjectInfo", {
-            title: "畢業專題交流平台",
-            subtitle: "管理專題 & 團隊",
-            name: ctx.session.name? ctx.session.name : "訪客",
-            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
-        })
     })
 
 
@@ -208,4 +213,6 @@ app.use(async (ctx, next) => {
 app.use(router.routes())
 app.use(mount('/static', serve('./static')))
 
-app.listen(3000)
+app.listen(3000,async e=>{
+    console.log("Koa server run on http://localhost:3000/")
+})

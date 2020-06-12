@@ -1,29 +1,39 @@
 .bg-color {
-    background: #3CB371;
+  background: #3cb371;
 }
 
-nav#desktop .input-group *{
-    background:rgba(255, 255, 255, 0.5);
+nav#desktop .input-group * {
+  background: rgba(255, 255, 255, 0.5);
 }
 
 nav#desktop a:hover {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 nav#desktop {
-    height: 10vh;
+  height: 10vh;
 }
 
 nav#sidebar {
-    min-width: 200px;
-    max-width: 200px;
-    height: 90vh;
-  }
-  
-  nav#sidebar > ul > li > img {
-    width: 2rem;
-  }
-  
-  nav#sidebar > ul > li.highlight {
-    background: #DEFEFB;
-  }
+  min-width: 200px;
+  max-width: 200px;
+  height: 90vh;
+}
+nav#sidebar > ul > a {
+  display:block;
+  cursor: default;
+}
+
+nav#sidebar > ul > a[href]:hover {
+  text-decoration: none;
+  cursor: pointer;
+  background: rgb(220,220,220);
+}
+
+nav#sidebar > ul > a.highlight {
+  background: #defefb;
+}
+
+nav#sidebar > ul > a > img {
+  width: 2rem;
+}
