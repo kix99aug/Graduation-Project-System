@@ -116,6 +116,7 @@ body {
   border-bottom: 1px #707070 solid;
   width: 573px;
   height: 50px;
+  margin: 0px;
 }
 
 #add {
@@ -123,6 +124,11 @@ body {
   margin-top: 20px;
   margin-right: 10px;
   margin-bottom: 0px;
+  border: 1px #707070 solid;
+}
+
+#edit {
+  margin-left: 310px;
   border: 1px #707070 solid;
 }
 
