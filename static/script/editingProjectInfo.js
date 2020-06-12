@@ -23,7 +23,6 @@ function addInputBar(e) {
 }
 function deleteInputBar(e) {
   if (memberNum != 0 && e.target.nodeName == "I") {
-    console.log(e.target.nodeName);
     var parentnode = e.target.parentNode;
     member.removeChild(parentnode);
     memberNum--;
