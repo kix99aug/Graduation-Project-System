@@ -15,7 +15,8 @@
             "runtimeArgs": ["--no-deprecation"],
             "env": {
                 "DEBUG":"koa-views"
-            }
+            },
+            "console": "integratedTerminal"
         }
     ]
 }
