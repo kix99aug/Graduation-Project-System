@@ -34,7 +34,10 @@ let notes =
 
 router
     .get('/', async ctx => {
-        await ctx.render("index", {
+        ctx.redirect("/intro")
+    })
+    .get('/intro', async ctx => {
+        await ctx.render("intro", {
             title: "高雄大學資訊工程學系 畢業專題交流平台"
         })
     })
@@ -42,8 +45,8 @@ router
         var url = `https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&redirect_uri=http://localhost:3000/loginCallback&response_type=code&client_id=${client_id}`
         ctx.redirect(url)
     })
-    .get('/mainpage', async ctx => {
-        await ctx.render("mainpage", {
+    .get('/index', async ctx => {
+        await ctx.render("index", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
@@ -110,7 +113,7 @@ router
         }
     })
     .get('/team/schedule', async ctx => {
-        await ctx.render("schedule", {
+        await ctx.render("team/schedule", {
             title: "畢業專題交流平台",
             subtitle: "行程表",
             name: ctx.session.name ? ctx.session.name : "訪客",
@@ -118,7 +121,7 @@ router
         })
     })
     .get('/team/blackboard', async ctx => {
-        await ctx.render("blackboard", {
+        await ctx.render("team/blackboard", {
             title: "畢業專題交流平台",
             subtitle: "留言板",
             name: ctx.session.name ? ctx.session.name : "訪客",
@@ -126,51 +129,54 @@ router
         })
     })
     .get('/team/judge', async ctx => {
-        await ctx.render("judge", {
+        await ctx.render("team/judge", {
             title: "畢業專題交流平台",
             subtitle: "專題評分",
-            name: ctx.session.name? ctx.session.name : "訪客",
+            name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             studentName: ctx.session.studentName ? ctx.session.studentName : "胡帥哥",
         })
     })
 
     .get('/team/info', async ctx => {
-        await ctx.render("info", {
+        await ctx.render("team/info", {
             title: "畢業專題交流平台",
             subtitle: "專題資訊",
-            name: ctx.session.name? ctx.session.name : "訪客",
+            name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             teamMateName: ctx.session.teamMateName ? ctx.session.teamMateName : "黃翰俞",
             guideTeacherName: ctx.session.guideTeacherName ? ctx.session.guideTeacherName : "張寶榮",
         })
     })
     //Backend
-    .get('/mainpageA', async ctx => {
-        await ctx.render("mainpageAdministrator", {
+    .get('/admin/', async ctx => {
+        ctx.redirect("/admin/index")
+    })
+    .get('/admin/index', async ctx => {
+        await ctx.render("admin/index", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
-    .get('/patm/managePT', async ctx => {
-        await ctx.render("projectAndteamManagement", {
+    .get('/admin/managePT', async ctx => {
+        await ctx.render("admin/projectAndteamManagement", {
             title: "畢業專題交流平台",
             subtitle: "管理專題 & 團隊",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
-    .get('/patm/editPj', async ctx => {
-        await ctx.render("editingProjectInfo", {
+    .get('/admin/editPj', async ctx => {
+        await ctx.render("admin/editingProjectInfo", {
             title: "畢業專題交流平台",
             subtitle: "管理專題 & 團隊",
-            name: ctx.session.name? ctx.session.name : "訪客",
+            name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
 
-    
+
     // apis
     .get('/api/blackboard/all', async ctx => {
         ctx.body = {
@@ -179,7 +185,7 @@ router
         }
     })
     .get('/api/blackboard/remove/:id', async ctx => {
-        delete notes[ctx.params.id] 
+        delete notes[ctx.params.id]
         ctx.body = {
             result: true
         }
@@ -191,11 +197,11 @@ router
         }
     })
     .post('/api/blackboard/new', async ctx => {
-        let newKey = parseInt(Math.random()*Number.MAX_SAFE_INTEGER)
+        let newKey = parseInt(Math.random() * Number.MAX_SAFE_INTEGER)
         notes[newKey] = ctx.request.body
         ctx.body = {
             result: true,
-            id:newKey
+            id: newKey
         }
     })
 
@@ -222,6 +228,6 @@ app.use(async (ctx, next) => {
 app.use(router.routes())
 app.use(mount('/static', serve('./static')))
 
-app.listen(3000,async e=>{
+app.listen(3000, async e => {
     console.log("Koa server run on http://localhost:3000/")
 })

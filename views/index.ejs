@@ -2,23 +2,32 @@
 <html>
 
 <head>
-    <title>高雄大學資訊工程學系 畢業專題交流平台</title>
     <%- include('header') -%>
-    <link rel="stylesheet" href="/static/stylesheets/login.css">
 </head>
 
 <body>
-    <div class="container">
-    <h1 class="m-5 text-center font-weight-bold">高雄大學資訊工程學系 畢業專題交流平台</h1>
-    <div class="login d-flex flex-column my-3">
-            <a href="/login">
-                <img src="/static/images/google.png" alt="" class="img-fluid">
-            </a>
-            <a href="/mainpage">
-                <img src="/static/images/guest.png" alt="" class="img-fluid">
-            </a>
+    <%- include('nav') -%>
+    <div class="container mt-n5 py-5 d-flex align-items-center" style="height: 90vh;">
+        <div class="card-deck flex-lg-row flex-xl-row flex-xs-column flex-sm-column flex-nowrap">
+            <div>
+                <div class="card-body">
+                    <img class="my-3 img-fluid" src="/static/images/data.png" alt=""><br>
+                    <a href="/projects" role="button" class="btn btn-lg btn-block btn-outline-primary ">瀏覽專題資料</a>
+                </div>
+            </div>
+            <div>
+                <div class="card-body">
+                    <img class="my-3 img-fluid" src="/static/images/profile.png" alt=""><br>
+                    <a href="/profile" role="button" class="btn btn-lg btn-block btn-outline-primary">個人資料</a>
+                </div>
+            </div>
+            <div>
+                <div class="card-body">
+                    <img class="my-3 img-fluid" src="/static/images/team.png" alt=""><br>
+                    <a href="/team/blackboard" role="button" class="btn btn-lg btn-block btn-outline-primary">我的團隊</a>
+                </div>
+            </div>
         </div>
     </div>
+    <%- include('footer'); -%>
 </body>
-
-</html>

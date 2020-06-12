@@ -12,7 +12,10 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}\\app.js",
-            "runtimeArgs": ["--no-deprecation"]
+            "runtimeArgs": ["--no-deprecation"],
+            "env": {
+                "DEBUG":"koa-views"
+            }
         }
     ]
 }
