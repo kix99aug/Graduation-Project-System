@@ -92,7 +92,7 @@ body {
 /*project and team management*/
 .manageBg {
   width: 50%;
-  height: 640px;
+  height: auto;
   box-shadow: 0px 0px 10px rgba(0,0,0,0.35);
 }
 
