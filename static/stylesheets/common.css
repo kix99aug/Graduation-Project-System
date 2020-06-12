@@ -4,6 +4,27 @@ body {
   font-family: "Noto Sans TC", sans-serif;
 }
 
+
+/* scrollbar width */
+*::-webkit-scrollbar {
+  width: 7.5px;
+}
+
+/* scrollbar track */
+*::-webkit-scrollbar-track {
+  background: #eee;
+}
+
+/* scrollbar handle */
+*::-webkit-scrollbar-thumb {
+  border-radius: 1rem;
+  background-color: #5ee7df;
+  background-image: -webkit-gradient(linear, left bottom, left top, from(#5ee7df), to(#b490ca));
+  background-image: -webkit-linear-gradient(bottom, #5ee7df 0%, #b490ca 100%);
+  background-image: linear-gradient(to top, #5ee7df 0%, #b490ca 100%);
+}
+
+
 .messageicon {
   width: 4rem;
   height: 4rem;
