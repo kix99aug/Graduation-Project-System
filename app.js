@@ -69,7 +69,7 @@ router
 
         })
     })
-    .get('/project', async ctx => {
+    .get('/project/:id', async ctx => {
         await ctx.render("project", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
