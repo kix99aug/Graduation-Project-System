@@ -32,12 +32,13 @@ body {
 
 .wrapper {
   display: flex;
+  height: 90vh;
   width: 100vw;
   align-items: stretch;
 }
 
 .wrapper > .content {
-  height: 90vh;
+  height: 100%;
   overflow: auto;
   background-origin: content-box;
 }
