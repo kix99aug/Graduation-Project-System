@@ -1,6 +1,14 @@
 <nav id="sidebar" class="border-right bg-white">
     <ul class="list-unstyled components">
         <a class="p-3 py-4 text-left 
+        <% if (subtitle == '專題資訊') { %>
+            highlight
+            " <% } else { %> "
+        href=" /team/projectInfo" <% } %>>
+            <img class="img-fluid mx-1" src="/static/images/qualification.png" alt="">
+            專題資訊
+        </a>
+        <a class="p-3 py-4 text-left 
         <% if (subtitle == '行程表') { %>
             highlight
             " <% } else { %> "
