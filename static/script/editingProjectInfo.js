@@ -22,9 +22,7 @@ function addInputBar(e) {
   }
 }
 function deleteInputBar(e) {
-  console.log(memberNum);
-  if (memberNum != 0 && e.target.nodeName == "i") {
-    console.log(e.target.nodeName);
+  if (memberNum != 0 && e.target.nodeName == "I") {
     var parentnode = e.target.parentNode;
     member.removeChild(parentnode);
     memberNum--;

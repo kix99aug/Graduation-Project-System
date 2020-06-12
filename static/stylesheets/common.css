@@ -35,6 +35,7 @@ body {
   height: 90vh;
   width: 100vw;
   align-items: stretch;
+  overflow:auto;
 }
 
 .wrapper > .content {
