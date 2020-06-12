@@ -56,13 +56,20 @@ function newNote(key) {
       $(note).remove()
     }
     else {
+      $(this).parent()[0].addEventListener("pointerdown", listenerDown)
+      if ($(this).val()==$(this).siblings("div").text()) {
+        $(this)
+          .hide()
+          .siblings("div")
+          .show()
+        return
+      }
       $(this)
         .hide()
         .siblings("div")
         .text($(this).val())
         .show()
       ele.content = $(this).val()
-      $(this).parent()[0].addEventListener("pointerdown", listenerDown)
       if (key == -1) {
         $.post(`/api/blackboard/new`, ele, res => {
           $(this).parent().data("noteid", res.id)
