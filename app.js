@@ -167,7 +167,7 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
-    .get('/admin/editPj', async ctx => {
+    .get('/admin/editPI', async ctx => {
         await ctx.render("admin/editingProjectInfo", {
             title: "畢業專題交流平台",
             subtitle: "管理專題 & 團隊",
@@ -175,7 +175,14 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
-
+    .get('/admin/editPF', async ctx => {
+        await ctx.render("admin/editingProjectFiles", {
+            title: "畢業專題交流平台",
+            subtitle: "管理專題 & 團隊",
+            name: ctx.session.name ? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+        })
+    })
 
     // apis
     .get('/api/blackboard/all', async ctx => {

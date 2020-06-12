@@ -116,7 +116,6 @@ body {
   color: #707070;
   font-size: 1.5rem;
   border-bottom: 1px #707070 solid;
-  width: 573px;
   height: 50px;
   margin: 0px;
 }
@@ -128,9 +127,9 @@ body {
   margin-bottom: 0px;
   border: 1px #707070 solid;
 }
-
-#edit {
-  margin-left: 310px;
+.edit {
+  margin-left: auto;
+  margin-right: 1em;
   border: 1px #707070 solid;
 }
 
