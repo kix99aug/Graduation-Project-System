@@ -91,8 +91,8 @@ body {
 /*project and team management*/
 .manageBg {
   width: 50%;
-  height: auto;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.35);
+  height: 640px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.35);
 }
 
 .project-list {
@@ -122,6 +122,7 @@ body {
 #add {
   margin-left: 30px;
   margin-top: 20px;
+  margin-right: 10px;
   margin-bottom: 0px;
   border: 1px #707070 solid;
 }
