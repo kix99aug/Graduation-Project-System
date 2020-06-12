@@ -14,7 +14,8 @@
         <div class="manageBg bg-white mx-5 my-4">
           <div class="input-group" style="padding-right:30px;">
             <button type="button" class="btn btn-light" id="add" data-toggle="modal"> + 新增專題團隊</button>
-            <div class="modal fade" id="addingTeam" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal fade" id="addingTeam" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-body">
@@ -29,13 +30,13 @@
             </div>
             <input class="form-control px-3 text-dark mt-4" type="text" placeholder="搜尋" aria-label="Search"
               style="border: 1px #000000 solid;">
-            <div class="input-group-append bg-transparent mt-4" style="height:38px;">
+            <div class="input-group-append bg-transparent mt-4">
               <button class="btn btn-outline-dark " type="button"><i class="fas fa-search bg-transparent "></i>
               </button>
             </div>
             <script>
-              $('#add').click(function(){
-                   $('#addingTeam').modal('show'); 
+              $('#add').click(function () {
+                $('#addingTeam').modal('show');
               });
             </script>
           </div>
@@ -50,29 +51,36 @@
                 $(`input[type="checkbox"]`).prop(`checked`, !allchecked)
               })
             </script>
-            <button type="button" class="btn btn-light btn-sm" id="delete"><img src="/static/images/trash.png"
-                style="width: 25px;" alt=""></button>
+            <button type="button" class="btn btn-light btn-sm" id="delete">
+              <img src="/static/images/trash.png" style="height:2rem" alt="">
+            </button>
           </div>
           <div class="project-list mb-4">
             <form role="form">
               <div class="checkbox">
-                <label class="projects-item"><input type="checkbox" style="width:15px;height:15px;margin:5px;">Disco0
+                <label class="projects-item ">
+                  <input type="checkbox" class="m-1 ">
+                  Disco0
                   <button type="button" class="btn btn-light btn-sm" id="edit">
-                    <img src="/static/images/register.png" style="width: 20px;" alt="">
+                    <img src="/static/images/register.png" style="width: 1rem;" alt="">
                     編輯專題團隊內容</button>
                 </label>
               </div>
               <div class="checkbox">
-                <label class="projects-item"><input type="checkbox" style="width:15px;height:15px;margin:5px;">Disco1
+                <label class="projects-item">
+                  <input type="checkbox" class="m-1">
+                  Disco1
                   <button type="button" class="btn btn-light btn-sm" id="edit">
-                    <img src="/static/images/register.png" style="width: 20px;" alt="">
+                    <img src="/static/images/register.png" style="width:1rem;" alt="">
                     編輯專題團隊內容</button>
                 </label>
               </div>
               <div class="checkbox">
-                <label class="projects-item"><input type="checkbox" style="width:15px;height:15px;margin:5px;">Disco2
+                <label class="projects-item">
+                  <input type="checkbox" class="m-1" >
+                  Disco2
                   <button type="button" class="btn btn-light btn-sm" id="edit">
-                    <img src="/static/images/register.png" style="width: 20px;" alt="">
+                    <img src="/static/images/register.png" style="width: 1rem;" alt="">
                     編輯專題團隊內容</button>
                 </label>
               </div>
