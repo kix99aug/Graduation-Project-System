@@ -99,7 +99,7 @@ body {
 .project-list {
   display: flex;
   width: 575px;
-  height: 500px;
+  height: 480px;
   margin: auto;
   margin-top: 10px;
   background-color: white;
