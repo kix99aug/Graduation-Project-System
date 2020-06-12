@@ -64,8 +64,7 @@ function newNote(key) {
       ele.content = $(this).val()
       $(this).parent()[0].addEventListener("pointerdown", listenerDown)
       if (key == -1) {
-        $.get('/api/blackboard/new', res => {
-          $.post(`/api/blackboard/modify/${res.id}`, ele, res => console.log(res))
+        $.post(`/api/blackboard/new`, ele, res => {
           $(this).parent().data("noteid", res.id)
           notes[res.id] = ele
           delete notes[-1]
