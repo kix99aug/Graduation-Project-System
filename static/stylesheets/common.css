@@ -23,7 +23,7 @@ body {
   background: rgba(255, 255, 210);
 }
 
-.profileicon{
+.profileicon {
   background: rgba(255, 255, 210);
   width: 20rem;
   height: 20rem;
@@ -82,7 +82,7 @@ body {
   position: relative;
   width: 100%;
   background: url("/static/images/blackboard.png");
-  background-size: 90%;
+  background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -91,7 +91,7 @@ body {
 .manageBg {
   width: 50%;
   height: auto;
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.35);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.35);
 }
 
 .project-list {
@@ -118,18 +118,19 @@ body {
   height: 50px;
 }
 
-#add{
+#add {
   margin-left: 30px;
   margin-top: 20px;
   margin-bottom: 0px;
-  border:1px #707070 solid;
+  border: 1px #707070 solid;
 }
 
-.selectBtn{
+.selectBtn {
   margin-right: 27px;
 }
 
-#select, #delete{
-  margin:5px;
-  border:1px #707070 solid;
+#select,
+#delete {
+  margin: 5px;
+  border: 1px #707070 solid;
 }
