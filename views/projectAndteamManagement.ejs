@@ -2,35 +2,70 @@
 <html>
 
 <head>
-    <%- include('header') -%>
+  <%- include('header') -%>
 </head>
 
 <body style="height: 100vh;">
-    <%- include('nav') -%>
-    <div class="wrapper mt-n5">
-        <%- include('administratorOptions') -%>
-        <div class=" d-flex justify-content-center" style=" width: 100%; height: auto;">
-          <div class="manageBg bg-white mx-5 my-4">
-            <button type="button" class="btn btn-light" id = "add"> + 新增專題團隊</button>
-            <div class = "selectBtn d-flex justify-content-end">
-              <button type="button" class="btn btn-light btn-sm" id = "select"> 全選</button>
-              <button type="button" class="btn btn-light btn-sm" id = "delete"><img src="/static/images/trash.png" style="width: 25px;" alt=""></button>
-            </div>
-            <div class = "project-list">
-              <form role = "form">
-                <div class = "checkbox"> 
-                  <label class = "projects-item"><input type = "checkbox" style="width:15px;height:15px;margin:5px;">Disco0</label>
-                </div>
-                <div class = "checkbox"> 
-                  <label class = "projects-item"><input type = "checkbox" style="width:15px;height:15px;margin:5px;">Disco1</label>
-                </div>
-                <div class = "checkbox"> 
-                  <label class = "projects-item"><input type = "checkbox" style="width:15px;height:15px;margin:5px;">Disco2</label>
-                </div>
-              </form>
+  <%- include('nav') -%>
+  <div class="wrapper mt-n5">
+    <%- include('administratorOptions') -%>
+    <div class="content w-100">
+      <div class=" d-flex justify-content-center" style=" width: 100%; height: auto;">
+        <div class="manageBg bg-white mx-5 my-4">
+          <div class="input-group" style="padding-right:30px;">
+            <button type="button" class="btn btn-light" id="add"> + 新增專題團隊</button>
+            <input class="form-control px-3 text-dark mt-4" type="text" placeholder="搜尋" aria-label="Search"
+              style="border: 1px #000000 solid;">
+            <div class="input-group-append bg-transparent mt-4" style="height:38px;">
+              <button class="btn btn-outline-dark " type="button"><i class="fas fa-search bg-transparent "></i>
+              </button>
             </div>
           </div>
+          <div class="selectBtn d-flex justify-content-end pt-2">
+            <button type="button" class="btn btn-light btn-sm" id="select"> 全選</button>
+            <script>
+              $("button#select").click(function () {
+                let allchecked = true
+                $(`input[type="checkbox"]`).each(function () {
+                  if (!$(this).prop(`checked`)) allchecked = false
+                })
+                $(`input[type="checkbox"]`).prop(`checked`, !allchecked)
+              })
+            </script>
+            <button type="button" class="btn btn-light btn-sm" id="delete"><img src="/static/images/trash.png"
+                style="width: 25px;" alt=""></button>
+          </div>
+              <div class = "project-list">
+                <form role = "form">
+                  <div class = "checkbox"> 
+                    <label class = "projects-item"><input type = "checkbox" style="width:15px;height:15px;margin:5px;">Disco0
+                      <button type="button" class="btn btn-light btn-sm" id = "edit"> 
+                        <img src="/static/images/register.png" style="width: 20px;" alt="">
+                        編輯專題團隊內容</button>
+                    </label>
+                  </div>
+                  <div class = "checkbox"> 
+                    <label class = "projects-item"><input type = "checkbox" style="width:15px;height:15px;margin:5px;">Disco1
+                      <button type="button" class="btn btn-light btn-sm" id = "edit"> 
+                        <img src="/static/images/register.png" style="width: 20px;" alt="">
+                        編輯專題團隊內容</button>
+                    </label>
+                  </div>
+                  <div class = "checkbox"> 
+                    <label class = "projects-item"><input type = "checkbox" style="width:15px;height:15px;margin:5px;">Disco2
+                      <button type="button" class="btn btn-light btn-sm" id = "edit">
+                        <img src="/static/images/register.png" style="width: 20px;" alt="">
+                        編輯專題團隊內容</button>
+                    </label>
+                  </div>
+                </form>
+              </div>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
-    <%- include('footer'); -%>
+  </div>
+  </div>
+  <%- include('footer'); -%>
 </body>

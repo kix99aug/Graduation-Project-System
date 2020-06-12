@@ -1,24 +1,52 @@
 <nav id="sidebar" class="border-right bg-white">
     <ul class="list-unstyled components">
-        <li class="p-3 py-4 text-left <% if (subtitle == '行程表') { %>highlight<% } %>" href="/public" role="button">
+        <a class="p-3 py-4 text-left 
+        <% if (subtitle == '專題資訊') { %>
+            highlight
+            " <% } else { %> "
+        href=" /team/info" <% } %>>
+            <img class="img-fluid mx-1" src="/static/images/qualification.png" alt="">
+            專題資訊
+        </a>
+        <a class="p-3 py-4 text-left 
+        <% if (subtitle == '行程表') { %>
+            highlight
+            " <% } else { %> "
+        href=" /team/schedule" <% } %>>
             <img class="img-fluid mx-1" src="/static/images/calendar (1).png" alt="">
             行程表
-        </li>
-        <li class="p-3 py-4 text-left <% if (subtitle == '專題資料') { %>highlight<% } %>" href="/public" role="button">
+        </a>
+        <a class="p-3 py-4 text-left 
+        <% if (subtitle == '檔案上傳') { %>
+            highlight
+            " <% } else { %> "
+        href=" /team/data" <% } %>>
             <img class="img-fluid mx-1" src="/static/images/folder.png" alt="">
-            專題資料
-        </li>
-        <li class="p-3 py-4 text-left <% if (subtitle == '留言板') { %>highlight<% } %>" href="/public" role="button">
+            檔案上傳
+        </a>
+        <a class="p-3 py-4 text-left 
+        <% if (subtitle == '留言板') { %>
+            highlight
+            " <% } else { %> "
+        href=" /team/blackboard" <% } %>>
             <img class="img-fluid mx-1" src="/static/images/message.png" alt="">
             留言板
-        </li>
-        <li class="p-3 py-4 text-left <% if (subtitle == '線上交流平台') { %>highlight<% } %>" href="/public" role="button">
+        </a>
+        <a class="p-3 py-4 text-left 
+        <% if (subtitle == '線上會議') { %>
+            highlight
+            " <% } else { %> "
+        href=" /team/conference" <% } %>>
             <img class="img-fluid mx-1" src="/static/images/candidates.png" alt="">
-            線上交流平台
-        </li>
-        <li class="p-3 py-4 text-left <% if (subtitle == '專題評分') { %>highlight<% } %>" href="/public" role="button">
+            線上會議
+        </a>
+        <a class="p-3 py-4 text-left 
+        <% if (subtitle == '專題評分') { %>
+            highlight
+            " <% } else { %> "
+        href=" /team/judge" <% } %>>
             <img class="img-fluid mx-1" src="/static/images/qualification.png" alt="">
             專題評分
-        </li>
+        </a>
     </ul>
 </nav>

@@ -1,18 +1,29 @@
 <nav id="sidebar" class="border-right bg-white">
     <ul class="list-unstyled components">
-        <li class="p-3 py-4 text-left <% if (subtitle == '管理專題 & 團隊') { %>highlight<% } %>" href="/public" role="button">
-            <img class="img-fluid mx-1" src="/static/images/project.png" alt="">
+        <a class="p-3 py-4 text-left 
+        <% if (subtitle == '管理專題 & 團隊') { %>
+            highlight
+            " <% } else { %> "
+        href=" /patm/managePT" <% } %>>
+            <img class="img-fluid mx-1" src="/static/images/project.png" style="width: 20%;" alt="">
+
             管理專題 & 團隊
-        </li>
-        <li class="p-3 py-4 text-left <% if (subtitle == '管理使用者') { %>highlight<% } %>" href="/public" role="button">
+        </a>
+        <a class="p-3 py-4 text-left 
+        <% if (subtitle == '管理使用者') { %>
+            highlight
+            " <% } else { %> "
+        href=" /patm/managePT" <% } %>>
             <img class="img-fluid mx-1" src="/static/images/manageUser.png" alt="">
             管理使用者
-        </li>
-        <li class="p-3 py-4 text-left <% if (subtitle == '系統時程設定') { %>highlight<% } %>" href="/public" role="button">
-            <img class="img-fluid mx-1" src="/static/images/time.png" alt="">
+        </a>
+        <a class="p-3 py-4 text-left 
+        <% if (subtitle == '系統時程設定') { %>
+            highlight
+            " <% } else { %> "
+        href=" /patm/managePT" <% } %>>
+            <img class="img-fluid mx-1" src="/static/images/time.png" style="width: 20%;" alt="">
             系統時程設定
-        </li>
+        </a>
     </ul>
 </nav>
-
-
