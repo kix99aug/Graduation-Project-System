@@ -1,31 +1,24 @@
-var memberNum = 0;
-var member = document.getElementById("addingMembers");
+var member = document.getElementById("member");
 
-member.addEventListener("keypress", addInputBar);
-member.addEventListener("click", deleteInputBar);
+$("col-3 pb-2 input").on("input", onInput)
 
-function addInputBar(e) {
-  if (e.key === "Enter") {
-    var div = document.createElement("div");
-    div.setAttribute("class", "col-3 pb-2");
-    div.setAttribute("style","margin-left: 119px;")
-    var input = document.createElement("input");
-    input.setAttribute("type", "text");
-    input.setAttribute("style", "width: 150px;");
-    input.setAttribute("class", "form-control");
-    input.setAttribute("placeholder", "專題名稱");
-    var i = document.createElement("i");
-    i.setAttribute("class", "far fa-times-circle");
-    div.appendChild(input);
-    div.appendChild(i);
-    member.appendChild(div);
-    memberNum++;
+function onInput(e) {
+  if ($(this).val() == "" && $(".row.mb-2 input").length > 1) {
+    $(this).parent().remove()
+    return
+  }
+  if ($("col-3 pb-2 input").last().val() != "") {
+    $(addInputBar()).on("input", onInput)
   }
 }
-function deleteInputBar(e) {
-  if (memberNum != 0 && e.target.nodeName == "I") {
-    var parentnode = e.target.parentNode;
-    member.removeChild(parentnode);
-    memberNum--;
-  }
+
+function addInputBar() {
+  var div = document.createElement("div");
+  div.setAttribute("class", "col-3 pb-2");
+  var input = document.createElement("input");
+  input.setAttribute("type", "text");
+  input.setAttribute("class", "form-control w-50");
+  div.appendChild(input);
+  member.appendChild(div);
+  return input
 }
