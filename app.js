@@ -183,7 +183,15 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
-
+    .get('/admin/time', async ctx => {
+        await ctx.render("admin/time", {
+            title: "畢業專題交流平台",
+            subtitle: "管理專題 & 團隊",
+            name: ctx.session.name ? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            recordtime: ctx.session.recordtime ? ctx.session.recordtime : "2020/06/09",
+        })
+    })
     // apis
     .get('/api/blackboard/all', async ctx => {
         ctx.body = {
