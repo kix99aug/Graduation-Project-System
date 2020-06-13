@@ -2,124 +2,179 @@
 <html>
 
 <head>
-    <%- include('../header') -%>
+  <%- include('../header') -%>
 </head>
 
 <body style="height: 100vh;">
-    <%- include('../nav') -%>
-    <div class="wrapper mt-n5">
-        <%- include('sidebar') -%>
-        <div class="content p-5">
-            <div class="modal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header p-2">
-                        <div class="container ">
-                            <div class="row">
-                                <div class="col-2 ml-5">
-                                    <img src="/static/images/grade_person.png" class="img-fluid ml-5 mt-1" alt="">
-                                </div>
-                                <div class="col">
-                                    <h4 class=" px-4 mt-3">指導學生個人成績</h4>
-                                </div>
-                            </div>
-                        </div>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="container">
-                        <div class="row mt-2">
-                            <div class="nav col-3 justify-content-end">
-                                <i class="fas fa-arrow-right py-2"></i>
-                            </div>
-                            <div class="col-3 mt-1">
-                              <h5>a1065526</h5>
-                            </div>
-                            <div class="col-3 mt-1">
-                              <h5 class="px-2"><%= studentName %></h5>
-                            </div>
-                            <div class="col-3">
-                                <input class="form-control " type="text" placeholder="分數">
-                            </div>
-                        </div>
-                      </div>
-                      <div class="container">
-                        <div class="row mt-2">
-                            <div class="nav col-3 justify-content-end">
-                                <i class="fas fa-arrow-right py-2"></i>
-                            </div>
-                            <div class="col-3 mt-1">
-                              <h5>a1065526</h5>
-                            </div>
-                            <div class="col-3 mt-1">
-                              <h5 class="px-2"><%= studentName %></h5>
-                            </div>
-                            <div class="col-3">
-                                <input class="form-control " type="text" placeholder="分數">
-                            </div>
-                        </div>
-                      </div>
-                      <div class="container">
-                        <div class="row mt-2">
-                            <div class="nav col-3 justify-content-end">
-                                <i class="fas fa-arrow-right py-2"></i>
-                            </div>
-                            <div class="col-3 mt-1">
-                              <h5>a1065526</h5>
-                            </div>
-                            <div class="col-3 mt-1 ">
-                              <h5 class="px-2"><%= studentName %></h5>
-                            </div>
-                            <div class="col-3">
-                                <input class="form-control " type="text" placeholder="分數">
-                            </div>
-                        </div>
-                      </div>
-                      <div class="container">
-                        <div class="row mt-2">
-                            <div class="nav col-3 justify-content-end">
-                                <i class="fas fa-arrow-right py-2"></i>
-                            </div>
-                            <div class="col-3 mt-1">
-                              <h5>a1065526</h5>
-                            </div>
-                            <div class="col-3 mt-1 ">
-                              <h5 class="px-2"><%= studentName %></h5>
-                            </div>
-                            <div class="col-3">
-                                <input class="form-control " type="text" placeholder="分數">
-                            </div>
-                        </div>
-                      </div>
-                      <div class="dropdown-divider"></div>
-                      <div class="container py-1 ">
-                        <div class="row">
-                          <div class="class col-2 ml-5">
-                                <img src="/static/images/grade.png" class="img-fluid py-1 ml-5" alt="">
-                          </div>
-                          <div class="col">
-                              <h4 class="p-3 text-center">專題總成績</h4>
-                          </div>
-                          <div class="col-3 py-2 justify-content-center">
-                              <input class="form-control " type="text" placeholder="分數">
-                          </div>
-                        </div>
-                    </div>
-
-                      <div class="container py-3">
-                        <div class="row justify-content-center">
-                            <button type="button" class="btn btn-primary rounded">提交</button>
-                        </div>
-                      
-                    </div>
+  <%- include('../nav') -%>
+  <div class="wrapper mt-n5">
+    <%- include('sidebar') -%>
+    <div class="content w-100">
+      <div class="modal" tabindex="-1" role="dialog" style="top: auto;">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header p-2">
+              <div class="container ">
+                <div class="row">
+                  <div class="col-2 ml-5">
+                    <img src="/static/images/grade_person.png" class="img-fluid ml-5 mt-1" alt="">
+                  </div>
+                  <div class="col">
+                    <h4 class=" px-4 mt-3">指導學生個人成績</h4>
                   </div>
                 </div>
               </div>
-        </div>
-    </div>
-    </div>
-    <script src="/static/script/projectGrade.js"></script>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="container">
+              <div class="row mt-2">
+                <div class="nav col-3 justify-content-end">
+                  <i class="fas fa-arrow-right py-2"></i>
+                </div>
+                <div class="col-3 mt-1">
+                  <h5>a1065526</h5>
+                </div>
+                <div class="col-3 mt-1">
+                  <h5 class="px-2"><%= studentName %></h5>
+                </div>
+                <div class="col-3">
+                  <input class="form-control " type="text" placeholder="分數">
+                </div>
+              </div>
+            </div>
+            <div class="container">
+              <div class="row mt-2">
+                <div class="nav col-3 justify-content-end">
+                  <i class="fas fa-arrow-right py-2"></i>
+                </div>
+                <div class="col-3 mt-1">
+                  <h5>a1065526</h5>
+                </div>
+                <div class="col-3 mt-1">
+                  <h5 class="px-2"><%= studentName %></h5>
+                </div>
+                <div class="col-3">
+                  <input class="form-control " type="text" placeholder="分數">
+                </div>
+              </div>
+            </div>
+            <div class="container">
+              <div class="row mt-2">
+                <div class="nav col-3 justify-content-end">
+                  <i class="fas fa-arrow-right py-2"></i>
+                </div>
+                <div class="col-3 mt-1">
+                  <h5>a1065526</h5>
+                </div>
+                <div class="col-3 mt-1 ">
+                  <h5 class="px-2"><%= studentName %></h5>
+                </div>
+                <div class="col-3">
+                  <input class="form-control " type="text" placeholder="分數">
+                </div>
+              </div>
+            </div>
+            <div class="container">
+              <div class="row mt-2">
+                <div class="nav col-3 justify-content-end">
+                  <i class="fas fa-arrow-right py-2"></i>
+                </div>
+                <div class="col-3 mt-1">
+                  <h5>a1065526</h5>
+                </div>
+                <div class="col-3 mt-1 ">
+                  <h5 class="px-2"><%= studentName %></h5>
+                </div>
+                <div class="col-3">
+                  <input class="form-control " type="text" placeholder="分數">
+                </div>
+              </div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="container py-1 ">
+              <div class="row">
+                <div class="class col-2 ml-5">
+                  <img src="/static/images/grade.png" class="img-fluid py-1 ml-5" alt="">
+                </div>
+                <div class="col">
+                  <h4 class="p-3 text-center">專題總成績</h4>
+                </div>
+                <div class="col-3 py-2 justify-content-center">
+                  <input class="form-control " type="text" placeholder="分數">
+                </div>
+              </div>
+            </div>
 
-    <%- include('../footer'); -%>
+            <div class="container py-3">
+              <div class="row justify-content-center">
+                <button type="button" class="btn btn-primary rounded">提交</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class=" d-flex justify-content-center" style=" width: 100%; height: auto; ">
+        <div class="manageBg bg-white mx-5 my-4">
+
+          <div class="px-4 pb-3 pt-1 d-flex flex-row justify-content-center">
+            <div>
+              <img src="/static/images/grade_person.png" class="img-fluid ml-3 mt-2" style="width: 3rem;" alt="">
+            </div>
+            
+            <h4 class="mx-2 my-3 ">
+              指導學生個人成績
+            </h4>
+          </div>
+          <div class="container">
+            <div class="row d-flex flex-row justify-content-center">
+              <i class="fas fa-arrow-right mt-2"></i>
+              <p class="px-3" style="font-size: 24px;">a1065526</p>
+              <p class="px-3" style="font-size: 24px;">胡醜男</p>
+              <input type="text" style="width: 10%;" class="form-control" placeholder="分數">
+            </div>
+            <div class="row d-flex flex-row justify-content-center">
+              <i class="fas fa-arrow-right mt-2"></i>
+              <p class="px-3" style="font-size: 24px;">a1065526</p>
+              <p class="px-3" style="font-size: 24px;">胡醜男</p>
+              <input type="text" style="width: 10%;" class="form-control" placeholder="分數">
+            </div>
+            <div class="row d-flex flex-row justify-content-center">
+              <i class="fas fa-arrow-right mt-2"></i>
+              <p class="px-3" style="font-size: 24px;">a1065526</p>
+              <p class="px-3" style="font-size: 24px;">胡醜男</p>
+              <input type="text" style="width: 10%;" class="form-control" placeholder="分數">
+            </div>
+            <div class="row d-flex flex-row justify-content-center">
+              <i class="fas fa-arrow-right mt-2"></i>
+              <p class="px-3" style="font-size: 24px;">a1065526</p>
+              <p class="px-3" style="font-size: 24px;">胡醜男</p>
+              <input type="text" style="width: 10%;" class="form-control" placeholder="分數">
+            </div>
+            <div class="row justify-content-center align-items-center ">
+              <div class=" col-2 mx-2">
+                <img src="/static/images/grade.png" class="img-fluid" alt="">
+              </div>
+              <div >
+                <h4 class=" text-center mx-2">專題總成績</h4>
+              </div>
+              <div class="mx-2">
+                <input class="form-control " style="width: 50%;"  type="text" placeholder="分數">
+              </div>
+            </div>
+            <div class="pb-3 row justify-content-center">
+              <button type="button" class="btn btn-primary rounded">提交</button>
+            </div>
+            <script src="/static/script/editingProjectInfo.js"></script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <script src="/static/script/projectGrade.js"></script>
+
+  <%- include('../footer'); -%>
 </body>
