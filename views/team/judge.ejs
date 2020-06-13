@@ -10,7 +10,7 @@
   <div class="wrapper mt-n5">
     <%- include('sidebar') -%>
     <div class="content w-100">
-      <div class="modal" tabindex="-1" role="dialog" style="top: auto;">
+      <div class="modal fade" aria-hidden="true" tabindex="-1" role="dialog" style="top: auto;" id="addEvent">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header p-2">
@@ -119,23 +119,58 @@
       <div class=" d-flex justify-content-center" style=" width: 100%; height: auto; ">
         <div class="manageBg bg-white mx-5 my-4">
 
-          <div class="px-4 pb-3 pt-1 d-flex flex-row justify-content-center">
+          <div class="py-2 d-flex flex-row justify-content-center border-bottom">
             <div>
               <img src="/static/images/grade_person.png" class="img-fluid ml-3 mt-2" style="width: 3rem;" alt="">
             </div>
-            
+
             <h4 class="mx-2 my-3 ">
               指導學生個人成績
             </h4>
           </div>
-          <div class="container">
-            <div class="row d-flex flex-row px-5 pb-0 justify-content-between">
+          <div class="container py-3">
+            <div class="row d-flex flex-row justify-content-center">
               <i class="fas fa-arrow-right mt-2"></i>
               <p class="px-3" style="font-size: 24px;">a1065526</p>
               <p class="px-3" style="font-size: 24px;">胡醜男</p>
               <input type="text" style="width: 10%;" class="form-control" placeholder="分數">
             </div>
+            <div class="row d-flex flex-row justify-content-center">
+              <i class="fas fa-arrow-right mt-2"></i>
+              <p class="px-3" style="font-size: 24px;">a1065526</p>
+              <p class="px-3" style="font-size: 24px;">胡醜男</p>
+              <input type="text" style="width: 10%;" class="form-control" placeholder="分數">
+            </div>
+            <div class="row d-flex flex-row justify-content-center">
+              <i class="fas fa-arrow-right mt-2"></i>
+              <p class="px-3" style="font-size: 24px;">a1065526</p>
+              <p class="px-3" style="font-size: 24px;">胡醜男</p>
+              <input type="text" style="width: 10%;" class="form-control" placeholder="分數">
+            </div>
+            <div class="row d-flex flex-row justify-content-center">
+              <i class="fas fa-arrow-right mt-2"></i>
+              <p class="px-3" style="font-size: 24px;">a1065526</p>
+              <p class="px-3" style="font-size: 24px;">胡醜男</p>
+              <input type="text" style="width: 10%;" class="form-control" placeholder="分數">
+            </div>
+
             <script src="/static/script/editingProjectInfo.js"></script>
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class=" row justify-content-center align-items-center  py-3" style="margin-left: 20%;">
+            <div class=" col-2 ">
+              <img src="/static/images/grade.png" class="img-fluid" alt="">
+            </div>
+            <div class="mx-5">
+              <h4 class=" text-center ">專題總成績</h4>
+            </div>
+            <div class="">
+              <input class="form-control " style="width: 30%;" type="text" placeholder="分數">
+            </div>
+          </div>
+          <div class="pb-3 row justify-content-center">
+            <button type="button" class="btn btn-primary rounded" data-toggle="modal"
+              data-target="#addEvent">更新</button>
           </div>
         </div>
       </div>
