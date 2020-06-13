@@ -149,7 +149,7 @@ router
         })
     })
     //Backend
-    .get('/admin/', async ctx => {
+    .get('/admin', async ctx => {
         ctx.redirect("/admin/index")
     })
     .get('/admin/index', async ctx => {
