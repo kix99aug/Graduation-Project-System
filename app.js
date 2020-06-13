@@ -106,7 +106,7 @@ router
             ctx.session.id = googleData.id
             ctx.session.name = googleData.name
             ctx.session.image = googleData.picture
-            ctx.redirect("/mainpage")
+            ctx.redirect("/index")
         } else {
             // 回傳錯誤
             ctx.throw(400)
