@@ -183,6 +183,22 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
+    .get('/admin/accountM', async ctx => {
+        await ctx.render("admin/accountManagement", {
+            title: "畢業專題交流平台",
+            subtitle: "管理使用者",
+            name: ctx.session.name ? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+        })
+    })
+    .get('/admin/editAC', async ctx => {
+        await ctx.render("admin/editingAccount", {
+            title: "畢業專題交流平台",
+            subtitle: "管理使用者",
+            name: ctx.session.name ? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+        })
+    })
 
     // apis
     .get('/api/blackboard/all', async ctx => {
