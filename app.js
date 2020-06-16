@@ -10,6 +10,7 @@ const session = require("koa-session");
 const bodyParser = require('koa-bodyparser');
 const MongooseStore = require("koa-session-mongoose")
 const Models = require("./models")
+const db = require("./db")
 
 const app = new Koa()
 const router = new Router()
@@ -30,7 +31,6 @@ let notes =
     3: { x: .3, y: .3, content: "123" },
     4: { x: .4, y: .4, content: "123" },
 }
-
 
 router
     .get('/', async ctx => {
@@ -262,5 +262,23 @@ app.use(router.routes())
 app.use(mount('/static', serve('./static')))
 
 app.listen(3000, async e => {
+
+    db.user.new(,,,,,,,,)
+
+    let [id_teacher] = await db.user.find({"account":{"$eq":"wuch"}})
+    let [id_leader] = await db.user.find({"account":{"$eq":"a1055512"}})
+    let [id_1] = await db.user.find({"account":{"$eq":"a1055521"}})
+    let [id_2] = await db.user.find({"account":{"$eq":"a1055532"}})
+    let [id_3] = await db.user.find({"account":{"$eq":"a1055533"}})
+
+
+    db.team.new("Dimension",109,id_teacher._id,id_leader._id,null,null,null,null,null,null,null,3,null).then(res=>{
+             db.user.modify(id_leader,"team",res._id)
+             db.user.modify(id_teacher,"team",res._id)
+             db.user.modify(id_1,"team",res._id)
+             db.user.modify(id_2,"team",res._id)
+             db.user.modify(id_3,"team",res._id)
+         })
+
     console.log("Koa server run on http://localhost:3000/")
 })

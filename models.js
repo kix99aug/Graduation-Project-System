@@ -1,77 +1,82 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema
 
 mongoose.connect("mongodb://localhost:27017/gps", {
     useCreateIndex: true,
     useFindAndModify: false,
     useNewUrlParser: true,
     useUnifiedTopology: true
-});
+})
+mongoose.Promise = global.Promise
+var db = mongoose.connection
+db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
-const userSchema = mongoose.Schema({
+const userSchema = new Schema({
     account: String,
     name: String,
-    avatar: String,          //storage._id
+    avatar: Schema.Types.ObjectId,          //storage._id
     group: Number,          //1:Admin 2:Teacher 3:Student 4:User
     email: String,
-    team: Number,           //team._id
+    team: Schema.Types.ObjectId,           //team._id
     grade: Number,          //學生才擁有，系級
     link: String,           //個人網站的link
     score: Number
 })
 
-const commentSchema = mongoose.Schema({
+const commentSchema = new Schema({
     content: String,
-    sender: Number,         //訊息的傳送者,user._id
+    sender: Schema.Types.ObjectId,         //訊息的傳送者,user._id
     time: Date,             //訊息傳送時間
 })
 
-const messageSchema = mongoose.Schema({
+const messageSchema = new Schema({
     type: String,           //1:Text 2:Image
-    content: String,        //1:Text 2:storage._id
-    sender: Number,         //訊息的傳送者,user.id
+    text: String,
+    image: Schema.Types.ObjectId,
+    sender: Schema.Types.ObjectId,         //訊息的傳送者,user.id
     time: Date,             //訊息傳送時間
 })
 
-const teamSchema = mongoose.Schema({
+const teamSchema = new Schema({
     name: String,
     grade: Number,          //該組別的系級
-    teacher: Number,        //user._id
-    leader: Number,        //user._id
-    poster: String,          //storage._id
-    report: String,          //storage._id
-    code: String,            //storage._id
-    files: Array,            //Array of storage._id
+    teacher: Schema.Types.ObjectId,        //user._id
+    leader: Schema.Types.ObjectId,        //user._id
+    poster: Schema.Types.ObjectId,          //storage._id
+    report: Schema.Types.ObjectId,          //storage._id
+    code: Schema.Types.ObjectId,            //storage._id
+    files: [Schema.Types.ObjectId],            //Array of storage._id
     info: String,             //專題簡介
     archived: Boolean,        //是否歸檔
     score: Number,            //專題成績
     rank: Number,              //專題名次
-    reward: Array            //Array of String
+    reward: [String],            //Array of String
 })
 
-const reminderSchema = mongoose.Schema({
+const reminderSchema = new Schema({
     message: String,
     time: Date,             //要提醒user(老師)的時間
 })
 
-const backupsSchema = mongoose.Schema({
+const backupSchema = new Schema({
     time: Date,
 })
 
-const systemSetSchema = mongoose.Schema({
+const systemSetSchema = new Schema({
     time: Date,
 })
 
-const storageSchema = mongoose.Schema({
+const storageSchema = new Schema({
     filename: String,
 })
 
 module.exports = {
-    user: mongoose.model('Users', userSchema),
-    comment: mongoose.model('Comments', commentSchema),
-    messages: mongoose.model('Messages', messageSchema),
-    team: mongoose.model('Teams', teamSchema),
-    reminder: mongoose.model('Reminders', reminderSchema),
-    storage: mongoose.model('Storages', storageSchema),
-    backups: mongoose.model('Backups', backupSchema),
+    user: mongoose.model('User', userSchema),
+    comment: mongoose.model('Comment', commentSchema),
+    messages: mongoose.model('Message', messageSchema),
+    team: mongoose.model('Team', teamSchema),
+    reminder: mongoose.model('Reminder', reminderSchema),
+    storage: mongoose.model('Storage', storageSchema),
+    backups: mongoose.model('Backup', backupSchema),
     systemSet: mongoose.model('systemSet', systemSetSchema),
 }
