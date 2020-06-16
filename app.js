@@ -7,7 +7,7 @@ const views = require('koa-views')
 const serve = require('koa-static')
 const mount = require('koa-mount')
 const session = require("koa-session");
-const bodyParser = require('koa-bodyparser');
+const bodyParser = require('koa-body');
 const MongooseStore = require("koa-session-mongoose")
 const Models = require("./models")
 
@@ -21,7 +21,11 @@ const client_secret = "zlT87D-MtpTF5ltC3w5k2hKN"
 app.use(views(path.join(__dirname, './views'), {
     extension: 'ejs'
 }))
-app.use(bodyParser());
+app.use(bodyParser({
+    formidable:{uploadDir: './uploads'},    //This is where the files would come
+    multipart: true,
+    urlencoded: true
+ }));
 
 let notes =
 {
@@ -116,6 +120,14 @@ router
         await ctx.render("team/schedule", {
             title: "畢業專題交流平台",
             subtitle: "行程表",
+            name: ctx.session.name ? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+        })
+    })
+    .get('/team/data', async ctx => {
+        await ctx.render("team/data", {
+            title: "畢業專題交流平台",
+            subtitle: "檔案上傳",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
@@ -234,6 +246,10 @@ router
             result: true,
             id: newKey
         }
+    })
+    .post('/api/storage/upload',async ctx=>{
+        console.log(ctx.request.body.files);
+        ctx.body = "Received your data!"
     })
 
 
