@@ -119,8 +119,7 @@ body {
 
 .project-list {
   display: flex;
-  margin: auto;
-  margin-top: 10px;
+
   background-color: white;
   border: 1px #707070 solid;
   flex-direction: column;
