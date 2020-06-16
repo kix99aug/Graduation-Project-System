@@ -58,7 +58,7 @@ const reminderSchema = new Schema({
     time: Date,             //要提醒user(老師)的時間
 })
 
-const backupSchema = new Schema({
+const backupSchema = mongoose.Schema({
     time: Date,
 })
 
