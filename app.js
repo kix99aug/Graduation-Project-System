@@ -147,7 +147,7 @@ router
             guideTeacherName: ctx.session.guideTeacherName ? ctx.session.guideTeacherName : "張寶榮",
         })
     })
-    
+
     //Backend
     .get('/admin', async ctx => {
         ctx.redirect("/admin/index")
@@ -204,7 +204,9 @@ router
             title: "畢業專題交流平台",
             subtitle: "系統時程設定",
             name: ctx.session.name ? ctx.session.name : "訪客",
-            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            recordtime: ctx.session.recordtime ? ctx.session.recordtime : "109/06/09",
+            backupTime: ctx.session.backupTime ? ctx.session.backupTime : "2020 年 06 月 09 日"
         })
     })
 
