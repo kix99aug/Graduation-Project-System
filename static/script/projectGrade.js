@@ -1,4 +1,4 @@
-$('.modal').on('shown.bs.modal', function () {
-$('#myInput').trigger('focus')
-})
-$('.modal').modal()
+// $('.modal').on('shown.bs.modal', function () {
+// $('#myInput').trigger('focus')
+// })
+// $('.modal').modal()
