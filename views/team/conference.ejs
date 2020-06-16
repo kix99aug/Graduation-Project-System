@@ -1,67 +1,55 @@
 <!DOCTYPE html>
-<html lang="zh-Hant-TW">
+<html>
 
 <head>
   <%- include('../header') -%>
 </head>
+<link rel="stylesheet" href="/static/stylesheets/conference.css">
 
 <body style="height: 100vh;">
   <%- include('../nav') -%>
-  <div id="head" class="container-fluid">
-    <div class="card">
-      <div id="messages" class="card-body d-flex flex-column-reverse"></div>
-    </div>
-    <div class="row m-5">
-      <div id="inputbox" class="input-group">
-        <textarea id="input" class="form-control rounded"></textarea>
-        <button type="button" class="btn btn-primary ml-3">送出</button>
+  <div class="wrapper mt-n5">
+    <%- include('sidebar') -%>
+    <div id="head" class="container-fluid">
+      <div>
+        <div id="messages" class="card-body d-flex flex-column-reverse m-4 bg-white">
+
+          <!-- <div class="media my-3 mr-0 ml-auto">
+            <a href="/user/${m.uid}"><img src="${m.picture}" class="mr-3 messageicon" alt="avatar"></a>
+            <div class="media-body">
+              <h5 class="m-0"><a href="/user/${m.uid}">${m.name}</a></h5>
+              <div style="font-size:0.2rem">${new Date(m.time * 1000).toLocaleString()}</div>
+              <span></span>
+            </div>
+          </div>
+          <div class="media my-3 mr-0 ml-auto">
+            <a href="/user/${m.uid}"><img src="${m.picture}" class="mr-3 messageicon" alt="avatar"></a>
+            <div class="media-body">
+              <h5 class="m-0"><a href="/user/${m.uid}">${m.name}</a></h5>
+              <div style="font-size:0.2rem">${new Date(m.time * 1000).toLocaleString()}</div>
+              <span></span>
+            </div>
+          </div>
+          <div class="media my-3 mr-0 ml-auto">
+            <a href="/user/${m.uid}"><img src="${m.picture}" class="mr-3 messageicon" alt="avatar"></a>
+            <div class="media-body">
+              <h5 class="m-0"><a href="/user/${m.uid}">${m.name}</a></h5>
+              <div style="font-size:0.2rem">${new Date(m.time * 1000).toLocaleString()}</div>
+              <span></span>
+            </div>
+          </div> -->
+        </div>
+      </div>
+      <div class="row m-5">
+        <div id="inputbox" class="input-group">
+          <textarea id="input" class="form-control rounded"></textarea>
+          <button type="button" class="btn btn-primary ml-3">送出</button>
+        </div>
       </div>
     </div>
-  </div>
-  <script src="/javascripts/socket.io.js"></script>
-  <script>
-    const socket = io(document.location.href);
-    socket.on('userin', e => {
-      document.querySelector("#messages").innerHTML = `
-      <div class="alert alert-primary" role="alert">
-        <a href="/user/${e.uid}">${e.name}</a> 已加入公共廣場
-        </div>
-        ` + document.querySelector("#messages").innerHTML
-    })
-    socket.on('userout', e => {
-      document.querySelector("#messages").innerHTML = `
-      <div class="alert alert-secondary" role="alert">
-          <a href="/user/${e.uid}">${e.name}</a> 已離開公共廣場
-        </div>
-        ` + document.querySelector("#messages").innerHTML
-    })
-    socket.on('message', m => {
-      console.log(new Date(m.time * 1000))
-      document.querySelector("#messages").innerHTML = `
-      <div class="media m-3">
-          <a href="/user/${m.uid}"><img src="${m.picture}" class="mr-3 messageicon" alt="avatar"></a>
-          <div class="media-body">
-            <h5 class="m-0"><a href="/user/${m.uid}">${m.name}</a></h5>
-            <div style="font-size:0.2rem">${new Date(m.time * 1000).toLocaleString()}</div>
-            <span></span>
-          </div>
-        </div>
-      ` + document.querySelector("#messages").innerHTML
-      document.querySelector("#messages").firstElementChild.querySelector('span').innerText = m.message
-    })
-    document.querySelector("#inputbox > button").onclick = () => {
-      if (document.querySelector("#input").value != "") socket.send(document.querySelector("#input").value)
-      document.querySelector("#input").value = ""
-    }
-    let handleEnter = event => {
-      if (event.keyCode == 13 && !event.shiftKey) {
-        document.querySelector("#inputbox > button").click()
-        event.preventDefault()
-      }
-    }
-    document.querySelector("#input").addEventListener("keydown", handleEnter)
-    document.querySelector("#input").addEventListener("keypress", handleEnter)
-  </script>
-</body>
+    <script src="/javascripts/socket.io.js"></script>
+    <script defer="defer" src="/static/script/conference.js"></script>
 
-</html>
+  </div>
+  <%- include('../footer'); -%>
+</body>
