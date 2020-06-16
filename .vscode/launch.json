@@ -16,7 +16,7 @@
             "env": {
                 "DEBUG":"koa-views"
             },
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
         }
     ]
 }

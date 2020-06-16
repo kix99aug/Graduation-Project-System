@@ -1,19 +1,23 @@
-const path = require('path')
-const crypto = require('crypto')
+const path = require("path");
+const crypto = require("crypto");
 const fetch = require("node-fetch");
-const Koa = require('koa')
-const Router = require('koa-router')
-const views = require('koa-views')
-const serve = require('koa-static')
-const mount = require('koa-mount')
+const Koa = require("koa");
+const Router = require("koa-router");
+const views = require("koa-views");
+const serve = require("koa-static");
+const mount = require("koa-mount");
 const session = require("koa-session");
 const bodyParser = require('koa-body');
+const Models = require("./models");
+const app = new Koa();
+const router = new Router();
+app.keys = [crypto.randomBytes(20).toString("hex")];
 const MongooseStore = require("koa-session-mongoose")
-const Models = require("./models")
+const db = require("./db")
 
-const app = new Koa()
-const router = new Router()
-app.keys = [crypto.randomBytes(20).toString('hex')];
+const client_id =
+  "712826989675-rs5ej0evsmp78hsphju6sudhhn3pb38s.apps.googleusercontent.com";
+const client_secret = "zlT87D-MtpTF5ltC3w5k2hKN";
 
 const client_id = "712826989675-rs5ej0evsmp78hsphju6sudhhn3pb38s.apps.googleusercontent.com"
 const client_secret = "zlT87D-MtpTF5ltC3w5k2hKN"
@@ -34,7 +38,6 @@ let notes =
     3: { x: .3, y: .3, content: "123" },
     4: { x: .4, y: .4, content: "123" },
 }
-
 
 router
     .get('/', async ctx => {
@@ -159,7 +162,7 @@ router
             guideTeacherName: ctx.session.guideTeacherName ? ctx.session.guideTeacherName : "張寶榮",
         })
     })
-    
+
     //Backend
     .get('/admin', async ctx => {
         ctx.redirect("/admin/index")
@@ -216,7 +219,9 @@ router
             title: "畢業專題交流平台",
             subtitle: "系統時程設定",
             name: ctx.session.name ? ctx.session.name : "訪客",
-            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            recordtime: ctx.session.recordtime ? ctx.session.recordtime : "109/06/09",
+            backupTime: ctx.session.backupTime ? ctx.session.backupTime : "2020 年 06 月 09 日"
         })
     })
 
@@ -252,29 +257,81 @@ router
         ctx.body = "Received your data!"
     })
 
+  // apis
+  .get("/api/blackboard/all", async (ctx) => {
+    ctx.body = {
+      result: true,
+      data: notes,
+    };
+  })
+  .get("/api/blackboard/remove/:id", async (ctx) => {
+    delete notes[ctx.params.id];
+    ctx.body = {
+      result: true,
+    };
+  })
+  .post("/api/blackboard/modify/:id", async (ctx) => {
+    notes[ctx.params.id] = ctx.request.body;
+    ctx.body = {
+      result: true,
+    };
+  })
+  .get("/api/conference", async (ctx) => {
+    ctx.body = {
+      result: true,
+      id: ctx.session.id
+    };
+  })
+  .post("/api/blackboard/new", async (ctx) => {
+    let newKey = parseInt(Math.random() * Number.MAX_SAFE_INTEGER);
+    notes[newKey] = ctx.request.body;
+    ctx.body = {
+      result: true,
+      id: newKey,
+    };
+  });
 
-app.use(session({ store: new MongooseStore() }, app))
+app.use(session({ store: new MongooseStore() }, app));
 app.use(async (ctx, next) => {
-    ctx.set('Server', 'Koa 2.12.0')
-    await next()
-})
+  ctx.set("Server", "Koa 2.12.0");
+  await next();
+});
 app.use(async (ctx, next) => {
-    try {
-        await next()
-        const status = ctx.status || 404
-        if (status === 404) {
-            ctx.throw(404)
-        }
-    } catch (err) {
-        ctx.status = err.status || 500
-        if (ctx.status != 200) {
-            await ctx.render('error')
-        }
+  try {
+    await next();
+    const status = ctx.status || 404;
+    if (status === 404) {
+      ctx.throw(404);
     }
-})
-app.use(router.routes())
-app.use(mount('/static', serve('./static')))
+  } catch (err) {
+    ctx.status = err.status || 500;
+    if (ctx.status != 200) {
+      await ctx.render("error");
+    }
+  }
+});
+
+app.use(router.routes());
+app.use(mount("/static", serve("./static")));
 
 app.listen(3000, async e => {
+
+    // // db.user.new(,,,,,,,,)
+
+    // let [id_teacher] = await db.user.find({"account":{"$eq":"wuch"}})
+    // let [id_leader] = await db.user.find({"account":{"$eq":"a1055512"}})
+    // let [id_1] = await db.user.find({"account":{"$eq":"a1055521"}})
+    // let [id_2] = await db.user.find({"account":{"$eq":"a1055532"}})
+    // let [id_3] = await db.user.find({"account":{"$eq":"a1055533"}})
+
+
+    // db.team.new("Dimension",109,id_teacher._id,id_leader._id,null,null,null,null,null,null,null,3,null).then(res=>{
+    //          db.user.modify(id_leader,"team",res._id)
+    //          db.user.modify(id_teacher,"team",res._id)
+    //          db.user.modify(id_1,"team",res._id)
+    //          db.user.modify(id_2,"team",res._id)
+    //          db.user.modify(id_3,"team",res._id)
+    //      })
+
     console.log("Koa server run on http://localhost:3000/")
 })
