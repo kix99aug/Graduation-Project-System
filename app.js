@@ -199,6 +199,14 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
+    .get('/admin/timeSetting', async ctx => {
+        await ctx.render("admin/time", {
+            title: "畢業專題交流平台",
+            subtitle: "系統時程設定",
+            name: ctx.session.name ? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+        })
+    })
 
     // apis
     .get('/api/blackboard/all', async ctx => {
