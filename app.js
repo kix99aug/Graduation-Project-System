@@ -137,7 +137,6 @@ router
             studentName: ctx.session.studentName ? ctx.session.studentName : "胡帥哥",
         })
     })
-
     .get('/team/info', async ctx => {
         await ctx.render("team/info", {
             title: "畢業專題交流平台",
@@ -148,6 +147,7 @@ router
             guideTeacherName: ctx.session.guideTeacherName ? ctx.session.guideTeacherName : "張寶榮",
         })
     })
+    
     //Backend
     .get('/admin', async ctx => {
         ctx.redirect("/admin/index")
@@ -195,6 +195,14 @@ router
         await ctx.render("admin/editingAccount", {
             title: "畢業專題交流平台",
             subtitle: "管理使用者",
+            name: ctx.session.name ? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+        })
+    })
+    .get('/admin/timeSetting', async ctx => {
+        await ctx.render("admin/time", {
+            title: "畢業專題交流平台",
+            subtitle: "系統時程設定",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
