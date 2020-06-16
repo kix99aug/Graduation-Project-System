@@ -137,7 +137,6 @@ router
             studentName: ctx.session.studentName ? ctx.session.studentName : "胡帥哥",
         })
     })
-
     .get('/team/info', async ctx => {
         await ctx.render("team/info", {
             title: "畢業專題交流平台",
@@ -148,6 +147,7 @@ router
             guideTeacherName: ctx.session.guideTeacherName ? ctx.session.guideTeacherName : "張寶榮",
         })
     })
+    
     //Backend
     .get('/admin', async ctx => {
         ctx.redirect("/admin/index")
