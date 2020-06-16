@@ -53,7 +53,11 @@ const reminderSchema = mongoose.Schema({
     time: Date,             //要提醒user(老師)的時間
 })
 
-const backupSchema = mongoose.Schema({
+const backupsSchema = mongoose.Schema({
+    time: Date,
+})
+
+const systemSetSchema = mongoose.Schema({
     time: Date,
 })
 
@@ -68,5 +72,6 @@ module.exports = {
     team: mongoose.model('Teams', teamSchema),
     reminder: mongoose.model('Reminders', reminderSchema),
     storage: mongoose.model('Storages', storageSchema),
-    backup: mongoose.model('Backup', backupSchema),
+    backups: mongoose.model('Backups', backupSchema),
+    systemSet: mongoose.model('systemSet', systemSetSchema),
 }
