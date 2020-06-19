@@ -1,15 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema
-
-mongoose.connect("mongodb://localhost:27017/gps", {
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-mongoose.Promise = global.Promise
-var db = mongoose.connection
-db.on('error', console.error.bind(console, 'MongoDB connection error:'))
+const Schema = require('mongoose').Schema
+const model = require('mongoose').model
 
 const userSchema = new Schema({
     account: String,
@@ -58,7 +48,7 @@ const reminderSchema = new Schema({
     time: Date,             //要提醒user(老師)的時間
 })
 
-const backupSchema = mongoose.Schema({
+const backupSchema = Schema({
     time: Date,
 })
 
@@ -71,12 +61,12 @@ const storageSchema = new Schema({
 })
 
 module.exports = {
-    user: mongoose.model('User', userSchema),
-    comment: mongoose.model('Comment', commentSchema),
-    messages: mongoose.model('Message', messageSchema),
-    team: mongoose.model('Team', teamSchema),
-    reminder: mongoose.model('Reminder', reminderSchema),
-    storage: mongoose.model('Storage', storageSchema),
-    backups: mongoose.model('Backup', backupSchema),
-    systemSet: mongoose.model('systemSet', systemSetSchema),
+    user: model('User', userSchema),
+    comment: model('Comment', commentSchema),
+    messages: model('Message', messageSchema),
+    team: model('Team', teamSchema),
+    reminder: model('Reminder', reminderSchema),
+    storage: model('Storage', storageSchema),
+    backups: model('Backup', backupSchema),
+    systemSet: model('systemSet', systemSetSchema),
 }

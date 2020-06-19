@@ -1,4 +1,15 @@
+const mongoose = require('mongoose');
 const Models = require("./models")
+
+mongoose.connect("mongodb://localhost:27017/gps", {
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+mongoose.Promise = global.Promise
+const db = mongoose.connection
+db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 let user = {
     new:async function(account,name,avatar,group,email,team,grade,link,score){
