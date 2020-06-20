@@ -158,6 +158,16 @@ router
             guideTeacherName: ctx.session.guideTeacherName ? ctx.session.guideTeacherName : "張寶榮",
         })
     })
+    .get('/team/conference', async ctx => {
+        await ctx.render("team/conference", {
+            title: "畢業專題交流平台",
+            subtitle: "線上會議",
+            name: ctx.session.name ? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            teamMateName: ctx.session.teamMateName ? ctx.session.teamMateName : "黃翰俞",
+            guideTeacherName: ctx.session.guideTeacherName ? ctx.session.guideTeacherName : "張寶榮",
+        })
+    })
 
     //Backend
     .get('/admin', async ctx => {
