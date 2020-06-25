@@ -25,8 +25,8 @@ $(".content")
             $(".drop-prompt").fadeOut(100)
             for (let i = 0; i < e.originalEvent.dataTransfer.files.length; i++) {
                 let div = document.createElement('div')
+                $(div).attr("class","card")
                 $(div).html(`
-                <div class="card">
                     <div class="card-body d-flex">
                         <div class="d-flex w-100 h-100 justify-content-center align-items-center">
                             <div class="spinner-border mr-3" role="status">
@@ -41,7 +41,7 @@ $(".content")
                         <div class="delete h-100 w-50 d-flex justify-content-center align-items-center"><i
                                 class="fas fa-trash"></i></div>
                     </div>
-                </div>`)
+                `)
                 $(".card-columns").append(div)
 
                 var formdata = new FormData()
@@ -50,12 +50,34 @@ $(".content")
                 $.ajax({
                     url: '/api/storage/upload',
                     type: 'POST',
-                    data: {abc:123},
+                    data: formdata,
                     contentType: false,
                     processData: false,
-                    success: function (response) {
-                        if (response != 0) {
-                            $(div).find(".card-body")
+                    success: function (res) {
+                        if (res.result == true) {
+                            $(div).html(`
+                                    <div class="card-body d-flex">
+                                        <i class="fas fa-file-image mr-3"></i>
+                                        <h6>${res.name}</h6>
+                                    </div>
+                                    <div class="h-100 w-100 position-absolute selection" style="display: none;">
+                                        <div class="download h-100 w-50 d-flex justify-content-center align-items-center"><i
+                                                class="fas fa-download"></i></div>
+                                        <div class="delete h-100 w-50 d-flex justify-content-center align-items-center"><i
+                                                class="fas fa-trash"></i></div>
+                                    </div>
+                            `)
+                            $(div).hover(function () {
+                                $(this).find(".selection").fadeIn(100)
+                            }, function () {
+                                $(this).find(".selection").fadeOut(100)
+                            })
+                            $(div).find(".selection > .download").click(e=>{
+                                console.log("download "+res.id)
+                            })
+                            $(div).find(".selection > .delete").click(e=>{
+                                console.log("delete "+res.id)
+                            })
                         }
                     },
                     error: function (err) {
@@ -65,9 +87,9 @@ $(".content")
                                 <h6 class="m-0">Failed</h6>
                             </div>
                         `)
-                        setTimeout(()=>{
-                            $(div).fadeOut(300,()=>$(div).remove())
-                        },500)
+                        setTimeout(() => {
+                            $(div).fadeOut(300, () => $(div).remove())
+                        }, 500)
                     }
                 });
             }

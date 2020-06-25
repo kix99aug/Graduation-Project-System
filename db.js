@@ -56,7 +56,24 @@ let team = {
     }
 }
 
+
+let storage = {
+    new:async function(filename,path,owner){
+        let model = new Models.storage({
+            filename: filename,
+            path:path,
+            owner:owner
+        })
+        return model.save()
+    },
+    find:async function(obj){
+        let query = await Models.storage.find(obj)
+        return query
+    }
+}
+
 module.exports = {
     user:user,
     team:team,
+    storage:storage
 }

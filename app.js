@@ -258,9 +258,23 @@ router
             id: newKey
         }
     })
+    .post('/api/storage/list', async ctx => {
+        let res = await db.storage.new(ctx.request.files.file.name,ctx.request.files.file.path)
+        ctx.body = {
+            result: true,
+            id:res._id,
+            name:ctx.request.files.file.name
+        }
+    })
     .post('/api/storage/upload', async ctx => {
-        console.log(ctx.request.body.files)
-        ctx.body = "Received your data!"
+        console.log(ctx.request.files.file.name)
+        console.log(ctx.request.files.file.path)
+        let res = await db.storage.new(ctx.request.files.file.name,ctx.request.files.file.path)
+        ctx.body = {
+            result: true,
+            id:res._id,
+            name:ctx.request.files.file.name
+        }
     })
     .get("/api/conference/myname", async (ctx) => {
         ctx.body = {
