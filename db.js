@@ -28,7 +28,13 @@ let user = {
     },
     find:async function(obj){
         return Models.user.find(obj)
-    }
+    },
+    modify:async function(u_id,objUpdate){
+            Models.user.findByIdAndUpdate(u_id,objUpdate,function(err,res){
+            if(err) console.error(err)
+            else console.log(res)
+            })
+    },
 }
 
 let team = {
