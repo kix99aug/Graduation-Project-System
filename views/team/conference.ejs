@@ -14,7 +14,15 @@
       <div>
         <div id="messages" class="card-body d-flex flex-column-reverse m-4 bg-white">
 
-          <!-- <div class="media my-3 mr-0 ml-auto">
+          <div class="media my-3 ml-0 mr-auto">
+            <a href="/user/${m.uid}"><img src="${m.picture}" class="mr-3 messageicon" alt="avatar"></a>
+            <div class="media-body">
+              <h5 class="m-0"><a href="/user/${m.uid}">${m.name}</a></h5>
+              <div style="font-size:0.2rem">${new Date(m.time * 1000).toLocaleString()}</div>
+              <span></span>
+            </div>
+          </div>
+          <div class="media my-3 ml-0 mr-auto">
             <a href="/user/${m.uid}"><img src="${m.picture}" class="mr-3 messageicon" alt="avatar"></a>
             <div class="media-body">
               <h5 class="m-0"><a href="/user/${m.uid}">${m.name}</a></h5>
@@ -30,25 +38,17 @@
               <span></span>
             </div>
           </div>
-          <div class="media my-3 mr-0 ml-auto">
-            <a href="/user/${m.uid}"><img src="${m.picture}" class="mr-3 messageicon" alt="avatar"></a>
-            <div class="media-body">
-              <h5 class="m-0"><a href="/user/${m.uid}">${m.name}</a></h5>
-              <div style="font-size:0.2rem">${new Date(m.time * 1000).toLocaleString()}</div>
-              <span></span>
-            </div>
-          </div> -->
         </div>
       </div>
       <div class="row m-5">
         <div id="inputbox" class="input-group">
           <textarea id="input" class="form-control rounded"></textarea>
-          <button type="button" class="btn btn-primary ml-3">送出</button>
+          <button id = "button"type="button" class="btn btn-primary ml-3">送出</button>
         </div>
       </div>
     </div>
     <script src="/javascripts/socket.io.js"></script>
-    <script defer="defer" src="/static/script/conference.js"></script>
+    <script src="/static/script/conference.js"></script>
 
   </div>
   <%- include('../footer'); -%>

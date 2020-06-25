@@ -3,15 +3,18 @@
 
 <head>
     <%- include('../header') -%>
-    <script src="/static/script/schedule.js" defer="defer"></script>
+    
+    <script src="/static/script/scheduleSvg.js" defer="defer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.min.js" ></script>
 </head>
 
 <body style="height: 100vh;">
     <%- include('../nav') -%>
     <div class="wrapper mt-n5">
         <%- include('sidebar') -%>
-        <div class="content p-5">
-            <canvas class="px-3 my-5" id="timeline" width="1200px" height="300px" >123</canvas>
+        <div class="justify-content-center p-5" style="width: 100%;">
+            <div id="timeline"></div>
+
             <div class="d-flex flex-row justify-content-center my-4">
               
               <!-- Button trigger modal -->
