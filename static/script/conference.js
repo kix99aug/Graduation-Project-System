@@ -47,10 +47,10 @@ socket.on("message", (m) => {
           </div>
         </div>
       ` + document.querySelector("#messages").innerHTML;
-  document
-    .querySelector("#messages")
-    .firstElementChild.querySelector("span").innerText = m.message;
-  }
+    document
+      .querySelector("#messages")
+      .firstElementChild.querySelector("span").innerText = m.message;
+    }
   else{
     document.querySelector("#messages").innerHTML =
     `
@@ -67,16 +67,18 @@ socket.on("message", (m) => {
           </div>
         </div>
       ` + document.querySelector("#messages").innerHTML;
-  document
-    .querySelector("#messages")
-    .firstElementChild.querySelector("span").innerText = m.message;
+    document
+      .querySelector("#messages")
+      .firstElementChild.querySelector("span").innerText = m.message;
   }
   
 });
-document.querySelector("#inputbox > button").onclick = () => {
+document.querySelector("#button").onclick = () => {
+  console.log("fuck")
   if (document.querySelector("#input").value != "")
     socket.send(document.querySelector("#input").value);
   document.querySelector("#input").value = "";
+
 };
 let handleEnter = (event) => {
   if (event.keyCode == 13 && !event.shiftKey) {
