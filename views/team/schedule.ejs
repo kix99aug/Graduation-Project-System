@@ -2,40 +2,41 @@
 <html>
 
 <head>
-    <%- include('../header') -%>
-    <script src="/static/script/schedule.js" defer="defer"></script>
+  <%- include('../header') -%>
+  <script src="/static/script/schedule.js" defer="defer"></script>
 </head>
 
 <body style="height: 100vh;">
-    <%- include('../nav') -%>
-    <div class="wrapper mt-n5">
-        <%- include('sidebar') -%>
-        <div class="content p-5">
-            <canvas class="px-3 my-5" id="timeline" width="1200px" height="300px" >123</canvas>
-            <div class="d-flex flex-row justify-content-center my-4">
-              
-              <!-- Button trigger modal -->
-              <button type="button" class="btn btn-primary mx-4" data-toggle="modal" data-target="#addEvent">
-                新增事件
-              </button>
-              <!-- Modal -->
-              <button type="button" class="btn btn-primary mx-4" data-toggle="modal" data-target="#deleteEvent">
-                刪除事件
-              </button>
-              <!-- Modal -->
-              
-            </div>
-        </div>
+  <%- include('../nav') -%>
+  <div class="wrapper mt-n5">
+    <%- include('sidebar') -%>
+    <div class="content p-5">
+      <canvas class="px-3 my-5" id="timeline" width="1200px" height="300px">123</canvas>
+      <div class="d-flex flex-row justify-content-center my-4">
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary mx-4" data-toggle="modal" data-target="#addEvent">
+          新增事件
+        </button>
+        <!-- Modal -->
+        <button type="button" class="btn btn-primary mx-4" data-toggle="modal" data-target="#deleteEvent">
+          刪除事件
+        </button>
+        <!-- Modal -->
+
+      </div>
     </div>
-    </div>
-    <script src="/static/script/blackboard.js"></script>
-    <%- include('../footer'); -%>
+  </div>
+  </div>
+  <script src="/static/script/blackboard.js"></script>
+  <%- include('../footer'); -%>
 
 
 </body>
 
 <!-- 新增事件 -->
-<div class="modal fade" id="addEvent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="addEvent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -61,7 +62,8 @@
   </div>
 </div>
 <!-- 刪除事件 -->
-<div class="modal fade" id="deleteEvent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="deleteEvent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -72,7 +74,7 @@
       </div>
       <div class="modal-body">
         <div class="my-3">
-          <input type="checkbox" >
+          <input type="checkbox">
           日期:<a class="mx-2">11/26</a>名稱:<a class="mx-2">CPE2</a>
         </div>
         <div class="my-3">
