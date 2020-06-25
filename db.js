@@ -34,7 +34,7 @@ let user = {
 let team = {
     new:async function(name,grade,teacher,leader,poster,report,code,files,info,archived,score,rank,reward){
         let model = new Models.team({
-            name: name,
+            name: name,             //專題名稱
             grade: grade,          //該組別的系級
             teacher: teacher,        //user._id
             leader: leader,        //user._id

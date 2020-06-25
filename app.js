@@ -71,7 +71,7 @@ router
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             projectName: "行車安全警示系統",
-            projectInfo: "啊我就怕被罵啊幹你娘鄵",
+            projectInfo: "啊我就怕被罵啊",
 
         })
     })
@@ -268,6 +268,12 @@ router
             id: ctx.session.id
         }
     })
+    .post('/api/admin/newTeam',async function(ctx){
+        ctx.body = {
+            
+
+        }
+    })
 
 app.use(session({ store: new MongooseStore() }, app))
 app.use(async (ctx, next) => {
@@ -294,7 +300,7 @@ app.use(mount("/static", serve("./static")))
 
 app.listen(3000, async e => {
 
-    // // db.user.new(,,,,,,,,)
+    // db.user.new(,,,,,,,,)
 
     // let [id_teacher] = await db.user.find({"account":{"$eq":"wuch"}})
     // let [id_leader] = await db.user.find({"account":{"$eq":"a1055512"}})
