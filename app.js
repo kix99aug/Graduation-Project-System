@@ -294,22 +294,30 @@ app.use(mount("/static", serve("./static")))
 
 app.listen(3000, async e => {
 
-    // // db.user.new(,,,,,,,,)
+    let T = ["brchang","張保榮","http://www.csie.nuk.edu.tw/~brchang/"]
+    let L  = ["a1055502","洪至謙"]
+    let S1 = ["a1053340","張丞賢"]
+    let S2 = ["a1055510","黃冠淇"]
+    //let S3 = ["a1055537","李宛萱"]
+    let TEAMNAME = "WOW!DISCO!"
 
-    // let [id_teacher] = await db.user.find({"account":{"$eq":"wuch"}})
-    // let [id_leader] = await db.user.find({"account":{"$eq":"a1055512"}})
-    // let [id_1] = await db.user.find({"account":{"$eq":"a1055521"}})
-    // let [id_2] = await db.user.find({"account":{"$eq":"a1055532"}})
-    // let [id_3] = await db.user.find({"account":{"$eq":"a1055533"}})
+    db.user.new(T[0],T[1],null,2,null,null,null,T[2],null)
+    db.user.new(L[0],L[1],null,3,null,null,109,null,null)
+    db.user.new(S1[0],S1[1],null,3,null,null,109,null,null)
+    db.user.new(S2[0],S2[1],null,3,null,null,109,null,null)
+    //db.user.new(S3[0],S3[1],null,3,null,null,109,null,null)
 
-
-    // db.team.new("Dimension",109,id_teacher._id,id_leader._id,null,null,null,null,null,null,null,3,null).then(res=>{
-    //          db.user.modify(id_leader,"team",res._id)
-    //          db.user.modify(id_teacher,"team",res._id)
-    //          db.user.modify(id_1,"team",res._id)
-    //          db.user.modify(id_2,"team",res._id)
-    //          db.user.modify(id_3,"team",res._id)
-    //      })
-
+    let [id_teacher] = await db.user.find({"account":{"$eq":T[0]}})
+    let [id_leader] = await db.user.find({"account":{"$eq":L[0]}})
+    let [id_1] = await db.user.find({"account":{"$eq":S1[0]}})
+    let [id_2] = await db.user.find({"account":{"$eq":S2[0]}})
+    //let [id_3] = await db.user.find({"account":{"$eq":S3[0]}})
+        db.team.new(TEAMNAME,109,id_teacher._id,id_leader._id,null,null,null,null,null,null,null,4,null).then(res=>{
+                db.user.modify(id_teacher._id,{"team":res._id})
+                db.user.modify(id_leader._id,{"team":res._id})
+                db.user.modify(id_1._id,{"team":res._id})
+                db.user.modify(id_2._id,{"team":res._id})
+                //db.user.modify(id_3._id,{"team":res._id})
+            })
     console.log("Koa server run on http://localhost:3000/")
 })
