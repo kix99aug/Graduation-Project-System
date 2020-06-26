@@ -28,13 +28,19 @@ let user = {
     },
     find:async function(obj){
         return Models.user.find(obj)
-    }
+    },
+    modify:async function(u_id,objUpdate){
+            Models.user.findByIdAndUpdate(u_id,objUpdate,function(err,res){
+            if(err) console.error(err)
+            else console.log(res)
+            })
+    },
 }
 
 let team = {
     new:async function(name,grade,teacher,leader,poster,report,code,files,info,archived,score,rank,reward){
         let model = new Models.team({
-            name: name,
+            name: name,             //專題名稱
             grade: grade,          //該組別的系級
             teacher: teacher,        //user._id
             leader: leader,        //user._id
@@ -56,7 +62,24 @@ let team = {
     }
 }
 
+
+let storage = {
+    new:async function(filename,path,owner){
+        let model = new Models.storage({
+            filename: filename,
+            path:path,
+            owner:owner
+        })
+        return model.save()
+    },
+    find:async function(obj){
+        let query = await Models.storage.find(obj)
+        return query
+    }
+}
+
 module.exports = {
     user:user,
     team:team,
+    storage:storage
 }

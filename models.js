@@ -58,6 +58,8 @@ const systemSetSchema = new Schema({
 
 const storageSchema = new Schema({
     filename: String,
+    path:String,
+    owner:Schema.Types.ObjectId,          //team._id
 })
 
 module.exports = {
