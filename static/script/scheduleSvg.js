@@ -23,6 +23,8 @@ addEvent("可以",2,3,2)
 addEvent("畢業",2,2,2)
 addEvent("八",2,4,2)
 addEvent("666",2,4,2)
+
+
 //加入事件
 function addEvent(name,year,month,day){
     var newEvent=new EventInfo(name,year,month,day)
@@ -79,3 +81,10 @@ function sortEvent(){
     }
 }
 
+function newEventBtn(){
+
+}
+
+function deleteEventBtn(){
+    
+}
