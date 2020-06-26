@@ -22,7 +22,7 @@ addEvent("希望",1,2,2)
 addEvent("可以",2,3,2)
 addEvent("畢業",2,2,2)
 addEvent("八",2,4,2)
-addEvent("666",2,4,2)
+
 
 
 //加入事件
@@ -30,7 +30,6 @@ function addEvent(name,year,month,day){
     var newEvent=new EventInfo(name,year,month,day)
     EventList.push(newEvent)
     sortEvent()
-    //console.log(EventList)
     drawEvent()
 }
 //將所有事件加入
@@ -80,11 +79,42 @@ function sortEvent(){
         }
     }
 }
-
+//按下確認按鈕
 function newEventBtn(){
-
+    var Input=document.getElementById("addEvent").querySelectorAll("input")
+    if(Input[0].value=="" || Input[1].value=="" ||Input[2].value==""||Input[3].value==""){
+        alert('輸入不可為空白');
+    }else{
+        name=Input[0].value
+        year=parseInt(Input[1].value)
+        month=parseInt(Input[2].value)
+        day=parseInt(Input[3].value)
+        if(isNaN(year)|| isNaN(month) ||isNaN(day)){
+            alert('日期不可輸入字元');
+        }else{
+            addEvent(Input[0].value,year,month,day)
+            document.getElementById("addEvent").querySelectorAll("button")[1].click()
+        }
+        
+    }
+    
+}
+//按下刪除按鈕
+function deleteEventBtn(){
+    console.log("delet")
 }
 
-function deleteEventBtn(){
-    
+
+function sendData(){
+    data1={name:"name_test",year:"106",month:"2",day:"5"}
+    $.ajax({
+        url: "/api/team/newSchedule",   //後端的URL
+        type: "POST",   //用POST的方式
+        dataType: "json",   //response的資料格式
+        cache: true,   //是否暫存
+        data: data1, //傳送給後端的資料
+        success: function(response) {
+            console.log(response);  //成功後回傳的資料
+        }
+    });
 }

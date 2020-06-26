@@ -288,7 +288,12 @@ router
 
         }
     })
-
+    .post('/api/team/newSchedule', async ctx => {
+        console.log(ctx)
+        ctx.body = {
+            result: true,
+        }
+    })
 app.use(session({ store: new MongooseStore() }, app))
 app.use(async (ctx, next) => {
     ctx.set("Server", "Koa 2.12.0")

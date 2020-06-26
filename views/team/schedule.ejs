@@ -18,11 +18,11 @@
             <div class="d-flex flex-row justify-content-center my-4">
               
               <!-- Button trigger modal -->
-              <button type="button" class="btn btn-primary mx-4" data-toggle="modal" data-target="#addEvent" onClick="newEventBtn()">
+              <button type="button" class="btn btn-primary mx-4" data-toggle="modal" data-target="#addEvent">
                 新增事件
               </button>
               <!-- Modal -->
-              <button type="button" class="btn btn-primary mx-4" data-toggle="modal" data-target="#deleteEvent"  onClick="deleteEventBtn()">
+              <button type="button" class="btn btn-primary mx-4" data-toggle="modal" data-target="#deleteEvent" >
                 刪除事件
               </button>
               <!-- Modal -->
@@ -61,7 +61,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-primary">確定新增</button>
+        <button type="button" class="btn btn-primary" onClick="newEventBtn()">確定新增</button>
       </div>
     </div>
   </div>
@@ -89,7 +89,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-primary">確認刪除</button>
+        <button type="button" class="btn btn-primary" onClick="deleteEventBtn()">確認刪除</button>
       </div>
     </div>
   </div>
