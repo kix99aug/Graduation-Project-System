@@ -48,8 +48,8 @@ $(".content")
                 formdata.append("file", e.originalEvent.dataTransfer.files[i])
 
                 $.ajax({
-                    url: '/api/storage/upload',
-                    type: 'POST',
+                    url: '/api/team/storage',
+                    type: 'PUT',
                     data: formdata,
                     contentType: false,
                     processData: false,

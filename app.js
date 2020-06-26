@@ -5,28 +5,23 @@ const views = require("koa-views")
 const serve = require("koa-static")
 const mount = require("koa-mount")
 const session = require("koa-session")
-const bodyParser = require('koa-body')
+const bodyParser = require('koa-body')({
+    formidable: { uploadDir: './uploads' },    //This is where the files would come
+    multipart: true,
+    urlencoded: true
+})
 const Koa = require("koa")
 const Router = require("koa-router")
 const MongooseStore = require("koa-session-mongoose")
 const app = new Koa()
 const router = new Router()
 const db = require("./db")
+const { rmdir, unlink } = require("fs")
 
 const client_id = "712826989675-rs5ej0evsmp78hsphju6sudhhn3pb38s.apps.googleusercontent.com"
 const client_secret = "zlT87D-MtpTF5ltC3w5k2hKN"
 
-app.keys = [crypto.randomBytes(20).toString("hex")]
 
-app.use(views(path.join(__dirname, './views'), {
-    extension: 'ejs'
-}))
-
-app.use(bodyParser({
-    formidable: { uploadDir: './uploads' },    //This is where the files would come
-    multipart: true,
-    urlencoded: true
-}))
 
 let notes = {
     1: { x: .1, y: .1, content: "123" },
@@ -34,6 +29,7 @@ let notes = {
     3: { x: .3, y: .3, content: "123" },
     4: { x: .4, y: .4, content: "123" },
 }
+
 
 router
     .get('/', async ctx => {
@@ -105,10 +101,16 @@ router
         if (googleData.hd === "mail.nuk.edu.tw" || googleData.hd === "go.nuk.edu.tw") {
             // 確認資料庫
             console.log(googleData)
+            let account = googleData.email.split('@')[0]
+            let [user] = await db.user.find({ "account": { "$eq": account } })
+            if (!user) user = await db.user.new(account, googleData.name, null, null, googleData.email, null, null, null, null)
+            console.log(user)
             ctx.session.login = true
-            ctx.session.id = googleData.id
+            ctx.session.id = user._id
+            console.log(ctx.session.id)
             ctx.session.name = googleData.name
             ctx.session.image = googleData.picture
+            ctx.session.team = 123
             ctx.redirect("/index")
         } else {
             // 回傳錯誤
@@ -232,25 +234,25 @@ router
     })
 
     // apis
-    .get('/api/blackboard/all', async ctx => {
+    .get('/api/team/blackboard/all', async ctx => {
         ctx.body = {
             result: true,
             data: notes
         }
     })
-    .get('/api/blackboard/remove/:id', async ctx => {
+    .get('/api/team/blackboard/remove/:id', async ctx => {
         delete notes[ctx.params.id]
         ctx.body = {
             result: true
         }
     })
-    .post('/api/blackboard/modify/:id', async ctx => {
+    .post('/api/team/blackboard/modify/:id', async ctx => {
         notes[ctx.params.id] = ctx.request.body
         ctx.body = {
             result: true
         }
     })
-    .post('/api/blackboard/new', async ctx => {
+    .post('/api/team/blackboard/new', async ctx => {
         let newKey = parseInt(Math.random() * Number.MAX_SAFE_INTEGER)
         notes[newKey] = ctx.request.body
         ctx.body = {
@@ -258,64 +260,82 @@ router
             id: newKey
         }
     })
-    .post('/api/storage/list', async ctx => {
-        let res = await db.storage.new(ctx.request.files.file.name,ctx.request.files.file.path)
+    .post('/api/team/storage/list', async ctx => {
+        let res = await db.storage.new(ctx.request.files.file.name, ctx.request.files.file.path)
         ctx.body = {
             result: true,
-            id:res._id,
-            name:ctx.request.files.file.name
+            id: res._id,
+            name: ctx.request.files.file.name
         }
     })
-    .post('/api/storage/upload', async ctx => {
+    .put('/api/team/storage', async ctx => {
         console.log(ctx.request.files.file.name)
         console.log(ctx.request.files.file.path)
-        let res = await db.storage.new(ctx.request.files.file.name,ctx.request.files.file.path)
+        let res = await db.storage.new(ctx.request.files.file.name, ctx.request.files.file.path)
         ctx.body = {
             result: true,
-            id:res._id,
-            name:ctx.request.files.file.name
+            id: res._id,
+            name: ctx.request.files.file.name
         }
     })
-    .get("/api/conference/myname", async (ctx) => {
+    .get("/api/team/conference/myname", async (ctx) => {
         ctx.body = {
             result: true,
             id: ctx.session.id
         }
     })
-    .post('/api/admin/newTeam',async function(ctx){
+    .post('/api/admin/newTeam', async function (ctx) {
         ctx.body = {
-            
+
 
         }
     })
     .post('/api/team/newSchedule', async ctx => {
-        console.log(ctx)
+        console.log(ctx.request.body)
         ctx.body = {
             result: true,
         }
     })
+
+
+app.keys = [crypto.randomBytes(20).toString("hex")]
+
+app.use(views(path.join(__dirname, './views'), {
+    extension: 'ejs'
+}))
 app.use(session({ store: new MongooseStore() }, app))
-app.use(async (ctx, next) => {
-    ctx.set("Server", "Koa 2.12.0")
-    await next()
-})
+app.use(mount("/static", serve("./static")))
 app.use(async (ctx, next) => {
     try {
         await next()
         const status = ctx.status || 404
         if (status === 404) {
-            ctx.throw(404)
+            ctx.throw(status)
         }
     } catch (err) {
         ctx.status = err.status || 500
         if (ctx.status != 200) {
-            await ctx.render("error")
+            if (ctx.method == "GET") await ctx.render("error", { code: ctx.status, server: "Koa 2.12.0" })
         }
     }
 })
-
+app.use(async (ctx, next) => {
+    if (ctx.url.startsWith("/team/") || ctx.url.startsWith("/api/team/")) {
+        if (!ctx.session.team) {
+            ctx.throw(403)
+            return
+        }
+    }
+    if (ctx.url.startsWith("/admin/")) {
+        if (!ctx.session.admin) {
+            ctx.throw(403)
+            return
+        }
+    }
+    await next()
+})
+app.use(bodyParser)
 app.use(router.routes())
-app.use(mount("/static", serve("./static")))
 
 app.listen(3000, async e => {
 

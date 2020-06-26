@@ -1,289 +1,63 @@
 <!DOCTYPE html>
 <html lang="zh-TW" style="height: 100%;">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="shortcut icon" href="/static/images/favicon_sad.png" type="image/x-icon">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="shortcut icon"
+      href="/static/images/favicon_sad.png"
+      type="image/x-icon"
+    />
     <title>Error</title>
     <style>
-        html{
-            height: 100%;
-        }
-        body{
-            height: 90%;
-            color : white;
-            background: url('/static/images/sadpepe.jpg');
-            margin: 0 10% 10% 10%;
-            font-family:Arial, Helvetica, sans-serif;
-            background-size: cover;
-            background-position: right;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        h1{
-            margin:auto;
-        }
-        h1,div{
-            padding: 10px 10px;
-            border-radius:5px;
-            background: rgba(0,0,0,0.2);
-            text-align: center;
-        }
-        h2,h4{
-            margin: 0;
-        }
+      html {
+        height: 100%;
+      }
+      body {
+        height: 90%;
+        color: white;
+        background: url("/static/images/sadpepe.jpg");
+        margin: 0 10% 10% 10%;
+        font-family: Arial, Helvetica, sans-serif;
+        background-size: cover;
+        background-position: right;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      h1 {
+        margin: auto;
+      }
+      h1,
+      div {
+        padding: 10px 10px;
+        border-radius: 5px;
+        background: rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+      h2,
+      h4 {
+        margin: 0;
+      }
     </style>
-</head>
-
-<body>
-    <h1>Something bad happened.</h1>
     <script>
-        var sc =
-            [
-                {
-                    "code": "100",
-                    "phrase": "Continue",
-                },
-                {
-                    "code": "101",
-                    "phrase": "Switching Protocols",
-                },
-                                {
-                    "code": "200",
-                    "phrase": "OK",
-                },
-                {
-                    "code": "201",
-                    "phrase": "Created",
-                },
-                {
-                    "code": "202",
-                    "phrase": "Accepted",
-                },
-                {
-                    "code": "203",
-                    "phrase": "Non-Authoritative Information",
-                },
-                {
-                    "code": "204",
-                    "phrase": "No Content",
-                },
-                {
-                    "code": "205",
-                    "phrase": "Reset Content",
-                },
-                {
-                    "code": "206",
-                    "phrase": "Partial Content",
-                },
-                                {
-                    "code": "300",
-                    "phrase": "Multiple Choices",
-                },
-                {
-                    "code": "301",
-                    "phrase": "Moved Permanently",
-                },
-                {
-                    "code": "302",
-                    "phrase": "Found",
-                },
-                {
-                    "code": "303",
-                    "phrase": "See Other",
-                },
-                {
-                    "code": "304",
-                    "phrase": "Not Modified",
-                },
-                {
-                    "code": "305",
-                    "phrase": "Use Proxy",
-                },
-                {
-                    "code": "307",
-                    "phrase": "Temporary Redirect",
-                },
-                                {
-                    "code": "400",
-                    "phrase": "Bad Request",
-                },
-                {
-                    "code": "401",
-                    "phrase": "Unauthorized",
-                },
-                {
-                    "code": "402",
-                    "phrase": "Payment Required",
-                },
-                {
-                    "code": "403",
-                    "phrase": "Forbidden",
-                },
-                {
-                    "code": "404",
-                    "phrase": "Not Found",
-                },
-                {
-                    "code": "405",
-                    "phrase": "Method Not Allowed",
-                },
-                {
-                    "code": "406",
-                    "phrase": "Not Acceptable",
-                },
-                {
-                    "code": "407",
-                    "phrase": "Proxy Authentication Required",
-                },
-                {
-                    "code": "408",
-                    "phrase": "Request Timeout",
-                },
-                {
-                    "code": "409",
-                    "phrase": "Conflict",
-                },
-                {
-                    "code": "410",
-                    "phrase": "Gone",
-                },
-                {
-                    "code": "411",
-                    "phrase": "Length Required",
-                },
-                {
-                    "code": "412",
-                    "phrase": "Precondition Failed",
-                },
-                {
-                    "code": "413",
-                    "phrase": "Payload Too Large",
-                },
-                {
-                    "code": "414",
-                    "phrase": "URI Too Long",
-                },
-                {
-                    "code": "415",
-                    "phrase": "Unsupported Media Type",
-                },
-                {
-                    "code": "416",
-                    "phrase": "Range Not Satisfiable",
-                },
-                {
-                    "code": "417",
-                    "phrase": "Expectation Failed",
-                },
-                {
-                    "code": "418",
-                    "phrase": "I'm a teapot",
-                },
-                {
-                    "code": "426",
-                    "phrase": "Upgrade Required",
-                },
-                                {
-                    "code": "500",
-                    "phrase": "Internal Server Error",
-                },
-                {
-                    "code": "501",
-                    "phrase": "Not Implemented",
-                },
-                {
-                    "code": "502",
-                    "phrase": "Bad Gateway",
-                },
-                {
-                    "code": "503",
-                    "phrase": "Service Unavailable",
-                },
-                {
-                    "code": "504",
-                    "phrase": "Gateway Time-out",
-                },
-                {
-                    "code": "505",
-                    "phrase": "HTTP Version Not Supported",
-                },
-                {
-                    "code": "102",
-                    "phrase": "Processing",
-                },
-                {
-                    "code": "207",
-                    "phrase": "Multi-Status",
-                },
-                {
-                    "code": "226",
-                    "phrase": "IM Used",
-                },
-                {
-                    "code": "308",
-                    "phrase": "Permanent Redirect",
-                },
-                {
-                    "code": "422",
-                    "phrase": "Unprocessable Entity",
-                },
-                {
-                    "code": "423",
-                    "phrase": "Locked",
-                },
-                {
-                    "code": "424",
-                    "phrase": "Failed Dependency",
-                },
-                {
-                    "code": "428",
-                    "phrase": "Precondition Required",
-                },
-                {
-                    "code": "429",
-                    "phrase": "Too Many Requests",
-                },
-                {
-                    "code": "431",
-                    "phrase": "Request Header Fields Too Large",
-                },
-                {
-                    "code": "451",
-                    "phrase": "Unavailable For Legal Reasons",
-                },
-                {
-                    "code": "506",
-                    "phrase": "Variant Also Negotiates",
-                },
-                {
-                    "code": "507",
-                    "phrase": "Insufficient Storage",
-                },
-                {
-                    "code": "511",
-                    "phrase": "Network Authentication Required",
-                },
-            ];
-        var req = new XMLHttpRequest();
-        req.open('GET', document.location, false);
-        req.send(null);
-        var result;
-        var date = new Date();
-        sc.forEach((el, id) => { if (el.code * 1 == req.status * 1) result = el.phrase });
-        var div = document.createElement("div");
-        div.innerHTML = `
-        <h2>${req.status} ${result}</h2>
-        <h4>${req.getResponseHeader("server")}</h4>
-        <h4>${date.toLocaleString()}</h4>
-        `;
-        document.body.appendChild(div);
+      const sc={100:{phrase:"Continue"},101:{phrase:"Switching Protocols"},200:{phrase:"OK"},201:{phrase:"Created"},202:{phrase:"Accepted"},203:{phrase:"Non-Authoritative Information"},204:{phrase:"No Content"},205:{phrase:"Reset Content"},206:{phrase:"Partial Content"},300:{phrase:"Multiple Choices"},301:{phrase:"Moved Permanently"},302:{phrase:"Found"},303:{phrase:"See Other"},304:{phrase:"Not Modified"},305:{phrase:"Use Proxy"},307:{phrase:"Temporary Redirect"},400:{phrase:"Bad Request"},401:{phrase:"Unauthorized"},402:{phrase:"Payment Required"},403:{phrase:"Forbidden"},404:{phrase:"Not Found"},405:{phrase:"Method Not Allowed"},406:{phrase:"Not Acceptable"},407:{phrase:"Proxy Authentication Required"},408:{phrase:"Request Timeout"},409:{phrase:"Conflict"},410:{phrase:"Gone"},411:{phrase:"Length Required"},412:{phrase:"Precondition Failed"},413:{phrase:"Payload Too Large"},414:{phrase:"URI Too Long"},415:{phrase:"Unsupported Media Type"},416:{phrase:"Range Not Satisfiable"},417:{phrase:"Expectation Failed"},418:{phrase:"I'm a teapot"},426:{phrase:"Upgrade Required"},500:{phrase:"Internal Server Error"},501:{phrase:"Not Implemented"},502:{phrase:"Bad Gateway"},503:{phrase:"Service Unavailable"},504:{phrase:"Gateway Time-out"},505:{phrase:"HTTP Version Not Supported"},102:{phrase:"Processing"},207:{phrase:"Multi-Status"},226:{phrase:"IM Used"},308:{phrase:"Permanent Redirect"},422:{phrase:"Unprocessable Entity"},423:{phrase:"Locked"},424:{phrase:"Failed Dependency"},428:{phrase:"Precondition Required"},429:{phrase:"Too Many Requests"},431:{phrase:"Request Header Fields Too Large"},451:{phrase:"Unavailable For Legal Reasons"},506:{phrase:"Variant Also Negotiates"},507:{phrase:"Insufficient Storage"},511:{phrase:"Network Authentication Required"}};
     </script>
-</body>
+  </head>
 
+  <body>
+    <h1>Something bad happened.</h1>
+    <div>
+        <h2 id="status"></h2>
+        <h4 id="server"><%= server %></h4>
+        <h4 id="date"></h4>
+    </div>
+    <script>
+      document.querySelector("#status").innerText = `<%= code %> ${sc[<%= code %>].phrase}`
+      document.querySelector("#date").innerHTML=`${new Date().toLocaleString()}`
+    </script>
+  </body>
 </html>

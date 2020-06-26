@@ -30,7 +30,7 @@ let listenerDown = function (e) {
     }
   };
   let listenerUp = function (e) {
-    $.post(`/api/blackboard/modify/${key}`, ele, (res) => console.log(res));
+    $.post(`/api/team/blackboard/modify/${key}`, ele, (res) => console.log(res));
     window.removeEventListener("pointermove", listenerMove);
     window.removeEventListener("pointerup", listenerUp);
   };
@@ -64,7 +64,7 @@ function newNote(key) {
   note.addEventListener("pointerdown", listenerDown);
   $(input).on("blur", function () {
     if ($(this).val() == "") {
-      if (key != -1) $.get(`/api/blackboard/remove/${key}`);
+      if (key != -1) $.get(`/api/team/blackboard/remove/${key}`);
       delete notes[key];
       $(note).remove();
     } else {
@@ -76,13 +76,13 @@ function newNote(key) {
       $(this).hide().siblings("div").text($(this).val()).show();
       ele.content = $(this).val();
       if (key == -1) {
-        $.post(`/api/blackboard/new`, ele, (res) => {
+        $.post(`/api/team/blackboard/new`, ele, (res) => {
           $(this).parent().data("noteid", res.id);
           notes[res.id] = ele;
           delete notes[-1];
         });
       } else
-        $.post(`/api/blackboard/modify/${key}`, ele, (res) => console.log(res));
+        $.post(`/api/team/blackboard/modify/${key}`, ele, (res) => console.log(res));
     }
   });
   $(text).click(function (e) {
@@ -140,7 +140,7 @@ $(window).resize(function () {
   });
 });
 
-fetch("/api/blackboard/all")
+fetch("/api/team/blackboard/all")
   .then((res) => {
     return res.json();
   })
