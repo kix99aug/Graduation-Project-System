@@ -71,7 +71,7 @@ router
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             projectName: "行車安全警示系統",
-            projectInfo: "啊我就怕被罵啊幹你娘鄵",
+            projectInfo: "啊我就怕被罵啊",
 
         })
     })
@@ -258,14 +258,34 @@ router
             id: newKey
         }
     })
+    .post('/api/storage/list', async ctx => {
+        let res = await db.storage.new(ctx.request.files.file.name,ctx.request.files.file.path)
+        ctx.body = {
+            result: true,
+            id:res._id,
+            name:ctx.request.files.file.name
+        }
+    })
     .post('/api/storage/upload', async ctx => {
-        console.log(ctx.request.body.files)
-        ctx.body = "Received your data!"
+        console.log(ctx.request.files.file.name)
+        console.log(ctx.request.files.file.path)
+        let res = await db.storage.new(ctx.request.files.file.name,ctx.request.files.file.path)
+        ctx.body = {
+            result: true,
+            id:res._id,
+            name:ctx.request.files.file.name
+        }
     })
     .get("/api/conference/myname", async (ctx) => {
         ctx.body = {
             result: true,
             id: ctx.session.id
+        }
+    })
+    .post('/api/admin/newTeam',async function(ctx){
+        ctx.body = {
+            
+
         }
     })
 
