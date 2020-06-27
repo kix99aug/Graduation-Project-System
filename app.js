@@ -61,13 +61,19 @@ router
         })
     })
     .get('/projects', async ctx => {
+        let teams = await db.team.find({})
+        projectData=[]
+        for(i in teams){
+            projectName=teams[i].name
+            projectInfo=teams[i].info
+            var project={'projectName':projectName,'projectInfo':projectInfo}
+            projectData.push(project)
+        }
         await ctx.render("projects", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
-            projectName: "行車安全警示系統",
-            projectInfo: "啊我就怕被罵啊",
-
+            data:projectData
         })
     })
     .get('/project/:id', async ctx => {
