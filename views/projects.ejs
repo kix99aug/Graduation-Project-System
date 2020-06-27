@@ -10,66 +10,21 @@
   <div class="wrapper mt-n5 py-5">
     
   <div class="container">
-    <div class="media bg-light p-3 mb-5 border rounded">
-      <div class="media-body">
-        <h3 class="text-center"><%= projectName%></h3>
-        <hr>
-        <h5>簡介：</h5>
-        <%= projectInfo%>
-        <br>
-        <div class="w-100 h-25 d-flex justify-content-end">
-          <a href="/project/2" type="button" class="btn btn-warning border border-dark rounded-pill border">Read More</a>
+    <% for(var i=0; i<data.length; i++) {%>
+      <div class="media bg-light p-3 mb-5 border rounded">
+        <div class="media-body">
+          <h3 class="text-center"><%= data[i]['projectName']%></h3>
+          <hr>
+          <h5>簡介：</h5>
+          <%= data[i]['projectInfo']%>
+          <br>
+          <div class="w-100 h-25 d-flex justify-content-end">
+            <a href="/project/<%= data[i]['id']%>" type="button" class="btn btn-warning border border-dark rounded-pill border">Read More</a>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="media bg-light p-3 mb-5 border rounded">
-      <div class="media-body">
-        <h3 class="text-center"><%= projectName%></h3>
-        <hr>
-        <h5>簡介：</h5>
-        <%= projectInfo%>
-        <br>
-        <div class="w-100 h-25 d-flex justify-content-end">
-          <a href="/project/2" type="button" class="btn btn-warning border border-dark rounded-pill border">Read More</a>
-        </div>
-      </div>
-    </div>
-    <div class="media bg-light p-3 mb-5 border rounded">
-      <div class="media-body">
-        <h3 class="text-center"><%= projectName%></h3>
-        <hr>
-        <h5>簡介：</h5>
-        <%= projectInfo%>
-        <br>
-        <div class="w-100 h-25 d-flex justify-content-end">
-          <a href="/project/2" type="button" class="btn btn-warning border border-dark rounded-pill border">Read More</a>
-        </div>
-      </div>
-    </div>
-    <div class="media bg-light p-3 mb-5 border rounded">
-      <div class="media-body">
-        <h3 class="text-center"><%= projectName%></h3>
-        <hr>
-        <h5>簡介：</h5>
-        <%= projectInfo%>
-        <br>
-        <div class="w-100 h-25 d-flex justify-content-end">
-          <a href="/project/2" type="button" class="btn btn-warning border border-dark rounded-pill border">Read More</a>
-        </div>
-      </div>
-    </div>
-    <div class="media bg-light p-3 mb-5 border rounded">
-      <div class="media-body">
-        <h3 class="text-center"><%= projectName%></h3>
-        <hr>
-        <h5>簡介：</h5>
-        <%= projectInfo%>
-        <br>
-        <div class="w-100 h-25 d-flex justify-content-end">
-          <a href="/project/2" type="button" class="btn btn-warning border border-dark rounded-pill border">Read More</a>
-        </div>
-      </div>
-    </div>
+    <% } %>
+
   </div>
   </div>
   <script src="/static/script/projects.js"></script>
