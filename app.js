@@ -61,20 +61,43 @@ router
         })
     })
     .get('/projects', async ctx => {
+        let teams = await db.team.find({})
+        //資料庫中所有project的資料彙整
+        projectData=[]
+        for(i in teams){
+            projectName=teams[i].name
+            projectInfo=teams[i].info
+            projectId=teams[i]._id
+            var project={'projectName':projectName,'projectInfo':projectInfo,'id':projectId}
+            projectData.push(project)
+        }
         await ctx.render("projects", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
-            projectName: "行車安全警示系統",
-            projectInfo: "啊我就怕被罵啊",
-
+            data:projectData
         })
     })
     .get('/project/:id', async ctx => {
+        //切出team id
+        url=ctx.request.url
+        start=url.lastIndexOf("ject/")
+        projectID=ctx.request.url.substring(start+5,url.length)
+        console.log(projectID)
+        let [projectContext] = await db.team.find({"_id":{"$eq":projectID}})
+        let member=await db.user.find({"team":{"$eq":projectID}})
+        let memberAccount=[]
+        for(i in member){
+            memberAccount.push(member[i].name)
+        }
+        console.log('memberAccount')
+        console.log(memberAccount)
         await ctx.render("project", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
-            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            projectName:projectContext.name,
+            member:['a1065501','a1065508','a1075513']
         })
     })
     .get("/loginCallback", async ctx => {
@@ -321,8 +344,13 @@ router
         let teamMate= await db.user.find({"team":{"$eq":user.team}})
         ctx.body = {
             result:true,
+            group:user.group,
             teamMate:teamMate,
         }
+    })
+    .post('/api/team/judge/score' ,async ctx=>{
+
+        
     })
     .post('/api/admin/newTeam', async function (ctx) {
         let [teacher] = await db.user.find({"name":{"$eq":ctx.request.body.teacher}})
