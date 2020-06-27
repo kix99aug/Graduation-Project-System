@@ -34,55 +34,7 @@
                   <i class="fas fa-arrow-right py-2"></i>
                 </div>
                 <div class="col-3 mt-1">
-                  <h5>a1065526</h5>
-                </div>
-                <div class="col-3 mt-1">
-                  <h5 class="px-2"><%= studentName %></h5>
-                </div>
-                <div class="col-3">
-                  <input class="form-control " type="text" placeholder="分數">
-                </div>
-              </div>
-            </div>
-            <div class="container">
-              <div class="row mt-2">
-                <div class="nav col-3 justify-content-end">
-                  <i class="fas fa-arrow-right py-2"></i>
-                </div>
-                <div class="col-3 mt-1">
-                  <h5>a1065526</h5>
-                </div>
-                <div class="col-3 mt-1">
-                  <h5 class="px-2"><%= studentName %></h5>
-                </div>
-                <div class="col-3">
-                  <input class="form-control " type="text" placeholder="分數">
-                </div>
-              </div>
-            </div>
-            <div class="container">
-              <div class="row mt-2">
-                <div class="nav col-3 justify-content-end">
-                  <i class="fas fa-arrow-right py-2"></i>
-                </div>
-                <div class="col-3 mt-1">
-                  <h5>a1065526</h5>
-                </div>
-                <div class="col-3 mt-1 ">
-                  <h5 class="px-2"><%= studentName %></h5>
-                </div>
-                <div class="col-3">
-                  <input class="form-control " type="text" placeholder="分數">
-                </div>
-              </div>
-            </div>
-            <div class="container">
-              <div class="row mt-2">
-                <div class="nav col-3 justify-content-end">
-                  <i class="fas fa-arrow-right py-2"></i>
-                </div>
-                <div class="col-3 mt-1">
-                  <h5>a1065526</h5>
+                  <h5><%= studentId %></h5>
                 </div>
                 <div class="col-3 mt-1 ">
                   <h5 class="px-2"><%= studentName %></h5>
@@ -129,32 +81,14 @@
             </h4>
           </div>
           <div class="container py-3">
+           
             <div class="row d-flex flex-row justify-content-center">
               <i class="fas fa-arrow-right mt-2"></i>
               <p class="px-3" style="font-size: 24px;">a1065526</p>
               <p class="px-3" style="font-size: 24px;">胡醜男</p>
-              <p class="px-3" style="font-size: 24px;">0分</p>
-            </div>
-            <div class="row d-flex flex-row justify-content-center">
-              <i class="fas fa-arrow-right mt-2"></i>
-              <p class="px-3" style="font-size: 24px;">a1065526</p>
-              <p class="px-3" style="font-size: 24px;">胡醜男</p>
-              <p class="px-3" style="font-size: 24px;">0分</p>
-            </div>
-            <div class="row d-flex flex-row justify-content-center">
-              <i class="fas fa-arrow-right mt-2"></i>
-              <p class="px-3" style="font-size: 24px;">a1065526</p>
-              <p class="px-3" style="font-size: 24px;">胡醜男</p>
-              <p class="px-3" style="font-size: 24px;">0分</p>
-            </div>
-            <div class="row d-flex flex-row justify-content-center">
-              <i class="fas fa-arrow-right mt-2"></i>
-              <p class="px-3" style="font-size: 24px;">a1065526</p>
-              <p class="px-3" style="font-size: 24px;">胡醜男</p>
-              <p class="px-3" style="font-size: 24px;">0分</p>
+              <p class="px-3" style="font-size: 24px;"></p>
             </div>
 
-            <script src="/static/script/editingProjectInfo.js"></script>
           </div>
           <div class="dropdown-divider"></div>
           <div class="row justify-content-center align-items-center py-2">
@@ -165,7 +99,7 @@
               <h4 class=" text-center ">專題總成績</h4>
             </div>
             <div class="">
-              <p class="px-3" style="font-size: 24px;">0分</p>
+              <p class="px-3" style="font-size: 24px;"><%= teamGrade %></p>
             </div>
           </div>
           <div class="pb-3 row justify-content-center">
@@ -177,7 +111,7 @@
     </div>
   </div>
   </div>
-  <script src="/static/script/projectGrade.js"></script>
+  <script src="/static/script/editingProjectInfo.js"></script>
 
   <%- include('../footer'); -%>
 </body>
