@@ -1,55 +1,31 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <%- include('../header') -%>
+  </head>
+  <link rel="stylesheet" href="/static/stylesheets/conference.css" />
 
-<head>
-  <%- include('../header') -%>
-</head>
-<link rel="stylesheet" href="/static/stylesheets/conference.css">
-
-<body style="height: 100vh;">
-  <%- include('../nav') -%>
-  <div class="wrapper mt-n5">
-    <%- include('sidebar') -%>
-    <div id="head" class="container-fluid">
-      <div>
-        <div id="messages" class="card-body d-flex flex-column-reverse m-4 bg-white">
-
-          <div class="media my-3 ml-0 mr-auto">
-            <a href="/user/${m.uid}"><img src="${m.picture}" class="mr-3 messageicon" alt="avatar"></a>
-            <div class="media-body">
-              <h5 class="m-0"><a href="/user/${m.uid}">${m.name}</a></h5>
-              <div style="font-size:0.2rem">${new Date(m.time * 1000).toLocaleString()}</div>
-              <span></span>
-            </div>
+  <body style="height: 100vh;">
+    <%- include('../nav') -%>
+    <div class="wrapper mt-n5">
+      <%- include('sidebar') -%>
+      <div class="container-fluid p-3">
+        <div id="messages" class="card-body d-flex flex-column-reverse bg-white h-75"></div>
+        <div class="h-25 justify-content-center d-flex py-3">
+          <div id="inputbox" class="input-group">
+            <textarea id="input" class="form-control rounded"></textarea>
+            <button id="button" type="button" class="btn btn-primary ml-3" style="width: 5rem;">
+              <i class="fas fa-paper-plane"></i>
+            </button>
           </div>
-          <div class="media my-3 ml-0 mr-auto">
-            <a href="/user/${m.uid}"><img src="${m.picture}" class="mr-3 messageicon" alt="avatar"></a>
-            <div class="media-body">
-              <h5 class="m-0"><a href="/user/${m.uid}">${m.name}</a></h5>
-              <div style="font-size:0.2rem">${new Date(m.time * 1000).toLocaleString()}</div>
-              <span></span>
-            </div>
-          </div>
-          <div class="media my-3 mr-0 ml-auto">
-            <a href="/user/${m.uid}"><img src="${m.picture}" class="mr-3 messageicon" alt="avatar"></a>
-            <div class="media-body">
-              <h5 class="m-0"><a href="/user/${m.uid}">${m.name}</a></h5>
-              <div style="font-size:0.2rem">${new Date(m.time * 1000).toLocaleString()}</div>
-              <span></span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row m-5">
-        <div id="inputbox" class="input-group">
-          <textarea id="input" class="form-control rounded"></textarea>
-          <button id = "button"type="button" class="btn btn-primary ml-3">送出</button>
         </div>
       </div>
     </div>
+    <script>
+      const id = "<%= id %>";
+    </script>
+    <script src="/static/script/socket.io.js"></script>
     <script src="/static/script/conference.js"></script>
-    <script src="/javascripts/socket.io.js"></script>
-
-  </div>
-  <%- include('../footer'); -%>
-</body>
+    <%- include('../footer'); -%>
+  </body>
+</html>
