@@ -642,7 +642,7 @@ app.use(async (ctx, next) => {
       ctx.redirect("/login");
       // ctx.throw(403)
       return;
-    }
+    }}
     if (ctx.url.startsWith("/admin/")) {
         console.log(ctx.session.id )
         let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
@@ -652,7 +652,6 @@ app.use(async (ctx, next) => {
         }
     }
     await next()
-  }
 });
 app.use(bodyParser)
 app.use(router.routes())
