@@ -10,6 +10,4 @@ function editor(){
     ele.projectName = projectName.value
     ele.info = textarea.value
     $.post(`/api/team/info`, ele, (res) => console.log(ele));
-
-    
 }
