@@ -186,6 +186,7 @@ function getAllEvent(){
 }
 //送新事件回後端
 function sendNewEvent(newEvent){
+    data={"a":1,"v":2}
     $.ajax({
         url: "/api/team/newSchedule",   //後端的URL
         type: "POST",   //用POST的方式
