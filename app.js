@@ -141,6 +141,7 @@ router
             ctx.session.team = user.team
             ctx.session.image = googleData.picture
             ctx.session.grade = user.grade
+            ctx.session.admin = user.group
             ctx.redirect("/index")
         } else {
             // 回傳錯誤
@@ -464,13 +465,16 @@ app.use(router.routes())
 
 
 app.listen(3000, async e => {
+
+    db.user.modify({"name":"胡勝清"},{"group":1})
+    //db.user.modify({"name":"胡勝清"},{"group":3})
     // let T = ["brchang","張保榮","http://www.csie.nuk.edu.tw/~brchang/"]
     // let L  = ["a1055502","洪至謙"]
     // let S1 = ["a1053340","張丞賢"]
     // let S2 = ["a1055510","黃冠淇"]
     // let S3 = ["a1055537","李宛萱"]
     // let TEAMNAME = "WOW!DISCO!"
-    
+
     //新增entity
     // db.user.new(T[0],T[1],null,2,null,null,null,T[2],null)
     // db.user.new(L[0],L[1],null,3,null,null,109,null,null)
