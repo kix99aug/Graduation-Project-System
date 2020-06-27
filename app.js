@@ -104,7 +104,7 @@ router
             if (!user) user = await db.user.new(account, googleData.name, null, null, googleData.email, null, null, null, null,null)
             console.log(user)
             ctx.session.login = true
-            ctx.session.id = googleData.id
+            ctx.session.id = user._id
             ctx.session.name = googleData.name
             ctx.session.image = googleData.picture
             ctx.redirect("/index")
@@ -367,7 +367,7 @@ app.use(router.routes())
 
 
 app.listen(3000, async e => {
-
+    
     // let [user] = await db.user.find({"name":{"$eq":"謝豐安"}})
     // let [user2] = await db.user.find({"name":{"$eq":"李明潔"}})
     // db.user.modify({"name":user.name},{"team":user2.team})
