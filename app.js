@@ -296,7 +296,7 @@ router
     })
     .post('/api/team/newSchedule', async ctx => {
         console.log(ctx.request.body)
-        //console.log(ctx.session.id)
+        
         ctx.body = {
             result: true,
         }
