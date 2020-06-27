@@ -285,11 +285,22 @@ router
         }
     })
     .post('/api/admin/newTeam', async function (ctx) {
-        console.log(ctx.request.body)
-        ctx.body = {
-            result: true,
+        let [teacher] = await db.user.find({"name":{"$eq":ctx.request.body.teacher}})
+        let [leader] = await db.user.find({"account":{"$eq":ctx.request.body.members[0]}})
+        if(!teacher || !leader) ctx.body = {result: false};
+        else{
+            await db.team.new(ctx.request.body.name,109,teacher._id,leader._id,null,null,null,null,null,null,null,4,null).then(async res=>{
+                db.user.modify({"_id":teacher._id},{"team":res._id})
+                db.user.modify({"_id":leader._id},{"team":res._id})
+                for(var i = 1;i < ctx.request.body.members.length;i++){
+                    let member = await db.user.find({"account":{"$eq":ctx.request.body.members[i]}})
+                    db.user.modify({"_id":member[0]._id},{"team":res._id})
+                }
+            })
+            ctx.body = {
+                result: true
+            }
         }
-        console.log(ctx)
     })
     .post('/api/team/newSchedule', async ctx => {
         console.log(ctx.request.body)
@@ -339,11 +350,6 @@ app.use(bodyParser)
 app.use(router.routes())
 
 app.listen(3000, async e => {
-    // let [user] = await db.user.find({"name":{"$eq":"謝豐安"}})
-    // let [user2] = await db.user.find({"name":{"$eq":"李明潔"}})
-    // db.user.modify({"name":user.name},{"team":user2.team})
-
-
     // let T = ["brchang","張保榮","http://www.csie.nuk.edu.tw/~brchang/"]
     // let L  = ["a1055502","洪至謙"]
     // let S1 = ["a1053340","張丞賢"]
