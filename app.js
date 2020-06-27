@@ -136,6 +136,21 @@ router
             comments:commentSend
         })
     })
+    .post('/search', async ctx => {
+        input=ctx.request.body.searchInput
+        console.log(input)
+        result=await db.team.find({"name":new RegExp(input,"g")})
+        console.log(result)
+        if(result.length==0){
+            redirect='/projects'
+        }else{
+            redirect='/project/'+result[0]._id
+        }
+        ctx.body = {
+            result: true,
+            redirect:redirect
+        }
+    })
     .get("/loginCallback", async ctx => {
         let formData = {
             code: ctx.query.code,
@@ -614,7 +629,7 @@ router
         }
     })
     .post('/api/team/AllSchedule', async ctx => {
-        console.log(ctx.request.body)
+        //console.log(ctx.request.body)
         let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
         let eventList = await db.schedule.find({ "teamId": { "$eq": user.team } })
         ctx.body = {
@@ -635,7 +650,7 @@ router
         }
     })
     .post('/api/team/deleteSchedule', async ctx => {
-        console.log(ctx.request.body)
+        //console.log(ctx.request.body)
         deleteData = ctx.request.body
         for (i in deleteData) {
             await db.schedule.remove({ "_id": deleteData[i] })
@@ -660,7 +675,7 @@ router
     })
     .post('/api/team/discuss',async ctx =>{
         data=ctx.request.body
-        console.log(data.content,ctx.session.id,new Date(),data.teamId)
+        //console.log(data.content,ctx.session.id,new Date(),data.teamId)
         await db.comment.new(data.content,ctx.session.id,new Date(),data.teamId)
         ctx.body = {
             result:true,
