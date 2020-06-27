@@ -3,6 +3,7 @@ const crypto = require("crypto")
 const fetch = require("node-fetch")
 const views = require("koa-views")
 const serve = require("koa-static")
+const send = require('koa-send');
 const mount = require("koa-mount")
 const session = require("koa-session")
 const bodyParser = require('koa-body')({
@@ -278,9 +279,8 @@ router
         ctx.body = ans
     })
     .get('/api/team/storage/:id',async ctx=>{
-        let res = await db.storage.find({"owner":{"$eq":ctx.session.team},"_id":{"$eq":ctx.params.id}})
-        console.log(res)
-        ctx.body = res
+        let [res] = await db.storage.find({"owner":{"$eq":ctx.session.team},"_id":{"$eq":ctx.params.id}})
+        await send(ctx,res.path)
     })
     .put('/api/team/storage', async ctx => {
         let res = await db.storage.new(ctx.request.files.file.name, ctx.request.files.file.path,ctx.session.team)

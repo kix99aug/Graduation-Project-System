@@ -1,9 +1,7 @@
 $(".card").each(function () {
     $(this).hover(function () {
-        console.log($(this), "in")
         $(this).find(".selection").fadeIn(100)
     }, function () {
-        console.log($(this), "out")
         $(this).find(".selection").fadeOut(100)
     })
 })
