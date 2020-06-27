@@ -277,27 +277,50 @@ router
         })
     })
     .get('/admin/managePT', async ctx => {
+        let ptList = await db.team.find({});
         await ctx.render("admin/projectAndteamManagement", {
             title: "畢業專題交流平台",
             subtitle: "管理專題 & 團隊",
             name: ctx.session.name ? ctx.session.name : "訪客",
-            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            ptItems:ptList,
         })
     })
-    .get('/admin/editPI', async ctx => {
+    .get('/admin/editPI/:id', async ctx => {
+        let [team] = await db.team.find({ "_id": { "$eq": ctx.params.id} })
+        let [user] = await db.user.find({ "_id": { "$eq": team.leader } })
+        let [teacher] = await db.user.find({ "_id": { "$eq": team.teacher } })
+        let members = await db.user.find({"$and":[{ "team": { "$eq": ctx.params.id }},{"_id":{"$nin":teacher._id}},{"_id":{"$nin":user._id}}]})
         await ctx.render("admin/editingProjectInfo", {
             title: "畢業專題交流平台",
             subtitle: "管理專題 & 團隊",
             name: ctx.session.name ? ctx.session.name : "訪客",
-            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            projectName: team.name,
+            leaderAccount: user.account,
+            memberAccount: members,
+            teacherName: teacher.name,
+            projectInfo: team.info,
+            teamId:ctx.params.id
         })
     })
-    .get('/admin/editPF', async ctx => {
+    .get('/admin/editPF/:id', async ctx => {
+        console.log("ctx.params.id" )
+        var filesName = []
+        let [team] = await db.team.find({ "_id": { "$eq": ctx.params.id} }) //array of storage._id
+        if(team.files != null){
+            for(var i = 0;i<team.files.length;i++){
+                filesName.push(await db.storage.find({"_id":{"$eq":team.files[i]}}))
+            }
+        }
+        console.log(team.files)
         await ctx.render("admin/editingProjectFiles", {
             title: "畢業專題交流平台",
             subtitle: "管理專題 & 團隊",
             name: ctx.session.name ? ctx.session.name : "訪客",
-            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            teamId:ctx.params.id,
+            filesName:filesName
         })
     })
     .get('/admin/users', async ctx => {
@@ -414,6 +437,7 @@ router
     })
 
     // apis
+    // team
     .post('/api/profile', async ctx => {
         let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
         await user.update({ "intro": ctx.request.body.content })
@@ -781,12 +805,6 @@ router
     })
 
     //admin
-
-
-
-
-
-
     .post('/api/admin/ptList', async function (ctx) {
         let ptList = await db.team.find();
         ctx.body = {
@@ -818,9 +836,6 @@ router
                 result: true
             }
         }
-    })
-    .get('/api/admin/editPI', async function (ctx) {
-        console.log("WTF")
     })
     .get('/api/admin/users', async function (ctx) {
         let users = await db.user.find({}, "account name")

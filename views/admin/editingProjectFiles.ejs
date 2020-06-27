@@ -12,11 +12,11 @@
     <div class="content w-100 py-4 d-flex justify-content-center align-items-center">
       <div class="w-75 border rounded p-3 px-4 bg-white shadow h-100 d-flex flex-column justify-content-around">
         <div class=" d-flex flex-row w-50" style="margin-bottom:-70px;position: relative;">
-          <a href="/admin/editPI" class=" mt-4 ml-5 mr-3"
+          <a href="/admin/editPI/<%= teamId%>" class=" mt-4 ml-5 mr-3"
             style="text-decoration:none;font-size: 1.3rem;  color: black;">
             團隊資訊
           </a>
-          <a href="/admin/editPF" class=" mt-4 border-right border-left px-4"
+          <a href="/admin/editPF/<%= teamId%>" class=" mt-4 border-right border-left px-4"
             style="text-decoration:none;font-size: 1.3rem;color: #003CFF;">
             專題檔案
           </a>
@@ -38,90 +38,19 @@
         </div>
         <div class="project-list border overflow-auto w-100 mb-0" style="height:400px">
           <form role="form">
-            <div class="checkbox">
-              <label class="projects-item " style="color: black;">
-                <input type="checkbox" class="m-1 " >
-                規格書.doc
-
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item " style="color: black;">
-                <input type="checkbox" class="m-1 " >
-                規格書.doc
-
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item " style="color: black;">
-                <input type="checkbox" class="m-1 " >
-                規格書.doc
-
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item " style="color: black;">
-                <input type="checkbox" class="m-1 " >
-                規格書.doc
-
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item " style="color: black;">
-                <input type="checkbox" class="m-1 " >
-                規格書.doc
-
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item " style="color: black;">
-                <input type="checkbox" class="m-1 " >
-                規格書.doc
-
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item " style="color: black;">
-                <input type="checkbox" class="m-1 " >
-                規格書.doc
-
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item " style="color: black;">
-                <input type="checkbox" class="m-1 " >
-                規格書.doc
-
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item " style="color: black;">
-                <input type="checkbox" class="m-1 " >
-                規格書.doc
-
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item " style="color: black;">
-                <input type="checkbox" class="m-1 " >
-                規格書.doc
-
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item " style="color: black;">
-                <input type="checkbox" class="m-1 " >
-                規格書.doc
-
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item " style="color: black;">
-                <input type="checkbox" class="m-1 " >
-                規格書.doc
-
-              </label>
-            </div>
+            <% if (filesName.length == 0) { %>
+              <div class="d-flex justify-content-center w-100 h-auto p-5">
+                <h4 style="font-size:20px;">這個團隊目前沒有檔案 <i class="fas fa-coffee"></i></h4>
+              </div>
+              <% }else{ %>
+                <% for(var i=0;i <filesName.length;i++) {%>
+                  <div class="checkbox">
+                    <label class="projects-item " style="color: #212529;">
+                      <input type="checkbox" class="m-1 " value="<%= filesName[i]%>">
+                    </label>
+                  </div>
+                  <% } %>
+              <% } %>
           </form>
         </div>
         <div class="row w-100 justify-content-right ml-0">
