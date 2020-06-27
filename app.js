@@ -62,11 +62,13 @@ router
     })
     .get('/projects', async ctx => {
         let teams = await db.team.find({})
+        //資料庫中所有project的資料彙整
         projectData=[]
         for(i in teams){
             projectName=teams[i].name
             projectInfo=teams[i].info
-            var project={'projectName':projectName,'projectInfo':projectInfo}
+            projectId=teams[i]._id
+            var project={'projectName':projectName,'projectInfo':projectInfo,'id':projectId}
             projectData.push(project)
         }
         await ctx.render("projects", {
@@ -77,10 +79,25 @@ router
         })
     })
     .get('/project/:id', async ctx => {
+        //切出team id
+        url=ctx.request.url
+        start=url.lastIndexOf("ject/")
+        projectID=ctx.request.url.substring(start+5,url.length)
+        console.log(projectID)
+        let [projectContext] = await db.team.find({"_id":{"$eq":projectID}})
+        let member=await db.user.find({"team":{"$eq":projectID}})
+        let memberAccount=[]
+        for(i in member){
+            memberAccount.push(member[i].name)
+        }
+        console.log('memberAccount')
+        console.log(memberAccount)
         await ctx.render("project", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
-            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            projectName:projectContext.name,
+            member:['a1065501','a1065508','a1075513']
         })
     })
     .get("/loginCallback", async ctx => {
