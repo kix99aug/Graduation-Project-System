@@ -146,11 +146,10 @@ let team = {
 }
 
 let reminder = {
-    new: async function (filename, path, owner) {
+    new: async function (message,time) {
         let model = new Models.reminder({
-            filename: filename,
-            path: path,
-            owner: owner
+            message: message,
+            time:time,
         })
         return model.save()
     },

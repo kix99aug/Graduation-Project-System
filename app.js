@@ -416,11 +416,16 @@ router
         });
     })
     .get('/admin/timeSetting', async ctx => {
-        if ((await db.systemSet.find()).length == 0) {
+        if((await db.systemSet.find()).length == 0){
             console.log("有啦幹")
             await db.systemSet.new(null);
         }
-        let [timeset] = await db.systemSet.find({})
+        let [timeset] =  await db.systemSet.find({})
+        let backUpData=await db.backup.find({})
+        let sendBackUpData=[]
+        for(i in backUpData){
+            sendBackUpData.push(backUpData[i].time)
+        }
         console.log(timeset)
         await ctx.render("admin/time", {
             title: "畢業專題交流平台",
@@ -430,12 +435,12 @@ router
                 ? ctx.session.image
                 : "/static/images/favicon_sad.png",
             recordtime: ctx.session.recordtime ? ctx.session.recordtime : "109/06/09",
-            year: timeset.year ? timeset.year : "00",
-            month: timeset.month ? timeset.month : "00",
-            day: timeset.day ? timeset.day : "00",
+            year: timeset.year ? timeset.year:"00",
+            month: timeset.month ? timeset.month:"00",
+            day: timeset.day ? timeset.day:"00",
+            data:sendBackUpData
         })
     })
-
     // apis
     // team
     .post('/api/profile', async ctx => {
@@ -883,17 +888,15 @@ router
     })
 
     .post('/api/admin/projecTimeSetting', async function (ctx) {
-        let [find] = await db.systemSet.find({})
-        if(!find) await db.systemSet.new(new Date(ctx.request.body.date))
-        else await find.update({time:new Date(ctx.request.body.date)})
+        await db.backup.new(Date(ctx.request.body.date))
+        console.log(" 有new 了喔")
         ctx.body = {
             result: true
         }
     })
     .post('/api/admin/reminderTimeSetting', async function (ctx) {
-        let [find] = await db.systemSet.find({})
-        if(!find) await db.systemSet.new(new Date(ctx.request.body.date))
-        else await find.update({time:new Date(ctx.request.body.date)})
+        await db.reminder.new(new Date(ctx.request.body.date))
+        console.log(" 有new 了喔")
         ctx.body = {
             result: true
         }
