@@ -288,8 +288,21 @@ router
 
         }
     })
+    .post('/api/team/AllSchedule', async ctx => {
+        console.log(ctx.request.body)
+        ctx.body = {
+            result: true,
+        }
+    })
     .post('/api/team/newSchedule', async ctx => {
-        console.log(ctx)
+        console.log(ctx.request.body)
+        //console.log(ctx.session.id)
+        ctx.body = {
+            result: true,
+        }
+    })
+    .post('/api/team/deleteSchedule', async ctx => {
+        console.log(ctx.request.body)
         ctx.body = {
             result: true,
         }
