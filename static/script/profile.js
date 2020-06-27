@@ -1,8 +1,14 @@
-var edit = document.getElementById("edit")
-edit.addEventListener("click",editor)
-var textarea = document.getElementById("textarea")
-function editor(){
-    console.log(textarea.disabled)
-    textarea.disabled = false
-    console.log(textarea.disabled)
+var edit = document.getElementById("edit");
+edit.addEventListener("click", editor);
+
+function editor() {
+  var textarea = document.getElementById("textarea");
+  var text = textarea.value;
+  if (textarea.disabled == true) {
+    textarea.disabled = false;
+  } else {
+    let ele = {};
+    ele.content = text;
+    $.post(`/api/profile`, ele, (res) => console.log(ele));
+  }
 }
