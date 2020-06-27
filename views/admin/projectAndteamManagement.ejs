@@ -12,6 +12,10 @@
       <img src="/static/images/tick.png" style="width: 30px;margin:10px; ">
       新增成功!
     </div>
+    <div class="alert fixed-top alert-light w-25 mx-auto danger" role="alert" style="text-align: center;box-shadow: 0px 0px 10px rgba(0,0,0,0.35); display: none;">
+      <img src="/static/images/close.png" style="width: 30px;margin:10px; ">
+      新增失敗!請重新輸入!
+    </div>
     <%- include('sidebar') -%>
     <div class="content w-100 py-5 d-flex justify-content-center align-items-center">
       <div class="w-75 border rounded p-3 px-4 bg-white shadow h-100 d-flex flex-column justify-content-around">
@@ -53,7 +57,10 @@
                     </div>
                     <div class="row mt-2" id="addingMembers">
                       <div class="col-3 pb-2" style="margin-left: 119px;">
-                        <input type="text" style="width: 150px;" class="form-control ">
+                        <input type="text" style="width: 150px;" placeholder="隊長學號" class="form-control ">
+                      </div>
+                      <div class="col-3 pb-2 mem" style="margin-left: 119px;">
+                        <input type="text" style="width: 150px;" placeholder="成員學號" class="form-control">
                         <script src="/static/script/addingGroup.js"></script>
                       </div>
                     </div>
@@ -65,7 +72,7 @@
                         <h5>指導老師</h5>
                       </div>
                       <div class="col-3">
-                        <input class="form-control teacher" type="text" style="width: 150px;">
+                        <input class="form-control teacher" type="text" placeholder="指導老師" style="width: 150px;">
                       </div>
                     </div>
                   </div>
@@ -92,19 +99,34 @@
                 method:'POST',
                 url:'/api/admin/newTeam',
                 type:'json',
+                cache:true,
                 data:{
                   name:projectName,
                   teacher:teacher,
                   members:members
                 }
               }).done(msg=>{
-                if(msg){
-                $('#addingTeam').modal('hide');
-                $( ".alert-light" ).show( "slow" );
-                setTimeout(()=>{
-                  $(".alert-light").slideUp();
-                },1500)
-              }})
+                if(msg.result){
+                  $('#addingTeam').modal('hide');
+                  $( ".alert-light" ).show( "slow" );
+                  setTimeout(()=>{
+                    $(".alert-light").slideUp();
+                  },1500)
+                  setTimeout(()=>{
+                    window.location.href = "/admin/managePT";
+                  },2000)
+                }
+                else{
+                  $('#addingTeam').modal('hide');
+                  $(".danger").show( "slow" );
+                  setTimeout(()=>{
+                    $(".danger").slideUp();
+                  },1500)
+                  setTimeout(()=>{
+                    window.location.href = "/admin/managePT";
+                  },2000)
+                }
+              })
             })
           </script>
           <input class="form-control text-dark ml-2 border-dark border-right-0" type="text" placeholder="搜尋">
