@@ -27,13 +27,58 @@ let user = {
         return model.save()
     },
     find:async function(obj){
-        return Models.user.find(obj)
+        let query = await  Models.user.find(obj)
+        return query
     },
-    modify:async function(u_id,objUpdate){
-            Models.user.findByIdAndUpdate(u_id,objUpdate,function(err,res){
+    modify:async function(objWhere,objUpdate){
+            Models.user.update(objWhere,objUpdate,function(err,res){
             if(err) console.error(err)
             else console.log(res)
             })
+    },
+}
+
+let comment = {
+    new:async function(content,sender,time){
+        let model = new Models.comment({
+            content:content,
+            sender:sender,
+            time:time
+        })
+        return model.save()
+    },
+    find:async function(obj){
+        let query = await Models.storage.find(obj)
+        return query
+    },
+    modify:async function(objWhere,objUpdate){
+        Models.comment.update(objWhere,objUpdate,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    },
+}
+
+let message = {
+    new:async function(type,text,image,sender,time){
+        let model = new Models.comment({
+            type:type,
+            text:text,
+            image:image,
+            sender:sender,
+            time:time,
+        })
+        return model.save()
+    },
+    find:async function(obj){
+        let query = await Models.storage.find(obj)
+        return query
+    },
+    modify:async function(objWhere,objUpdate){
+        Models.message.update(objWhere,objUpdate,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
     },
 }
 
@@ -59,11 +104,16 @@ let team = {
     find:async function(obj){
         let query = await Models.team.find(obj)
         return query
-    }
+    },
+    modify:async function(objWhere,objUpdate){
+        Models.team.update(objWhere,objUpdate,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    },
 }
 
-
-let storage = {
+let reminder = {
     new:async function(filename,path,owner){
         let model = new Models.storage({
             filename: filename,
@@ -75,11 +125,80 @@ let storage = {
     find:async function(obj){
         let query = await Models.storage.find(obj)
         return query
-    }
+    },
+    modify:async function(objWhere,objUpdate){
+        Models.reminder.update(objWhere,objUpdate,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    },
+}
+
+let backup = {
+    new:async function(time){
+        let model = new Models.storage({
+            time:time
+        })
+        return model.save()
+    },
+    find:async function(obj){
+        let query = await Models.storage.find(obj)
+        return query
+    },
+    modify:async function(objWhere,objUpdate){
+        Models.backup.update(objWhere,objUpdate,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    },
+}
+
+let storage = {
+    new:async function(message,time){
+        let model = new Models.storage({
+            message: message,
+            time:time,
+        })
+        return model.save()
+    },
+    find:async function(obj){
+        let query = await Models.storage.find(obj)
+        return query
+    },
+    modify:async function(objWhere,objUpdate){
+        Models.storage.update(objWhere,objUpdate,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    },
+}
+
+let systemSet = {
+    new:async function(time){
+        let model = new Models.storage({
+            time:time
+        })
+        return model.save()
+    },
+    find:async function(obj){
+        let query = await Models.storage.find(obj)
+        return query
+    },
+    modify:async function(objWhere,objUpdate){
+        Models.systemSet.update(objWhere,objUpdate,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    },
 }
 
 module.exports = {
     user:user,
     team:team,
-    storage:storage
+    storage:storage,
+    comment:comment,
+    message:message,
+    reminder:reminder,
+    backup:backup,
+    systemSet:systemSet,
 }
