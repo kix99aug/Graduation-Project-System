@@ -305,23 +305,25 @@ router
         })
     })
     .get('/admin/editPF/:id', async ctx => {
-        console.log("ctx.params.id")
-        var filesName = []
-        let [team] = await db.team.find({ "_id": { "$eq": ctx.params.id } }) //array of storage._id
-        if (team.files != null) {
-            for (var i = 0; i < team.files.length; i++) {
-                filesName.push(await db.storage.find({ "_id": { "$eq": team.files[i] } }))
-            }
-        }
-        console.log(team.files)
+        let files = await db.storage.find({ "owner": { "$eq": ctx.params.id }},"filename") //array of storage._id
         await ctx.render("admin/editingProjectFiles", {
             title: "畢業專題交流平台",
             subtitle: "管理專題 & 團隊",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             teamId: ctx.params.id,
-            filesName: filesName
+            files: files
         })
+    })
+    
+    .delete("/api/admin/team/storage/:id", async (ctx) => {
+        let [res] = await db.storage.find({
+            _id: { $eq: ctx.params.id }
+        });
+        console.log(res)
+        unlink("./" + res.path, (e) => { });
+        await res.deleteOne();
+        ctx.status = 200;
     })
     .get('/admin/users', async ctx => {
         await ctx.render("admin/accountManagement", {
@@ -492,6 +494,14 @@ router
         unlink("./" + res.path, e => { })
         await res.deleteOne()
         ctx.status = 200
+    })
+    .put('/api/team/storage', async ctx => {
+        let res = await db.storage.new(ctx.request.files.file.name, ctx.request.files.file.path, ctx.session.team)
+        ctx.body = {
+            result: true,
+            id: res._id,
+            filename: ctx.request.files.file.name
+        }
     })
     .get("/api/conference/myname", async (ctx) => {
         ctx.body = {
@@ -804,8 +814,6 @@ router
 
     //admin
 
-
-
     .put("/api/admin/user", async (ctx) => {
         let res = await db.user.new(
             ctx.request.body
@@ -860,17 +868,17 @@ router
         };
     })
     .delete('/api/admin/projectTeam/:id', async function (ctx) {
-        let res = await db.team.remove({_id:{"$eq":ctx.params.id}})
-        ctx.status = res>0 ? 200:204
+        let res = await db.team.remove({ _id: { "$eq": ctx.params.id } })
+        ctx.status = res > 0 ? 200 : 204
         ctx.body = {
-            result:res>0
+            result: res > 0
         }
     })
     .delete('/api/admin/user/:id', async function (ctx) {
-        let res = await db.user.remove({_id:{"$eq":ctx.params.id}})
-        ctx.status = res>0 ? 200:204
+        let res = await db.user.remove({ _id: { "$eq": ctx.params.id } })
+        ctx.status = res > 0 ? 200 : 204
         ctx.body = {
-            result:res>0
+            result: res > 0
         }
     })
     .get('/api/admin/users', async function (ctx) {
@@ -879,13 +887,14 @@ router
     })
 
     .post('/api/admin/backupTimeSetting', async function (ctx) {
-        let [find] = await db.systemSet.find({})
-        if(!find) await db.systemSet.new(new Date(ctx.request.body.date))
-        else await find.update({time:new Date(ctx.request.body.date)})
-        ctx.body = {
-            result: true
+        if ((await db.systemSet.find()).length == 0) {
+            await db.systemSet.new(null);
         }
-    })
+        let [timeSet] = await db.systemSet.find({})
+        console.log("0000000000000000000.0000" + ctx.request.body.year)
+        await timeSet.update({ "year": ctx.request.body.year })
+        await timeSet.update({ "month": ctx.request.body.month })
+        await timeSet.update({ "day": ctx.request.body.day })
 
     .post('/api/admin/projecTimeSetting', async function (ctx) {
         await db.backup.new(Date(ctx.request.body.date))
@@ -901,6 +910,7 @@ router
             result: true
         }
     })
+
     //admin
     .post("/api/admin/ptList", async function (ctx) {
         let ptList = await db.team.find();
@@ -1086,5 +1096,4 @@ app.listen(3000, async (e) => {
     //         })
     //db.backup.new(new Data())
     console.log("Koa server run on http://localhost:3000/");
-    db.backup.new(null)
 });
