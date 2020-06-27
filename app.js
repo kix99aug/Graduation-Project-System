@@ -354,7 +354,7 @@ app.use(async (ctx, next) => {
     } catch (err) {
         ctx.status = err.status || 500
         if (ctx.status != 200) {
-            await ctx.render("error")
+            if (ctx.method == "GET") await ctx.render("error", { code: ctx.status, server: "Koa 2.12.0" })
         }
     }
 })
