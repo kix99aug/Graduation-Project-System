@@ -21,10 +21,9 @@ class EventInfo{
         this.id=id
     }
 }
+getAllEvent()
 addEvent("希望",1,2,2,'QQ111')
-addEvent("可以",2,3,2,'QQ112')
-addEvent("畢業",2,2,2,'QQ113')
-addEvent("八",2,4,2,'QQ114')
+
 
 
 //使用者加入事件
@@ -96,10 +95,13 @@ function newEventBtn(){
             alert('日期不可輸入字元');
         }else{
             //加到list中
-            addEvent(name,year,month,day)
+            
             //
             newEvent={'Name':name,'Year':year,'Month':month,'Day':day}
-            sendNewEvent(newEvent)
+            var Sid=sendNewEvent(newEvent)
+
+            addEvent(name,year,month,day,Sid)
+            console.log(Sid)
             //按下關閉鍵
             document.getElementById("addEvent").querySelectorAll("button")[1].click()
         }
@@ -134,7 +136,7 @@ function deleteEventBtn(){
                 }
             }
             //EventList.splice(deleteIndex[i],1)
-            deleteList['Event'+i]={'id':deletEvent.id}
+            deleteList['Event'+i]=deletEvent.id
         }
         sendDeleteEvent(deleteList)
         EventList=tempList
@@ -180,23 +182,34 @@ function getAllEvent(){
         cache: true,   //是否暫存
         data: data1, //傳送給後端的資料
         success: function(response) {
-            console.log(response);  //成功後回傳的資料
+            AllEvent=response.AllEvent;  //成功後回傳的資料
+            for(i in AllEvent){
+                var newEvent=new EventInfo(AllEvent[i].name,AllEvent[i].year,AllEvent[i].month,AllEvent[i].day,AllEvent[i]._id)
+                EventList.push(newEvent)
+            }
+            sortEvent()
+            drawEvent()
+            refreshDeleteEvent()
         }
     });
 }
 //送新事件回後端
-function sendNewEvent(newEvent){
+async function sendNewEvent(newEvent){
     data={"a":1,"v":2}
-    $.ajax({
+    Sid=""
+    await $.ajax({
         url: "/api/team/newSchedule",   //後端的URL
         type: "POST",   //用POST的方式
         dataType: "json",   //response的資料格式
         cache: true,   //是否暫存
         data: newEvent, //傳送給後端的資料
         success: function(response) {
-            console.log(response);  //成功後回傳的資料
+            //console.log(response)
+            Sid=response.id  //成功後回傳的資料
         }
     });
+    //console.log("1:",Sid)
+    return Sid
 }
 
 
