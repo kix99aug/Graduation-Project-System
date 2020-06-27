@@ -1,3 +1,5 @@
+const socketIO = require('socket.io');
+
 const path = require("path")
 const crypto = require("crypto")
 const fetch = require("node-fetch")
@@ -12,12 +14,14 @@ const bodyParser = require('koa-body')({
     urlencoded: true
 })
 const Koa = require("koa")
+const http = require('http');
 const Router = require("koa-router")
 const MongooseStore = require("koa-session-mongoose")
 const app = new Koa()
 const router = new Router()
 const db = require("./db")
-const { unlink } = require("fs")
+const { unlink } = require("fs");
+const { join } = require('path');
 
 const client_id = "712826989675-rs5ej0evsmp78hsphju6sudhhn3pb38s.apps.googleusercontent.com"
 const client_secret = "zlT87D-MtpTF5ltC3w5k2hKN"
@@ -50,7 +54,7 @@ router
         })
     })
     .get('/profile', async ctx => {
-        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
         await ctx.render("profile", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
@@ -99,11 +103,9 @@ router
         ).json()
         if (googleData.hd === "mail.nuk.edu.tw" || googleData.hd === "go.nuk.edu.tw") {
             // 確認資料庫
-            console.log(googleData)
             let account = googleData.email.split('@')[0]
             let [user] = await db.user.find({ "account": { "$eq": account } })
-            if (!user) user = await db.user.new(account, googleData.name, null, null, googleData.email, null, null, null, null,null)
-            console.log(user)
+            if (!user) user = await db.user.new(account, googleData.name, null, null, googleData.email, null, null, null, null, null)
             ctx.session.login = true
             ctx.session.id = user._id
             ctx.session.name = googleData.name
@@ -149,8 +151,8 @@ router
         })
     })
     .get('/team/info', async ctx => {
-        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
-        let [team] = await db.team.find({"_id":{"$eq":user.team} })
+        let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
+        let [team] = await db.team.find({ "_id": { "$eq": user.team } })
         await ctx.render("team/info", {
             title: "畢業專題交流平台",
             subtitle: "專題資訊",
@@ -158,8 +160,8 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             teamMateName: ctx.session.teamMateName ? ctx.session.teamMateName : "黃翰俞",
             guideTeacherName: ctx.session.guideTeacherName ? ctx.session.guideTeacherName : "張寶榮",
-            projectName:team.name?team.name:"親~為你們的組別命個名麻~",
-            info:team.info?team.info:"親~~說明一下你們的專題介紹啦~啾咪",
+            projectName: team.name ? team.name : "親~為你們的組別命個名麻~",
+            info: team.info ? team.info : "親~~說明一下你們的專題介紹啦~啾咪",
         })
     })
     .get('/team/conference', async ctx => {
@@ -168,6 +170,7 @@ router
             subtitle: "線上會議",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            id: ctx.session.id,
             teamMateName: ctx.session.teamMateName ? ctx.session.teamMateName : "黃翰俞",
             guideTeacherName: ctx.session.guideTeacherName ? ctx.session.guideTeacherName : "張寶榮",
         })
@@ -262,28 +265,28 @@ router
             id: newKey
         }
     })
-    .get('/api/team/storage',async ctx=>{
-        let res = await db.storage.find({"owner":{"$eq":ctx.session.team}})
-        let ans = res.map(x=>Object({id:x._id,filename:x.filename}))
+    .get('/api/team/storage', async ctx => {
+        let res = await db.storage.find({ "owner": { "$eq": ctx.session.team } })
+        let ans = res.map(x => Object({ id: x._id, filename: x.filename }))
         ctx.body = ans
     })
-    .get('/api/team/storage/:id',async ctx=>{
-        let [res] = await db.storage.find({"owner":{"$eq":ctx.session.team},"_id":{"$eq":ctx.params.id}})
+    .get('/api/team/storage/:id', async ctx => {
+        let [res] = await db.storage.find({ "owner": { "$eq": ctx.session.team }, "_id": { "$eq": ctx.params.id } })
         console.log(res)
-        await send(ctx,res.path)
+        await send(ctx, res.path)
     })
-    .delete('/api/team/storage/:id',async ctx=>{
-        let [res] = await db.storage.find({"owner":{"$eq":ctx.session.team},"_id":{"$eq":ctx.params.id}})
-        unlink("./"+res.path,e=>{})
+    .delete('/api/team/storage/:id', async ctx => {
+        let [res] = await db.storage.find({ "owner": { "$eq": ctx.session.team }, "_id": { "$eq": ctx.params.id } })
+        unlink("./" + res.path, e => { })
         await res.deleteOne()
         ctx.status = 200
     })
     .put('/api/team/storage', async ctx => {
-        let res = await db.storage.new(ctx.request.files.file.name, ctx.request.files.file.path,ctx.session.team)
+        let res = await db.storage.new(ctx.request.files.file.name, ctx.request.files.file.path, ctx.session.team)
         ctx.body = {
             result: true,
-            id:res._id,
-            filename:ctx.request.files.file.name
+            id: res._id,
+            filename: ctx.request.files.file.name
         }
     })
     .get("/api/conference/myname", async (ctx) => {
@@ -292,26 +295,26 @@ router
             id: ctx.session.id
         }
     })
-    .post('/api/team/info',async ctx =>{
-        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
-        let [team] = await db.team.find({"_id":{"$eq":user.team} })
-        await team.update({"info":ctx.request.body.info})
-        await team.update({"name":ctx.request.body.projectName})
+    .post('/api/team/info', async ctx => {
+        let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
+        let [team] = await db.team.find({ "_id": { "$eq": user.team } })
+        await team.update({ "info": ctx.request.body.info })
+        await team.update({ "name": ctx.request.body.projectName })
         ctx.body = {
-            result:true,
+            result: true,
         }
     })
     .post('/api/admin/newTeam', async function (ctx) {
-        let [teacher] = await db.user.find({"name":{"$eq":ctx.request.body.teacher}})
-        let [leader] = await db.user.find({"account":{"$eq":ctx.request.body.members[0]}})
-        if(!teacher || !leader) ctx.body = {result: false};
-        else{
-            await db.team.new(ctx.request.body.name,109,teacher._id,leader._id,null,null,null,null,null,null,null,4,null).then(async res=>{
-                db.user.modify({"_id":teacher._id},{"team":res._id})
-                db.user.modify({"_id":leader._id},{"team":res._id})
-                for(var i = 1;i < ctx.request.body.members.length;i++){
-                    let member = await db.user.find({"account":{"$eq":ctx.request.body.members[i]}})
-                    db.user.modify({"_id":member[0]._id},{"team":res._id})
+        let [teacher] = await db.user.find({ "name": { "$eq": ctx.request.body.teacher } })
+        let [leader] = await db.user.find({ "account": { "$eq": ctx.request.body.members[0] } })
+        if (!teacher || !leader) ctx.body = { result: false };
+        else {
+            await db.team.new(ctx.request.body.name, 109, teacher._id, leader._id, null, null, null, null, null, null, null, 4, null).then(async res => {
+                db.user.modify({ "_id": teacher._id }, { "team": res._id })
+                db.user.modify({ "_id": leader._id }, { "team": res._id })
+                for (var i = 1; i < ctx.request.body.members.length; i++) {
+                    let member = await db.user.find({ "account": { "$eq": ctx.request.body.members[i] } })
+                    db.user.modify({ "_id": member[0]._id }, { "team": res._id })
                 }
             })
             ctx.body = {
@@ -326,10 +329,10 @@ router
         }
     })
     .post('/api/team/newSchedule', async ctx => {
-        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
-        data=ctx.request.body
+        let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
+        data = ctx.request.body
         console.log(user.team)
-        await db.schedule.new(user.team,data.Name,data.Year,data.Month,data.Day)
+        await db.schedule.new(user.team, data.Name, data.Year, data.Month, data.Day)
         console.log(user.team)
         ctx.body = {
             result: true,
@@ -341,22 +344,24 @@ router
             result: true,
         }
     })
-    .post('/api/profile',async ctx =>{
-        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
-        await user.update({"intro":ctx.request.body.content})
+    .post('/api/profile', async ctx => {
+        let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
+        await user.update({ "intro": ctx.request.body.content })
         ctx.body = {
-            result:true,
+            result: true,
         }
     })
-    
 
 
-app.keys = [crypto.randomBytes(20).toString("hex")]
+
+app.keys = ["088f149f3e8d7a69f3999f0c850f71140168bc18"]
 
 app.use(views(path.join(__dirname, './views'), {
     extension: 'ejs'
 }))
+
 app.use(session({ store: new MongooseStore() }, app))
+
 app.use(mount("/static", serve("./static")))
 app.use(async (ctx, next) => {
     try {
@@ -392,6 +397,52 @@ app.use(async (ctx, next) => {
 app.use(bodyParser)
 app.use(router.routes())
 
+app.server = http.createServer(app.callback());
+app.listen = (...args) => {
+    app.server.listen.call(app.server, ...args);
+    return app.server;
+};
+
+app.io = socketIO(app.server, {});
+
+// add Socket.io middleware to parse Koa-session cookie
+app.io.use(async (socket, next) => {
+    let error = null;
+    try {
+        // create a new (fake) Koa context to decrypt the session cookie
+        let ctx = app.createContext(socket.request, new http.OutgoingMessage());
+        await ctx.session._sessCtx.initFromExternal()
+        socket.session = ctx.session;
+    } catch (err) {
+        error = err;
+    }
+    return next(error);
+});
+
+
+app.io.on('connection', client => {
+    client.join(client.session.team)
+    client.room = client.session.team
+    app.io.in(client.room).emit('userin', {
+        id: client.session.id,
+        name: client.session.name
+    })
+    client.on('message', async function (message) {
+        app.io.in(client.room).emit('message', {
+            id: client.session.id,
+            picture: client.session.image,
+            name: client.session.name,
+            message: message,
+        })
+    })
+    client.on('disconnect', async function () {
+        app.io.in(client.room).emit('userout', {
+            id: client.session.id,
+            name: client.session.name
+        })
+    })
+
+})
 
 app.listen(3000, async e => {
 
@@ -420,7 +471,7 @@ app.listen(3000, async e => {
     // let [id_2] = await db.user.find({"account":{"$eq":S2[0]}})
     // //let [id_3] = await db.user.find({"account":{"$eq":S3[0]}})
 
-    
+
     //     db.team.new(TEAMNAME,109,id_teacher._id,id_leader._id,null,null,null,null,null,null,null,4,null).then(res=>{
     //             db.user.modify(id_teacher._id,{"team":res._id})
     //             db.user.modify(id_leader._id,{"team":res._id})
