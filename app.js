@@ -494,6 +494,14 @@ router
         await res.deleteOne()
         ctx.status = 200
     })
+    .put('/api/team/storage', async ctx => {
+        let res = await db.storage.new(ctx.request.files.file.name, ctx.request.files.file.path, ctx.session.team)
+        ctx.body = {
+            result: true,
+            id: res._id,
+            filename: ctx.request.files.file.name
+        }
+    })
     .get("/api/conference/myname", async (ctx) => {
         ctx.body = {
             result: true,
