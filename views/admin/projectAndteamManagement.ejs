@@ -3,6 +3,46 @@
 
 <head>
   <%- include('../header') -%>
+  <script defer="true">
+   /* $.ajax({
+      method: 'POST',
+      url: '/api/search',
+      data: {
+        value: "{{ value }}"
+      }
+    }).done(msg => {
+      console.log(msg.result)
+      msg.result.forEach((ele) => {
+        var div = $('<div>', {
+          class: "card border-info m-3"
+        }).append($('<h4>', {
+          class: "card-header bg-transparent border-info d-flex justify-content-between align-items-center"
+          
+        }).html(ele.model  + `<button class="btn btn-primary comment" data-model="${ele.model}" data-mid="${ele.mid}">評論</button>`) )
+        for (let i = 0; i < ele.data.length; i++) {
+          var row = $('<div>', {
+            class: "card-body row"
+          })
+          row.append(`
+          <div class="col-1">
+            <img src="${ele.data[i].image_url}" class="img-fluid"></div>
+          <div class="col">
+            <h5 class="card-title"><a href="${ele.data[i].url}" target="_blank">${ele.data[i].title}</a></h5>
+            <h5 class="card-text">$ <span>${ele.data[i].price}</span> </h5>
+          </div>
+          `)
+          div.append(row)
+          console.log(i)
+          if (i > 1 && msg.result.length != 1) {
+            console.log("HELLO")
+            div.append(`<div class="card-footer bg-transparent border-success"><a href='/search?value=${ele.model}'>顯示更多</a></div>`)
+            break
+          }
+        }
+        $('div#main').append(div)
+      })
+    });*/
+  </script>
 </head>
 
 <body style="height: 100vh;">
@@ -11,6 +51,10 @@
     <div class="alert fixed-top alert-light w-25 mx-auto" role="alert" style="text-align: center;box-shadow: 0px 0px 10px rgba(0,0,0,0.35); display: none;">
       <img src="/static/images/tick.png" style="width: 30px;margin:10px; ">
       新增成功!
+    </div>
+    <div class="alert fixed-top alert-light w-25 mx-auto danger" role="alert" style="text-align: center;box-shadow: 0px 0px 10px rgba(0,0,0,0.35); display: none;">
+      <img src="/static/images/close.png" style="width: 30px;margin:10px; ">
+      新增失敗!請重新輸入!
     </div>
     <%- include('sidebar') -%>
     <div class="content w-100 py-5 d-flex justify-content-center align-items-center">
@@ -53,7 +97,10 @@
                     </div>
                     <div class="row mt-2" id="addingMembers">
                       <div class="col-3 pb-2" style="margin-left: 119px;">
-                        <input type="text" style="width: 150px;" class="form-control ">
+                        <input type="text" style="width: 150px;" placeholder="隊長學號" class="form-control ">
+                      </div>
+                      <div class="col-3 pb-2 mem" style="margin-left: 119px;">
+                        <input type="text" style="width: 150px;" placeholder="成員學號" class="form-control">
                         <script src="/static/script/addingGroup.js"></script>
                       </div>
                     </div>
@@ -65,7 +112,7 @@
                         <h5>指導老師</h5>
                       </div>
                       <div class="col-3">
-                        <input class="form-control teacher" type="text" style="width: 150px;">
+                        <input class="form-control teacher" type="text" placeholder="指導老師" style="width: 150px;">
                       </div>
                     </div>
                   </div>
@@ -92,19 +139,34 @@
                 method:'POST',
                 url:'/api/admin/newTeam',
                 type:'json',
+                cache:true,
                 data:{
                   name:projectName,
                   teacher:teacher,
                   members:members
                 }
               }).done(msg=>{
-                if(msg){
-                $('#addingTeam').modal('hide');
-                $( ".alert-light" ).show( "slow" );
-                setTimeout(()=>{
-                  $(".alert-light").slideUp();
-                },1500)
-              }})
+                if(msg.result){
+                  $('#addingTeam').modal('hide');
+                  $( ".alert-light" ).show( "slow" );
+                  setTimeout(()=>{
+                    $(".alert-light").slideUp();
+                  },1500)
+                  setTimeout(()=>{
+                    window.location.href = "/admin/managePT";
+                  },2000)
+                }
+                else{
+                  $('#addingTeam').modal('hide');
+                  $(".danger").show( "slow" );
+                  setTimeout(()=>{
+                    $(".danger").slideUp();
+                  },1500)
+                  setTimeout(()=>{
+                    window.location.href = "/admin/managePT";
+                  },2000)
+                }
+              })
             })
           </script>
           <input class="form-control text-dark ml-2 border-dark border-right-0" type="text" placeholder="搜尋">
@@ -133,6 +195,7 @@
             <div class="checkbox">
               <label class="projects-item" >
                 <input type="checkbox" class="m-1 ">
+                <%= projectName %>
                 Disco0
                 <button type="button" class="btn btn-light btn-sm edit">
                   <a href="/admin/editPI" style="color:black;text-decoration:none;"><i class="fas fa-file-signature"></i> 編輯專題團隊內容</button></a>

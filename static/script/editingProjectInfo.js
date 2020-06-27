@@ -22,3 +22,4 @@ function addInputBar() {
   member.appendChild(div);
   return input
 }
+
