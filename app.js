@@ -134,7 +134,7 @@ router
             let account = googleData.email.split('@')[0]
             let [user] = await db.user.find({ "account": { "$eq": account } })
             if (!user) user = await db.user.new(account, googleData.name, null, null, googleData.email, null, null, null, null,null)
-            if (account === "a1065510"){
+            if (user.group === 1){
                 await db.user.modify({"_id":user._id},{"group":1})
                 console.log(user)
                 ctx.session.login = true
@@ -380,24 +380,6 @@ router
 
 
     })
-    .post('/api/admin/newTeam', async function (ctx) {
-        let [teacher] = await db.user.find({"name":{"$eq":ctx.request.body.teacher}})
-        let [leader] = await db.user.find({"account":{"$eq":ctx.request.body.members[0]}})
-        if(!teacher || !leader) ctx.body = {result: false};
-        else{
-            await db.team.new(ctx.request.body.name,109,teacher._id,leader._id,null,null,null,null,null,null,null,4,null).then(async res=>{
-                db.user.modify({"_id":teacher._id},{"team":res._id})
-                db.user.modify({"_id":leader._id},{"team":res._id})
-                for(var i = 1;i < ctx.request.body.members.length;i++){
-                    let member = await db.user.find({"account":{"$eq":ctx.request.body.members[i]}})
-                    db.user.modify({"_id":member[0]._id},{"team":res._id})
-                }
-            })
-            ctx.body = {
-                result: true
-            }
-        }
-    })
     .post('/api/team/AllSchedule', async ctx => {
         console.log(ctx.request.body)
         let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
@@ -432,6 +414,7 @@ router
     
 
     //admin
+
     .post('/api/admin/ptList',async function(ctx){
         let ptList = await db.team.find();
         ctx.body = {
