@@ -8,21 +8,21 @@
     <%- include('../nav') -%>
     <div class="wrapper mt-n5">
       <%- include('sidebar') -%>
-      <div class="modal" tabindex="-1" role="dialog" id="confirmDelete">
+      <div class="modal fade" tabindex="-1" role="dialog" id="confirmDelete">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title"></h5>
+              <h5 class="modal-title">確認要刪除以下使用者?</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
-              <p>Modal body text goes here.</p>
+            <div class="modal-body overflow-auto" style="max-height: 50vh;">
+              <ul></ul>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-danger" id="confirm" data-dismiss="modal">刪除</button>
             </div>
           </div>
         </div>
@@ -48,7 +48,6 @@
               id="addingUser"
               tabindex="-1"
               role="dialog"
-              aria-labelledby="exampleModalCenterTitle"
               aria-hidden="false"
             >
               <div class="modal-dialog modal-dialog-centered" role="document">
@@ -78,47 +77,50 @@
                   <div class="modal-body">
                     <div class="container">
                       <div class="row mt-2">
-                        <div class="nav col-3 justify-content-end">
+                        <div class="nav col-2 justify-content-center">
                           <i class="fas fa-arrow-right py-2"></i>
                         </div>
-                        <div class="col-3 mt-1">
-                          <h5>學號</h5>
+                        <div class="col-4 mt-1">
+                          <h5>學號/帳號</h5>
                         </div>
                         <div class="col-3">
                           <input
                             class="form-control"
                             type="text"
-                            style="width: 150px;"
+                            name="account"
+                            style="width: 200px;"
                           />
                         </div>
                       </div>
                       <div class="row mt-2">
-                        <div class="nav col-3 justify-content-end">
+                        <div class="nav col-2 justify-content-center">
                           <i class="fas fa-arrow-right py-2"></i>
                         </div>
-                        <div class="col-3 mt-1">
+                        <div class="col-4 mt-1">
                           <h5>姓名</h5>
                         </div>
                         <div class="col-3">
                           <input
                             class="form-control"
                             type="text"
-                            style="width: 150px;"
+                            name="name"
+                            style="width: 200px;"
                           />
                         </div>
                       </div>
                       <div class="row mt-2">
-                        <div class="nav col-3 justify-content-end">
+                        <div class="nav col-2 justify-content-center">
                           <i class="fas fa-arrow-right py-2"></i>
                         </div>
-                        <div class="col-3 mt-1">
+                        <div class="col-4 mt-1">
                           <h5>E-mail</h5>
                         </div>
                         <div class="col-3">
                           <input
                             class="form-control"
                             type="text"
-                            style="width: 150px;"
+                            name="email"
+                            style="width: 200px;"
                           />
                         </div>
                       </div>
@@ -127,7 +129,7 @@
                   <div class="modal-footer">
                     <div class="container">
                       <div class="row justify-content-center">
-                        <button type="button" class="btn btn-primary rounded">
+                        <button type="button" class="btn btn-primary rounded" id="new">
                           新增！
                         </button>
                       </div>
@@ -137,7 +139,7 @@
               </div>
             </div>
             <input
-              class="form-control text-dark ml-2 border-dark border-right-0"
+              class="form-control text-dark ml-2 border-dark border-right-0 search"
               type="text"
               placeholder="搜尋"
             />
@@ -151,38 +153,22 @@
             <button type="button" class="btn btn-light" id="select">
               全選
             </button>
-            <script>
-              $("button#select").click(function () {
-                let allchecked = true;
-                $(`input[type="checkbox"]`).each(function () {
-                  if (!$(this).prop(`checked`)) allchecked = false;
-                });
-                $(`input[type="checkbox"]`).prop(`checked`, !allchecked);
-              });
-            </script>
             <button
               type="button"
               class="btn btn-light mr-0"
               id="delete"
               data-toggle="modal"
-              data-target="#confirmDelete"
             >
               <i class="fas fa-trash"></i>
             </button>
           </div>
           <div class="project-list border overflow-auto w-100 h-75 mb-0">
-            <form method="POST">
-              <!-- 
-            <div class="checkbox">
-              <div class="projects-item ">
-                <input type="checkbox" class="m-1 ">
-                user0
-                <button type="button" class="btn btn-light btn-sm edit">
-                  <a href="/admin/user/edit/:id" style="color:black;text-decoration:none;"><i class="fas fa-file-signature"></i> 編輯使用者資訊</button></a>
+            
+            <div class="d-flex h-100 justify-content-center align-items-center">
+              <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
               </div>
-            </div>
-          -->
-            </form>
+          </div>
           </div>
         </div>
       </div>

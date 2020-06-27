@@ -488,14 +488,6 @@ router
         await res.deleteOne()
         ctx.status = 200
     })
-    .put('/api/team/storage', async ctx => {
-        let res = await db.storage.new(ctx.request.files.file.name, ctx.request.files.file.path, ctx.session.team)
-        ctx.body = {
-            result: true,
-            id: res._id,
-            filename: ctx.request.files.file.name
-        }
-    })
     .get("/api/conference/myname", async (ctx) => {
         ctx.body = {
             result: true,
@@ -635,6 +627,7 @@ router
                 j++
             }
         }
+    }
     })
 
     // apis
@@ -806,6 +799,21 @@ router
     })
 
     //admin
+
+
+
+    .put("/api/admin/user", async (ctx) => {
+        let res = await db.user.new(
+            ctx.request.body
+        );
+        ctx.body = {
+            result: true,
+            id: res._id,
+        };
+    })
+
+
+
     .post('/api/admin/ptList', async function (ctx) {
         let ptList = await db.team.find();
         ctx.body = {
@@ -836,6 +844,29 @@ router
             ctx.body = {
                 result: true
             }
+        }
+    })
+    .put("/api/admin/projectTeam", async (ctx) => {
+        let res = await db.team.new(
+            ctx.request.body
+        );
+        ctx.body = {
+            result: true,
+            id: res._id,
+        };
+    })
+    .delete('/api/admin/projectTeam/:id', async function (ctx) {
+        let res = await db.team.remove({_id:{"$eq":ctx.params.id}})
+        ctx.status = res>0 ? 200:204
+        ctx.body = {
+            result:res>0
+        }
+    })
+    .delete('/api/admin/user/:id', async function (ctx) {
+        let res = await db.user.remove({_id:{"$eq":ctx.params.id}})
+        ctx.status = res>0 ? 200:204
+        ctx.body = {
+            result:res>0
         }
     })
     .get('/api/admin/users', async function (ctx) {
@@ -1035,5 +1066,6 @@ app.listen(3000, async (e) => {
     //             db.user.modify(id_2._id,{"team":res._id})
     //             db.user.modify(id_3._id,{"team":res._id})
     //         })
+    //db.backup.new(new Data())
     console.log("Koa server run on http://localhost:3000/");
 });

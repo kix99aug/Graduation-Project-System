@@ -78,7 +78,7 @@ module.exports = {
     team: model('Team', teamSchema),
     reminder: model('Reminder', reminderSchema),
     storage: model('Storage', storageSchema),
-    backups: model('Backup', backupSchema),
+    backup: model('Backup', backupSchema),
     systemSet: model('systemSet', systemSetSchema),
     schedule: model('schedule', scheduleSchema),
 }

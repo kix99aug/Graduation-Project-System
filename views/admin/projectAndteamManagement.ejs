@@ -20,6 +20,25 @@
     <div class="content w-100 py-5 d-flex justify-content-center align-items-center">
       <div class="w-75 border rounded p-3 px-4 bg-white shadow h-100 d-flex flex-column justify-content-around">
         <div class="input-group">
+          <div class="modal fade" tabindex="-1" role="dialog" id="confirmDelete">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">確認要刪除以下專題團隊?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body overflow-auto" style="max-height: 50vh;">
+                  <ul></ul>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                  <button type="button" class="btn btn-danger" id="confirm" data-dismiss="modal">刪除</button>
+                </div>
+              </div>
+            </div>
+          </div>
           <button type="button" class="btn btn-outline-dark rounded-0" data-toggle="modal" data-target="#addingTeam"> + 新增專題團隊</button>
 
           <div class="modal fade" id="addingTeam" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
@@ -115,9 +134,9 @@
                 }
                 else{
                   $('#addingTeam').modal('hide');
-                  $(".danger").show( "slow" );
+                  $(".alert-light.danger").show( "slow" );
                   setTimeout(()=>{
-                    $(".danger").slideUp();
+                    $(".alert-light.danger").slideUp();
                   },1500)
                   setTimeout(()=>{
                     window.location.href = "/admin/managePT";
@@ -127,9 +146,14 @@
               })
             })
           </script>
-          <input class="form-control text-dark ml-2 border-dark border-right-0" type="text" placeholder="搜尋">
+          <input
+          class="form-control text-dark ml-2 border-dark border-right-0 search"
+          type="text"
+          placeholder="搜尋"
+          />
           <div class="input-group-append bg-transparent">
-            <button class="btn btn-outline-dark " type="button"><i class="fas fa-search bg-transparent "></i>
+            <button class="btn btn-outline-dark" type="button">
+              <i class="fas fa-search bg-transparent"></i>
             </button>
           </div>
         </div>
@@ -144,9 +168,14 @@
               $(`input[type="checkbox"]`).prop(`checked`, !allchecked)
             })
           </script>
-          <button type="button" class="btn btn-light mr-0" id="delete">
-            <i class="fas fa-trash"></i>
-          </button>
+          <button
+          type="button"
+          class="btn btn-light mr-0"
+          id="delete"
+          data-toggle="modal"
+        >
+          <i class="fas fa-trash"></i>
+        </button>
         </div>
         <div class="project-list border overflow-auto w-100 h-75 mb-0">
           <form role="form" class="ptList">
@@ -173,5 +202,6 @@
       </div>
     </div>
   </div>
+  <script src="/static/script/managePT.js"></script>
   <%- include('../footer'); -%>
 </body>

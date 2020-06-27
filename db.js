@@ -27,6 +27,10 @@ let user = {
         })
         return model.save()
     },
+    new: async function (obj) {
+        let model = new Models.user(obj)
+        return model.save()
+    },
     find: async function (obj, col) {
         let query
         if (col) query = await Models.user.find(obj, col)
@@ -170,13 +174,13 @@ let reminder = {
 
 let backup = {
     new: async function (time) {
-        let model = new Models.storage({
+        let model = new Models.backup({
             time: time
         })
         return model.save()
     },
     find: async function (obj) {
-        let query = await Models.storage.find(obj)
+        let query = await Models.backup.find(obj)
         return query
     },
     modify: async function (objWhere, objUpdate) {
