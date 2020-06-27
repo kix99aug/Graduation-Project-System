@@ -12,7 +12,7 @@ const db = mongoose.connection
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 let user = {
-    new:async function(account,name,avatar,group,email,team,grade,link,score){
+    new:async function(account,name,avatar,group,email,team,grade,link,score,intro){
         let model = new Models.user({
             account: account,
             name: name,
@@ -22,7 +22,8 @@ let user = {
             team: null,           //team._id
             grade: grade,          //學生才擁有，系級
             link: link,           //個人網站的link
-            score: score
+            score: score,
+            intro:intro,
         })
         return model.save()
     },
@@ -36,6 +37,12 @@ let user = {
             else console.log(res)
             })
     },
+    remove:async function(objWhere){
+        Models.user.remove(objWhere,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    }
 }
 
 let comment = {
@@ -53,6 +60,12 @@ let comment = {
     },
     modify:async function(objWhere,objUpdate){
         Models.comment.update(objWhere,objUpdate,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    },
+    remove:async function(objWhere){
+        Models.comment.remove(objWhere,function(err,res){
         if(err) console.error(err)
         else console.log(res)
         })
@@ -80,6 +93,12 @@ let message = {
         else console.log(res)
         })
     },
+    remove:async function(objWhere){
+        Models.message.remove(objWhere,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    }
 }
 
 let team = {
@@ -111,6 +130,12 @@ let team = {
         else console.log(res)
         })
     },
+    remove:async function(objWhere){
+        Models.team.remove(objWhere,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    }
 }
 
 let reminder = {
@@ -132,6 +157,12 @@ let reminder = {
         else console.log(res)
         })
     },
+    remove:async function(objWhere){
+        Models.reminder.remove(objWhere,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    }
 }
 
 let backup = {
@@ -151,6 +182,12 @@ let backup = {
         else console.log(res)
         })
     },
+    remove:async function(objWhere){
+        Models.backup.remove(objWhere,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    }
 }
 
 let storage = {
@@ -172,6 +209,12 @@ let storage = {
         else console.log(res)
         })
     },
+    remove:async function(objWhere){
+        Models.storage.remove(objWhere,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    }
 }
 
 let systemSet = {
@@ -191,6 +234,12 @@ let systemSet = {
         else console.log(res)
         })
     },
+    remove:async function(objWhere){
+        Models.systemSet.remove(objWhere,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    }
 }
 
 module.exports = {
