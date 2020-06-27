@@ -324,22 +324,31 @@ router
     })
     .post('/api/team/AllSchedule', async ctx => {
         console.log(ctx.request.body)
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        let eventList=await db.schedule.find({"teamId":{"$eq":user.team} })
         ctx.body = {
             result: true,
+            AllEvent:eventList
         }
     })
     .post('/api/team/newSchedule', async ctx => {
         let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
         data=ctx.request.body
-        console.log(user.team)
-        await db.schedule.new(user.team,data.Name,data.Year,data.Month,data.Day)
-        console.log(user.team)
+        let Sid
+        await db.schedule.new(user.team,data.Name,data.Year,data.Month,data.Day).then(res=>{
+            Sid=res._id
+        })
         ctx.body = {
             result: true,
+            "id":Sid
         }
     })
     .post('/api/team/deleteSchedule', async ctx => {
         console.log(ctx.request.body)
+        deleteData=ctx.request.body
+        for(i in deleteData){
+            await db.schedule.remove({"_id":deleteData[i]})
+        }
         ctx.body = {
             result: true,
         }
