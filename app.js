@@ -142,6 +142,7 @@ router
                 ctx.session.name = googleData.name
                 ctx.session.team = user.team
                 ctx.session.image = googleData.picture
+                ctx.session.admin = user.group
                 ctx.redirect("/admin")
             }
             else{
@@ -278,7 +279,10 @@ router
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             recordtime: ctx.session.recordtime ? ctx.session.recordtime : "109/06/09",
-            backupTime: ctx.session.backupTime ? ctx.session.backupTime : "2020 年 06 月 09 日"
+            year: db.systemSet.year ? db.systemSet.year:"00",
+            month: db.systemSet.month ? db.systemSet.month:"00",
+            day: db.systemSet.day ? db.systemSet.day:"00",
+
         })
     })
 
@@ -415,6 +419,11 @@ router
 
     //admin
 
+
+
+
+    
+
     .post('/api/admin/ptList',async function(ctx){
         let ptList = await db.team.find();
         ctx.body = {
@@ -442,7 +451,23 @@ router
     .get('/api/admin/editPI',async function(ctx){
         console.log("WTF")
     })
-    
+
+    .post('/api/admin/timeSet',async function(ctx){
+        if(db.systemSet.find().count() == 0){
+            await db.systemSet.new(null);
+        }
+        var [timeSet] = db.systemSet.find()
+        await timeSet.update({"year":ctx.request.body.year})
+        await timeSet.update({"month":ctx.request.body.month})
+        await timeSet.update({"day":ctx.request.body.day})
+
+        ctx.body = {
+            year:timeSet.year,
+            month:timeSet.month,
+            day:timeSet.day,
+        }
+    })
+
 
 
 app.keys = [crypto.randomBytes(20).toString("hex")]
@@ -477,8 +502,8 @@ app.use(async (ctx, next) => {
     }
     if (ctx.url.startsWith("/admin/")) {
         console.log(ctx.session.id )
-        let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
-        if (user.group != 1) {
+
+        if (ctx.session.admin != 1) {
             ctx.throw(403)
             return
         }

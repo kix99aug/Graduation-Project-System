@@ -45,7 +45,7 @@
                     <div class="row justify-content-center">
                         <div class='col-sm-6' style="text-align: center;">
                           <h5>日期選擇</h5>
-                          <input type="text" name="date" class="form-control datepicker">
+                          <input type="text" name="date" class="form-control datepicker" id="date">
                         </span>
                           <script>
                             //$('.datepicker').datepicker()
@@ -66,7 +66,25 @@
                 <div class="modal-footer">
                   <div class="container">
                     <div class="row justify-content-center">
-                      <button type="button" class="btn btn-primary rounded">設定！</button>
+                      <button type="button" class="btn btn-primary rounded" id="timeSetting">設定！</button>
+
+                      <script>
+                        var edit = document.getElementById("setting");
+                        var date = document.getElementById("date").innerText;
+                        date.split("-");
+                        var month = date[1];
+                        var day = date[2];
+                        edit.addEventListener("click",editor)
+                        function editor(){
+                          let ele = {};
+                          ele.year = date[0]
+                          ele.month = date[1]
+                          ele.day = date[2]
+                          $.post(`/api/admin/timeSet`, ele, (res) => console.log(ele));
+                        }
+
+                      </script>
+
                     </div>
                   </div>
                 </div>
@@ -125,7 +143,7 @@
           </div>
                     <div class=" d-flex flex-row mt-3 mb-3">
                         <p class="ml-5 mb-0" style="font-size: 24px;">備份時程：</p>
-                        <p class="ml-1 mb-0 font-weight-bold" style="font-size: 24px;"><%= backupTime %></p>
+                        <p class="ml-1 mb-0 font-weight-bold" style="font-size: 24px;"><%= year %>年<%= month %>月<%= day %>日</p>
                         <button type="button" class="btn btn-warning ml-4" data-toggle="modal" data-target="#backup" >設置</button>
                     </div>
                     <div class="modal fade" id="backup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
