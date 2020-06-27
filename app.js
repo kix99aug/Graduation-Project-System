@@ -286,8 +286,6 @@ router
     })
     .post('/api/admin/newTeam', async function (ctx) {
         ctx.body = {
-
-
         }
     })
     .post('/api/team/newSchedule', async ctx => {
@@ -326,12 +324,12 @@ app.use(async (ctx, next) => {
             return
         }
     }
-    if (ctx.url.startsWith("/admin/")) {
+   /* if (ctx.url.startsWith("/admin/")) {
         if (!ctx.session.admin) {
             ctx.throw(403)
             return
         }
-    }
+    }*/
     await next()
 })
 app.use(bodyParser)

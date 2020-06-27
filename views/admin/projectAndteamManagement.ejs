@@ -84,7 +84,7 @@
               var members = document.getElementById("addingMembers").querySelectorAll(".form-control");
               var teacher = document.querySelector('.teacher').value;
               var projectName = document.querySelector('.projectName').value;
-              $.ajax({
+              /*$.ajax({
                 method:'POST',
                 url:'/api/admin/newTeam',
                 data:{
@@ -97,8 +97,8 @@
                 setTimeout(()=>{
                   window.location.href = "/admin/managePT"
                 },3000)
-              })
-              console.log(members[0].value);
+              })*/
+              console.log(typeof(members));
               console.log(teacher);
             })
           </script>
