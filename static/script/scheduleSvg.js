@@ -105,7 +105,8 @@ function deleteEventBtn(){
 }
 
 
-function sendData(){
+//送被刪除的事件回後端
+function sendDeleteEvent(eventList){
     data1={name:"name_test",year:"106",month:"2",day:"5"}
     $.ajax({
         url: "/api/team/newSchedule",   //後端的URL
