@@ -110,7 +110,7 @@ router
             console.log(ctx.session.id)
             ctx.session.name = googleData.name
             ctx.session.image = googleData.picture
-            ctx.session.team = 123
+            ctx.session.team = user.team
             ctx.redirect("/index")
         } else {
             // 回傳錯誤
