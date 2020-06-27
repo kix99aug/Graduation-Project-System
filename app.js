@@ -57,7 +57,20 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             grade: "避不了業",
             professor: "沒人要你",
-            introduction: user.intro ? user.intro : "親~請輸入您的簡介歐~~~"
+            introduction: user.intro ? user.intro : "親~請輸入您的簡介歐~~~",
+            canFix:true
+        })
+    })
+    .get('/profile/:id', async ctx => {
+        let [user] = await db.user.find({"_id":{"$eq":ctx.params.id}})
+        await ctx.render("profile", {
+            title: "畢業專題交流平台",
+            name: ctx.session.name ? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            grade: "避不了業",
+            professor: "沒人要你",
+            introduction: user.intro ? user.intro : "親~請輸入您的簡介歐~~~",
+            canFix:false
         })
     })
     .get('/projects', async ctx => {
@@ -83,18 +96,26 @@ router
         url=ctx.request.url
         start=url.lastIndexOf("ject/")
         projectID=ctx.request.url.substring(start+5,url.length)
-        console.log(projectID)
         let [projectContext] = await db.team.find({"_id":{"$eq":projectID}})
         let member=await db.user.find({"team":{"$eq":projectID}})
         let memberAccount=[] //學生的學號
         let teachName=""//
+        let projectInfo=projectContext.info
+        let comments=await db.comment.find({"teamId":projectID})
+        let commentSend=[]
+        //將資料庫的評論資料換成要顯示的方式
+        for(i in comments){
+            sender=await db.user.find({"_id":{"$eq":comments[i].sender}})
+            senderName=sender[0].name
+            Acomment={'name':senderName,'time':comments[i].time,'content':comments[i].content,'SenderID':comments[i].sender}
+            commentSend.push(Acomment)
+        }
         for(i in member){
             if(member[i].group==3){
                 memberAccount.push({'account':member[i].account,'name':member[i].name})
             }else{
                 teachName=member[i].name
             }
-            
         }
         await ctx.render("project", {
             title: "畢業專題交流平台",
@@ -102,7 +123,9 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             projectName:projectContext.name,
             member:memberAccount,
-            teachName:teachName
+            teachName:teachName,
+            projectInfo:projectInfo,
+            comments:commentSend
         })
     })
     .get("/loginCallback", async ctx => {
@@ -414,7 +437,14 @@ router
             result:true,
         }
     })
-    
+    .post('/api/team/discuss',async ctx =>{
+        data=ctx.request.body
+        console.log(data.content,ctx.session.id,new Date(),data.teamId)
+        await db.comment.new(data.content,ctx.session.id,new Date(),data.teamId)
+        ctx.body = {
+            result:true,
+        }
+    })
 
 
 app.keys = [crypto.randomBytes(20).toString("hex")]

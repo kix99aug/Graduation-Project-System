@@ -95,7 +95,6 @@ function newEventBtn(){
             alert('日期不可輸入字元');
         }else{
             //加到list中
-            
             //
             newEvent={'Name':name,'Year':year,'Month':month,'Day':day}
             var Sid=sendNewEvent(newEvent)
@@ -195,7 +194,6 @@ function getAllEvent(){
 }
 //送新事件回後端
 async function sendNewEvent(newEvent){
-    data={"a":1,"v":2}
     Sid=""
     await $.ajax({
         url: "/api/team/newSchedule",   //後端的URL
@@ -208,7 +206,6 @@ async function sendNewEvent(newEvent){
             Sid=response.id  //成功後回傳的資料
         }
     });
-    //console.log("1:",Sid)
     return Sid
 }
 

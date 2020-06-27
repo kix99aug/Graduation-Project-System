@@ -46,11 +46,12 @@ let user = {
 }
 
 let comment = {
-    new:async function(content,sender,time){
+    new:async function(content,sender,time,teamId){
         let model = new Models.comment({
             content:content,
             sender:sender,
-            time:time
+            time:time,
+            teamId:teamId
         })
         return model.save()
     },
