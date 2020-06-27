@@ -42,7 +42,9 @@
             <div class="col m-5">
                 <div class="row">
                     <h3 class="row post-row">個人簡介：</h3>
-                    <img src="/static/images/edit (1).png" alt="" class="pb-3 ml-4" id="edit">
+                    <% if(canFix==true){ %>
+                        <img src="/static/images/edit (1).png" alt="" class="pb-3 ml-4" id="edit">
+                    <% } %>
                 </div>
                 <div class="form-group " >
                     <textarea disabled class="form-control" id="textarea" rows="5" ><%= introduction %></textarea>
