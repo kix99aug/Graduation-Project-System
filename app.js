@@ -318,8 +318,11 @@ router
         }
     })
     .post('/api/team/newSchedule', async ctx => {
-        console.log(ctx.request.body)
-        let [user] = await db.user.find({"name":{"$eq":"謝豐安"}})
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        data=ctx.request.body
+        console.log(user.team)
+        await db.schedule.new(user.team,data.Name,data.Year,data.Month,data.Day)
+        console.log(user.team)
         ctx.body = {
             result: true,
         }
@@ -356,7 +359,7 @@ app.use(async (ctx, next) => {
         }
     } catch (err) {
         ctx.status = err.status || 500
-        console.err(err)
+        console.error(err)
         if (ctx.status != 200) {
             if (ctx.method == "GET") await ctx.render("error", { code: ctx.status, server: "Koa 2.12.0" })
         }
