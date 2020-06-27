@@ -17,7 +17,8 @@ const userSchema = new Schema({
 const commentSchema = new Schema({
     content: String,
     sender: Schema.Types.ObjectId,         //訊息的傳送者,user._id
-    time: Date,             //訊息傳送時間
+    time: Date,//訊息傳送時間
+    teamId:Schema.Types.ObjectId,           
 })
 
 const messageSchema = new Schema({
@@ -77,7 +78,7 @@ module.exports = {
     team: model('Team', teamSchema),
     reminder: model('Reminder', reminderSchema),
     storage: model('Storage', storageSchema),
-    backups: model('Backup', backupSchema),
+    backup: model('Backup', backupSchema),
     systemSet: model('systemSet', systemSetSchema),
     schedule: model('schedule', scheduleSchema),
 }

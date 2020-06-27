@@ -3,29 +3,6 @@
 
 <head>
   <%- include('../header') -%>
-  <script defer="true">
-  $.ajax({
-      method: 'POST',
-      url: '/api/admin/ptList',
-    }).done(msg => {
-      msg.result.forEach((ele) => {
-        console.log(ele)
-        var div = $('<div>', {
-          class: "checkbox"
-        }).append($('<label>', {
-          class: "projects-item",
-          style: "color:#212529; font-size:20px;"
-        }).html(`<input type="checkbox" class="m-2">` + ele.name + 
-        `<button type="button" class="btn btn-light btn-sm edit" name="` + ele._id + `"><i class="fas fa-file-signature"></i> 編輯專題團隊內容</button>`))
-        
-        $('form.ptList').append(div)
-      })
-    });
-
-  $("button.edit").click(function(e){
-    alert(e.name);
-  })
-  </script>
 </head>
 
 <body style="height: 100vh;">
@@ -146,17 +123,14 @@
                   name:projectName,
                   teacher:teacher,
                   members:members
-                }
-              }).done(msg=>{
+                },
+                success:msg=>{
+                  console.log(msg)
                 if(msg.result){
                   $('#addingTeam').modal('hide');
                   $( ".alert-light.success" ).show( "slow" );
-                  setTimeout(()=>{
-                    $(".alert-light.success").slideUp();
-                  },1500)
-                  setTimeout(()=>{
-                    window.location.href = "/admin/managePT";
-                  },2000)
+                  setTimeout(()=>$(".alert-light.success").slideUp(),1500)
+                  setTimeout(()=>window.location.reload(),2000)
                 }
                 else{
                   $('#addingTeam').modal('hide');
@@ -168,6 +142,7 @@
                     window.location.href = "/admin/managePT";
                   },2000)
                 }
+              }
               })
             })
           </script>
@@ -204,6 +179,16 @@
         </div>
         <div class="project-list border overflow-auto w-100 h-75 mb-0">
           <form role="form" class="ptList">
+            <% for(var i=0;i <ptItems.length;i++) {%>
+              <div class="checkbox">
+                <label class="projects-item" style="font-size: 20px; color:#212529;">
+                  <input type="checkbox" class="m-2">
+                      <%= ptItems[i].name%>
+                      <a type="button" class="btn btn-light btn-sm edit" href="editPI/<%= ptItems[i]._id%>">
+                        <i class="fas fa-file-signature"></i> 編輯專題團隊內容</a>
+                    </label> 
+                  </div>
+                <% } %>
             <!-- <div class="checkbox">
               <label class="projects-item" >
                 <input type="checkbox" class="m-1 ">
