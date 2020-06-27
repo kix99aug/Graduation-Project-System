@@ -6,7 +6,11 @@ const serve = require("koa-static")
 const send = require('koa-send');
 const mount = require("koa-mount")
 const session = require("koa-session")
-const bodyParser = require('koa-body')
+const bodyParser = require('koa-body')({
+    formidable: { uploadDir: './uploads' },    //This is where the files would come
+    multipart: true,
+    urlencoded: true
+})
 const Koa = require("koa")
 const Router = require("koa-router")
 const MongooseStore = require("koa-session-mongoose")
@@ -16,18 +20,6 @@ const db = require("./db")
 
 const client_id = "712826989675-rs5ej0evsmp78hsphju6sudhhn3pb38s.apps.googleusercontent.com"
 const client_secret = "zlT87D-MtpTF5ltC3w5k2hKN"
-
-app.keys = [crypto.randomBytes(20).toString("hex")]
-
-app.use(views(path.join(__dirname, './views'), {
-    extension: 'ejs'
-}))
-
-app.use(bodyParser({
-    formidable: { uploadDir: './uploads' },    //This is where the files would come
-    multipart: true,
-    urlencoded: true
-}))
 
 let notes = {
     1: { x: .1, y: .1, content: "123" },
@@ -340,16 +332,13 @@ app.use(views(path.join(__dirname, './views'), {
     extension: 'ejs'
 }))
 app.use(session({ store: new MongooseStore() }, app))
-app.use(async (ctx, next) => {
-    ctx.set("Server", "Koa 2.12.0")
-    await next()
-})
+app.use(mount("/static", serve("./static")))
 app.use(async (ctx, next) => {
     try {
         await next()
         const status = ctx.status || 404
         if (status === 404) {
-            ctx.throw(404)
+            ctx.throw(status)
         }
     } catch (err) {
         ctx.status = err.status || 500
@@ -365,17 +354,17 @@ app.use(async (ctx, next) => {
             return
         }
     }
-   /* if (ctx.url.startsWith("/admin/")) {
+    if (ctx.url.startsWith("/admin/")) {
         if (!ctx.session.admin) {
             ctx.throw(403)
             return
         }
-    }*/
+    }
     await next()
 })
 app.use(bodyParser)
 app.use(router.routes())
-app.use(mount("/static", serve("./static")))
+
 
 app.listen(3000, async e => {
 
