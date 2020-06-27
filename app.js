@@ -54,31 +54,62 @@ router
         })
     })
     .get('/profile', async ctx => {
-        let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        let [team] = await db.team.find({"_id":{"$eq":user.team}})
+        let [professor] = await db.user.find({"_id":{"$eq":team.teacher}})
+
         await ctx.render("profile", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
-            grade: "避不了業",
-            professor: "沒人要你",
-            introduction: user.intro ? user.intro : "親~請輸入您的簡介歐~~~"
+            grade: ctx.session.grade ? ctx.session.grade : "???",
+            professor: professor.name ? professor.name : "???",
+            introduction: user.intro ? user.intro : "親~請輸入您的簡介歐~~~",
         })
     })
     .get('/projects', async ctx => {
+        let teams = await db.team.find({})
+        //資料庫中所有project的資料彙整
+        projectData=[]
+        for(i in teams){
+            projectName=teams[i].name
+            projectInfo=teams[i].info
+            projectId=teams[i]._id
+            var project={'projectName':projectName,'projectInfo':projectInfo,'id':projectId}
+            projectData.push(project)
+        }
         await ctx.render("projects", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
-            projectName: "行車安全警示系統",
-            projectInfo: "啊我就怕被罵啊",
-
+            data:projectData
         })
     })
     .get('/project/:id', async ctx => {
+        //切出team id
+        url=ctx.request.url
+        start=url.lastIndexOf("ject/")
+        projectID=ctx.request.url.substring(start+5,url.length)
+        console.log(projectID)
+        let [projectContext] = await db.team.find({"_id":{"$eq":projectID}})
+        let member=await db.user.find({"team":{"$eq":projectID}})
+        let memberAccount=[] //學生的學號
+        let teachName=""//
+        for(i in member){
+            if(member[i].group==3){
+                memberAccount.push({'account':member[i].account,'name':member[i].name})
+            }else{
+                teachName=member[i].name
+            }
+            
+        }
         await ctx.render("project", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
-            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            projectName:projectContext.name,
+            member:memberAccount,
+            teachName:teachName
         })
     })
     .get("/loginCallback", async ctx => {
@@ -105,13 +136,26 @@ router
             // 確認資料庫
             let account = googleData.email.split('@')[0]
             let [user] = await db.user.find({ "account": { "$eq": account } })
-            if (!user) user = await db.user.new(account, googleData.name, null, null, googleData.email, null, null, null, null, null)
-            ctx.session.login = true
-            ctx.session.id = user._id
-            ctx.session.name = googleData.name
-            ctx.session.team = user.team
-            ctx.session.image = googleData.picture
-            ctx.redirect("/index")
+            if (!user) user = await db.user.new(account, googleData.name, null, null, googleData.email, null, null, null, null,null)
+            if (account === "a1065510"){
+                await db.user.modify({"_id":user._id},{"group":1})
+                console.log(user)
+                ctx.session.login = true
+                ctx.session.id = user._id
+                ctx.session.name = googleData.name
+                ctx.session.team = user.team
+                ctx.session.image = googleData.picture
+                ctx.redirect("/admin")
+            }
+            else{
+                console.log(user)
+                ctx.session.login = true
+                ctx.session.id = user._id
+                ctx.session.name = googleData.name
+                ctx.session.team = user.team
+                ctx.session.image = googleData.picture
+                ctx.redirect("/index")
+            }
         } else {
             // 回傳錯誤
             ctx.throw(400)
@@ -142,12 +186,16 @@ router
         })
     })
     .get('/team/judge', async ctx => {
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        let [team] = await db.team.find({"_id":{"$eq":user.team} })
+        let [teamMate] = await db.user.find({"team":team._id})
         await ctx.render("team/judge", {
             title: "畢業專題交流平台",
             subtitle: "專題評分",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             studentName: ctx.session.studentName ? ctx.session.studentName : "胡帥哥",
+            teamGrade: ctx.session.teamGrade? ctx.session.teamGrade:"0",
         })
     })
     .get('/team/info', async ctx => {
@@ -172,7 +220,7 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             id: ctx.session.id,
             teamMateName: ctx.session.teamMateName ? ctx.session.teamMateName : "黃翰俞",
-            guideTeacherName: ctx.session.guideTeacherName ? ctx.session.guideTeacherName : "張寶榮",
+            guideTeacherName: ctx.session.guideTeacherName ? ctx.session.guideTeacherName : "???",
         })
     })
 
@@ -239,6 +287,14 @@ router
     })
 
     // apis
+    .post('/api/profile',async ctx =>{
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        await user.update({"intro":ctx.request.body.content})
+        ctx.body = {
+            result:true,
+        }
+    })
+    // team
     .get('/api/team/blackboard/all', async ctx => {
         ctx.body = {
             result: true,
@@ -295,14 +351,38 @@ router
             id: ctx.session.id
         }
     })
-    .post('/api/team/info', async ctx => {
-        let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
-        let [team] = await db.team.find({ "_id": { "$eq": user.team } })
-        await team.update({ "info": ctx.request.body.info })
-        await team.update({ "name": ctx.request.body.projectName })
+    .post('/api/team/info',async ctx =>{
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        let [team] = await db.team.find({"_id":{"$eq":user.team} })
+        let teamMate= await db.user.find({"team":{"$eq":user.team}})
+        await team.update({"info":ctx.request.body.info})
+        await team.update({"name":ctx.request.body.projectName})
         ctx.body = {
-            result: true,
+            result:true,
+            teamMate:teamMate,
         }
+    })
+    .get('/api/team/info_2',async ctx =>{
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        let teamMate= await db.user.find({"team":{"$eq":user.team}})
+        ctx.body = {
+            result:true,
+            teamMate:teamMate,
+        }
+    })
+
+    .get('/api/team/judge',async ctx=>{
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        let teamMate= await db.user.find({"team":{"$eq":user.team}})
+        ctx.body = {
+            result:true,
+            group:user.group,
+            teamMate:teamMate,
+        }
+    })
+    .post('/api/team/judge/score' ,async ctx=>{
+
+
     })
     .post('/api/admin/newTeam', async function (ctx) {
         let [teacher] = await db.user.find({ "name": { "$eq": ctx.request.body.teacher } })
@@ -324,33 +404,65 @@ router
     })
     .post('/api/team/AllSchedule', async ctx => {
         console.log(ctx.request.body)
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        let eventList=await db.schedule.find({"teamId":{"$eq":user.team} })
         ctx.body = {
             result: true,
+            AllEvent:eventList
         }
     })
     .post('/api/team/newSchedule', async ctx => {
-        let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
-        data = ctx.request.body
-        console.log(user.team)
-        await db.schedule.new(user.team, data.Name, data.Year, data.Month, data.Day)
-        console.log(user.team)
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        data=ctx.request.body
+        let Sid
+        await db.schedule.new(user.team,data.Name,data.Year,data.Month,data.Day).then(res=>{
+            Sid=res._id
+        })
         ctx.body = {
             result: true,
+            "id":Sid
         }
     })
     .post('/api/team/deleteSchedule', async ctx => {
         console.log(ctx.request.body)
+        deleteData=ctx.request.body
+        for(i in deleteData){
+            await db.schedule.remove({"_id":deleteData[i]})
+        }
         ctx.body = {
             result: true,
         }
     })
-    .post('/api/profile', async ctx => {
-        let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
-        await user.update({ "intro": ctx.request.body.content })
+
+    //admin
+    .post('/api/admin/ptList',async function(ctx){
+        let ptList = await db.team.find();
         ctx.body = {
-            result: true,
+            result: ptList,
         }
     })
+    .post('/api/admin/newTeam', async function (ctx) {
+        let [teacher] = await db.user.find({"name":{"$eq":ctx.request.body.teacher}})
+        let [leader] = await db.user.find({"account":{"$eq":ctx.request.body.members[0]}})
+        if(!teacher || !leader) ctx.body = {result: false};
+        else{
+            await db.team.new(ctx.request.body.name,109,teacher._id,leader._id,null,null,null,null,null,null,null,4,null).then(async res=>{
+                db.user.modify({"_id":teacher._id},{"team":res._id})
+                db.user.modify({"_id":leader._id},{"team":res._id})
+                for(var i = 1;i < ctx.request.body.members.length;i++){
+                    let member = await db.user.find({"account":{"$eq":ctx.request.body.members[i]}})
+                    db.user.modify({"_id":member[0]._id},{"team":res._id})
+                }
+            })
+            ctx.body = {
+                result: true
+            }
+        }
+    })
+    .get('/api/admin/editPI',async function(ctx){
+        console.log("WTF")
+    })
+    
 
 
 
@@ -387,7 +499,9 @@ app.use(async (ctx, next) => {
         }
     }
     if (ctx.url.startsWith("/admin/")) {
-        if (!ctx.session.admin) {
+        console.log(ctx.session.id )
+        let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
+        if (user.group != 1) {
             ctx.throw(403)
             return
         }
@@ -446,11 +560,8 @@ app.io.on('connection', client => {
 
 app.listen(3000, async e => {
 
-    // let [user] = await db.user.find({"name":{"$eq":"謝豐安"}})
-    // let [user2] = await db.user.find({"name":{"$eq":"李明潔"}})
-    // db.user.modify({"name":user.name},{"team":user2.team})
-
-
+    db.user.modify({"name":"胡勝清"},{"group":1})
+    //db.user.modify({"name":"胡勝清"},{"group":3})
     // let T = ["brchang","張保榮","http://www.csie.nuk.edu.tw/~brchang/"]
     // let L  = ["a1055502","洪至謙"]
     // let S1 = ["a1053340","張丞賢"]

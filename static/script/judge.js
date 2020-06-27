@@ -41,7 +41,6 @@ function appendChilds(teamMate) {
   p3.setAttribute("class", "px-3");
   p3.setAttribute("style", "font-size: 24px;");
   div.appendChild(i);
-
   p1.innerHTML = teamMate.account;
   div.appendChild(p1);
   p2.innerHTML = teamMate.name;
@@ -49,18 +48,64 @@ function appendChilds(teamMate) {
   if (teamMate.score == null) teamMate.score = 0;
   p3.innerHTML = teamMate.score + "分";
   div.appendChild(p3);
-
   rec.appendChild(div);
 }
+
+function appendChilds2(teamMate) {
+  if (teamMate.group == 2) {
+    return;
+  }
+  var hiderec = document.getElementById("hiderec");
+  var div = document.createElement("div");
+  div.setAttribute("class", "row d-flex flex-row justify-content-center py-1");
+  var i = document.createElement("i");
+  i.setAttribute("class", "fas fa-arrow-right mt-2");
+  var p1 = document.createElement("p");
+  p1.setAttribute("class", "px-3");
+  p1.setAttribute("style", "font-size: 24px;");
+  var p2 = document.createElement("p");
+  p2.setAttribute("class", "px-3");
+  p2.setAttribute("style", "font-size: 24px;");
+  var p3 = document.createElement("input");
+  p3.setAttribute("class", "form-control ");
+  p3.setAttribute("type", "text");
+  p3.setAttribute("placeholder", "分數");
+  p3.setAttribute("style", "width:15%");
+  div.appendChild(i);
+  p1.innerHTML = teamMate.account;
+  div.appendChild(p1);
+  p2.innerHTML = teamMate.name;
+  div.appendChild(p2);
+  div.appendChild(p3);
+  hiderec.appendChild(div);
+}
+
 var length;
 fetch("/api/team/judge")
   .then((res) => {
     return res.json();
   })
   .then((json) => {
+    console.log(json.group);
     if (json.result) {
+      let ele = {};
+
       for (var i = 0; i < json.teamMate.length; i++) {
         appendChilds(json.teamMate[i]);
+        appendChilds2(json.teamMate[i]);
+
       }
+      if (json.group == 3) {
+        var refreshbtn = document.getElementById("refreshbtn");
+        refreshbtn.style.visibility = "hidden";
+      } else {
+        var refreshbtn = document.getElementById("refreshbtn");
+        refreshbtn.style.visibility = "visible";
+      }
+
+      var push = document.getElementById("push");
+      push.addEventListener("click", function () {
+        $.post(`/api/team/judge/score`, ele, (res) => console.log(ele));
+      });
     }
   });
