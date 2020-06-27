@@ -17,6 +17,8 @@ const MongooseStore = require("koa-session-mongoose")
 const app = new Koa()
 const router = new Router()
 const db = require("./db")
+const { rmdir, unlink } = require("fs")
+const { createContext } = require("vm")
 
 const client_id = "712826989675-rs5ej0evsmp78hsphju6sudhhn3pb38s.apps.googleusercontent.com"
 const client_secret = "zlT87D-MtpTF5ltC3w5k2hKN"
@@ -148,9 +150,8 @@ router
         })
     })
     .get('/team/info', async ctx => {
-        console.log(ctx.session.team)
-        let member = await db.user.find({"team":{"$eq":ctx.session.team}})
-        console.log(member)
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        let [team] = await db.team.find({"_id":{"$eq":user.team} })
         await ctx.render("team/info", {
             title: "畢業專題交流平台",
             subtitle: "專題資訊",
@@ -158,6 +159,8 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             teamMateName: ctx.session.teamMateName ? ctx.session.teamMateName : "黃翰俞",
             guideTeacherName: ctx.session.guideTeacherName ? ctx.session.guideTeacherName : "張寶榮",
+            projectName:team.name?team.name:"親~為你們的組別命個名麻~",
+            info:team.info?team.info:"親~~說明一下你們的專題介紹啦~啾咪",
         })
     })
     .get('/team/conference', async ctx => {
@@ -292,6 +295,15 @@ router
             id: ctx.session.id
         }
     })
+    .post('/api/team/info',async ctx =>{
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        let [team] = await db.team.find({"_id":{"$eq":user.team} })
+        await team.update({"info":ctx.request.body.info})
+        await team.update({"name":ctx.request.body.projectName})
+        ctx.body = {
+            result:true,
+        }
+    })
     .post('/api/admin/newTeam', async function (ctx) {
         console.log(ctx.request.body)
         ctx.body = {
@@ -307,7 +319,7 @@ router
     })
     .post('/api/team/newSchedule', async ctx => {
         console.log(ctx.request.body)
-        
+        let [user] = await db.user.find({"name":{"$eq":"謝豐安"}})
         ctx.body = {
             result: true,
         }
@@ -319,13 +331,13 @@ router
         }
     })
     .post('/api/profile',async ctx =>{
-        console.log(ctx.request.body.content)
-        let [thisUser] = await db.user.find({"_id":{"$eq":ctx.session.id}})
-        await thisUser.update({"intro":ctx.request.body.content})
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        await user.update({"intro":ctx.request.body.content})
         ctx.body = {
             result:true,
         }
     })
+    
 
 
 app.keys = [crypto.randomBytes(20).toString("hex")]

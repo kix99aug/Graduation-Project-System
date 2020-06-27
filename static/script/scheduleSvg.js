@@ -13,23 +13,23 @@ var circle = draw.circle(40).attr({ cx: 60, cy: 350 }).fill("red")
 var EventList=[]
 
 class EventInfo{
-    constructor(name,year,month,day) {
+    constructor(name,year,month,day,id) {
         this.name=name
         this.year=year
         this.month=month
         this.day=day
+        this.id=id
     }
 }
-addEvent("希望",1,2,2)
-addEvent("可以",2,3,2)
-addEvent("畢業",2,2,2)
-addEvent("八",2,4,2)
-
+addEvent("希望",1,2,2,'QQ111')
+addEvent("可以",2,3,2,'QQ112')
+addEvent("畢業",2,2,2,'QQ113')
+addEvent("八",2,4,2,'QQ114')
 
 
 //使用者加入事件
-function addEvent(name,year,month,day){
-    var newEvent=new EventInfo(name,year,month,day)
+function addEvent(name,year,month,day,id){
+    var newEvent=new EventInfo(name,year,month,day,id)
     EventList.push(newEvent)
     sortEvent()
     drawEvent()
@@ -126,6 +126,7 @@ function deleteEventBtn(){
         deleteList={}
         for(var i=0;i<deleteIndex.length;i++){
             var deletEvent=EventList[deleteIndex[i]]
+            console.log(deletEvent)
             //在EventList中把要刪除的資料刪除
             for(var j=0;j<tempList.length;j++){
                 if(deletEvent==tempList[j]){
@@ -133,8 +134,7 @@ function deleteEventBtn(){
                 }
             }
             //EventList.splice(deleteIndex[i],1)
-            deleteEvent={'Name':deletEvent.name,'Month':deletEvent.month,'Day':deletEvent.day}
-            deleteList['Event'+i]=deleteEvent
+            deleteList['Event'+i]={'id':deletEvent.id}
         }
         sendDeleteEvent(deleteList)
         EventList=tempList
