@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "node --no-deprecation app.js"
+    "start": "nodemon --no-deprecation app.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
     "koa-mongo": "^1.9.1",
     "koa-mount": "^4.0.0",
     "koa-router": "^9.0.1",
+    "koa-send": "^5.0.0",
     "koa-session": "^6.0.0",
     "koa-session-mongoose": "^3.0.1",
     "koa-static": "^5.0.0",

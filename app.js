@@ -151,6 +151,9 @@ router
         })
     })
     .get('/team/info', async ctx => {
+        console.log(ctx.session.team)
+        let member = await db.user.find({"team":{"$eq":ctx.session.team}})
+        console.log(member)
         await ctx.render("team/info", {
             title: "畢業專題交流平台",
             subtitle: "專題資訊",
@@ -268,10 +271,18 @@ router
             name: ctx.request.files.file.name
         }
     })
+    .get('/api/team/storage',async ctx=>{
+        let res = await db.storage.find({"owner":{"$eq":ctx.session.team}})
+        let ans = res.map(x=>Object({id:x._id,filename:x.filename}))
+        ctx.body = ans
+    })
+    .get('/api/team/storage/:id',async ctx=>{
+        let res = await db.storage.find({"owner":{"$eq":ctx.session.team},"_id":{"$eq":ctx.params.id}})
+        console.log(res)
+        ctx.body = res
+    })
     .put('/api/team/storage', async ctx => {
-        console.log(ctx.request.files.file.name)
-        console.log(ctx.request.files.file.path)
-        let res = await db.storage.new(ctx.request.files.file.name, ctx.request.files.file.path)
+        let res = await db.storage.new(ctx.request.files.file.name, ctx.request.files.file.path,ctx.session.team)
         ctx.body = {
             result: true,
             id: res._id,
@@ -286,7 +297,6 @@ router
     })
     .post('/api/admin/newTeam', async function (ctx) {
         ctx.body = {
-
 
         }
     })

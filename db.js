@@ -56,7 +56,7 @@ let comment = {
         if(err) console.error(err)
         else console.log(res)
         })
-    },
+    }
 }
 
 let message = {
@@ -154,10 +154,11 @@ let backup = {
 }
 
 let storage = {
-    new:async function(message,time){
+    new:async function(filename,path,owner){
         let model = new Models.storage({
-            message: message,
-            time:time,
+            filename: filename,
+            path:path,
+            owner:owner
         })
         return model.save()
     },
