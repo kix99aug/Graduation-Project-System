@@ -51,13 +51,16 @@ router
     })
     .get('/profile', async ctx => {
         let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        let [team] = await db.team.find({"_id":{"$eq":user.team}})
+        let [professor] = await db.user.find({"_id":{"$eq":team.teacher}})
+
         await ctx.render("profile", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
-            grade: "避不了業",
-            professor: "沒人要你",
-            introduction: user.intro ? user.intro : "親~請輸入您的簡介歐~~~"
+            grade: ctx.session.grade ? ctx.session.grade : "???",
+            professor: professor.name ? professor.name : "???",
+            introduction: user.intro ? user.intro : "親~請輸入您的簡介歐~~~",
         })
     })
     .get('/projects', async ctx => {
@@ -132,6 +135,7 @@ router
             ctx.session.name = googleData.name
             ctx.session.team = user.team
             ctx.session.image = googleData.picture
+            ctx.session.grade = user.grade
             ctx.redirect("/index")
         } else {
             // 回傳錯誤
@@ -455,16 +459,13 @@ app.use(router.routes())
 
 
 app.listen(3000, async e => {
-    //db.user.modify({"name":"胡勝清"},{"team":"5ef4bd04fc4bd0032415b39d"})
-
-
     // let T = ["brchang","張保榮","http://www.csie.nuk.edu.tw/~brchang/"]
     // let L  = ["a1055502","洪至謙"]
     // let S1 = ["a1053340","張丞賢"]
     // let S2 = ["a1055510","黃冠淇"]
     // let S3 = ["a1055537","李宛萱"]
     // let TEAMNAME = "WOW!DISCO!"
-
+    
     //新增entity
     // db.user.new(T[0],T[1],null,2,null,null,null,T[2],null)
     // db.user.new(L[0],L[1],null,3,null,null,109,null,null)
