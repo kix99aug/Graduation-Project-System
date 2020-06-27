@@ -10,7 +10,8 @@ const userSchema = new Schema({
     team: Schema.Types.ObjectId,           //team._id
     grade: Number,          //學生才擁有，系級
     link: String,           //個人網站的link
-    score: Number
+    score: Number,
+    intro: String,
 })
 
 const commentSchema = new Schema({

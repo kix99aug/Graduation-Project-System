@@ -52,13 +52,14 @@ router
         })
     })
     .get('/profile', async ctx => {
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
         await ctx.render("profile", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             grade: "避不了業",
             professor: "沒人要你",
-            introduction: ctx.session.introduction ? ctx.session.introduction : "我是大雞雞，又香又甜又好吃"
+            introduction: user.intro ? user.intro : "親~請輸入您的簡介歐~~~"
         })
     })
     .get('/projects', async ctx => {
@@ -103,7 +104,7 @@ router
             console.log(googleData)
             let account = googleData.email.split('@')[0]
             let [user] = await db.user.find({ "account": { "$eq": account } })
-            if (!user) user = await db.user.new(account, googleData.name, null, null, googleData.email, null, null, null, null)
+            if (!user) user = await db.user.new(account, googleData.name, null, null, googleData.email, null, null, null, null,null)
             console.log(user)
             ctx.session.login = true
             ctx.session.id = user._id
@@ -298,7 +299,9 @@ router
         }
     })
     .post('/api/profile',async ctx =>{
-        ctx.request.body.content
+        console.log(ctx.request.body.content)
+        let [thisUser] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        await thisUser.update({"intro":ctx.request.body.content})
         ctx.body = {
             result:true,
         }
@@ -345,6 +348,7 @@ app.use(bodyParser)
 app.use(router.routes())
 
 app.listen(3000, async e => {
+
     // let [user] = await db.user.find({"name":{"$eq":"謝豐安"}})
     // let [user2] = await db.user.find({"name":{"$eq":"李明潔"}})
     // db.user.modify({"name":user.name},{"team":user2.team})
