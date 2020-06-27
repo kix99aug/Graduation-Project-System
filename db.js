@@ -36,6 +36,12 @@ let user = {
             else console.log(res)
             })
     },
+    remove:async function(objWhere){
+        Models.user.remove(objWhere,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    }
 }
 
 let comment = {
@@ -57,6 +63,12 @@ let comment = {
         else console.log(res)
         })
     },
+    remove:async function(objWhere){
+        Models.comment.remove(objWhere,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    }
 }
 
 let message = {
@@ -80,6 +92,12 @@ let message = {
         else console.log(res)
         })
     },
+    remove:async function(objWhere){
+        Models.message.remove(objWhere,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    }
 }
 
 let team = {
@@ -111,6 +129,12 @@ let team = {
         else console.log(res)
         })
     },
+    remove:async function(objWhere){
+        Models.team.remove(objWhere,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    }
 }
 
 let reminder = {
@@ -132,6 +156,12 @@ let reminder = {
         else console.log(res)
         })
     },
+    remove:async function(objWhere){
+        Models.reminder.remove(objWhere,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    }
 }
 
 let backup = {
@@ -151,6 +181,12 @@ let backup = {
         else console.log(res)
         })
     },
+    remove:async function(objWhere){
+        Models.backup.remove(objWhere,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    }
 }
 
 let storage = {
@@ -171,6 +207,12 @@ let storage = {
         else console.log(res)
         })
     },
+    remove:async function(objWhere){
+        Models.storage.remove(objWhere,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    }
 }
 
 let systemSet = {
@@ -190,6 +232,12 @@ let systemSet = {
         else console.log(res)
         })
     },
+    remove:async function(objWhere){
+        Models.systemSet.remove(objWhere,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    }
 }
 
 module.exports = {
