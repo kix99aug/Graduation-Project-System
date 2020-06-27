@@ -310,8 +310,13 @@ router
         let teamMate= await db.user.find({"team":{"$eq":user.team}})
         ctx.body = {
             result:true,
+            group:user.group,
             teamMate:teamMate,
         }
+    })
+    .post('/api/team/judge/score' ,async ctx=>{
+
+        
     })
     .post('/api/admin/newTeam', async function (ctx) {
         let [teacher] = await db.user.find({"name":{"$eq":ctx.request.body.teacher}})
