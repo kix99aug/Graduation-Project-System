@@ -206,8 +206,10 @@ let storage = {
         })
         return model.save()
     },
-    find: async function (obj) {
-        let query = await Models.storage.find(obj)
+    find: async function (obj, col) {
+        let query
+        if (col) query = await Models.storage.find(obj, col)
+        else query = await Models.storage.find(obj)
         return query
     },
     modify: async function (objWhere, objUpdate) {

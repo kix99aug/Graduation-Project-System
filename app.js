@@ -305,23 +305,25 @@ router
         })
     })
     .get('/admin/editPF/:id', async ctx => {
-        console.log("ctx.params.id")
-        var filesName = []
-        let [team] = await db.team.find({ "_id": { "$eq": ctx.params.id } }) //array of storage._id
-        if (team.files != null) {
-            for (var i = 0; i < team.files.length; i++) {
-                filesName.push(await db.storage.find({ "_id": { "$eq": team.files[i] } }))
-            }
-        }
-        console.log(team.files)
+        let files = await db.storage.find({ "owner": { "$eq": ctx.params.id }},"filename") //array of storage._id
         await ctx.render("admin/editingProjectFiles", {
             title: "畢業專題交流平台",
             subtitle: "管理專題 & 團隊",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             teamId: ctx.params.id,
-            filesName: filesName
+            files: files
         })
+    })
+    
+    .delete("/api/admin/team/storage/:id", async (ctx) => {
+        let [res] = await db.storage.find({
+            _id: { $eq: ctx.params.id }
+        });
+        console.log(res)
+        unlink("./" + res.path, (e) => { });
+        await res.deleteOne();
+        ctx.status = 200;
     })
     .get('/admin/users', async ctx => {
         await ctx.render("admin/accountManagement", {
