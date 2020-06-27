@@ -296,6 +296,12 @@ router
             result: true,
         }
     })
+    .post('/api/profile',async ctx =>{
+        ctx.request.body.content
+        ctx.body = {
+            result:true,
+        }
+    })
 
 
 app.keys = [crypto.randomBytes(20).toString("hex")]

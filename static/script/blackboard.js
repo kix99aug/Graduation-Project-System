@@ -44,7 +44,7 @@ function newNote(key) {
   let text = document.createElement("div");
   let input = document.createElement("textarea");
   $(text).text(ele.content);
-  $(input).text(ele.content);
+  $(input).text(ele.conqtent);
   $(note)
     .attr("class", "note")
     .data("noteid", key)
