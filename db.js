@@ -191,10 +191,11 @@ let backup = {
 }
 
 let storage = {
-    new:async function(message,time){
+    new:async function(filename,path,owner){
         let model = new Models.storage({
-            message: message,
-            time:time,
+            filename: filename,
+            path:path,
+            owner:owner
         })
         return model.save()
     },
