@@ -745,6 +745,7 @@ app.use(async (ctx, next) => {
       ctx.throw(403);
       return;
     }
+    
   }
   await next();
 });
@@ -797,7 +798,7 @@ app.io.on("connection", (client) => {
 });
 
 app.listen(3000, async (e) => {
-  // db.user.modify({"name":"胡勝清"},{"group":1})
+//   db.user.modify({"name":"潘彥霖"},{"group":1})
   //db.user.modify({"name":"胡勝清"},{"group":3})
   // let T = ["brchang","張保榮","http://www.csie.nuk.edu.tw/~brchang/"]
   // let L  = ["a1055502","洪至謙"]
