@@ -86,18 +86,23 @@ router
         console.log(projectID)
         let [projectContext] = await db.team.find({"_id":{"$eq":projectID}})
         let member=await db.user.find({"team":{"$eq":projectID}})
-        let memberAccount=[]
+        let memberAccount=[] //學生的學號
+        let teachName=""//
         for(i in member){
-            memberAccount.push(member[i].name)
+            if(member[i].group==3){
+                memberAccount.push({'account':member[i].account,'name':member[i].name})
+            }else{
+                teachName=member[i].name
+            }
+            
         }
-        console.log('memberAccount')
-        console.log(memberAccount)
         await ctx.render("project", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             projectName:projectContext.name,
-            member:['a1065501','a1065508','a1075513']
+            member:memberAccount,
+            teachName:teachName
         })
     })
     .get("/loginCallback", async ctx => {
@@ -339,7 +344,7 @@ router
     })
     .post('/api/team/judge/score' ,async ctx=>{
 
-        
+
     })
     .post('/api/admin/newTeam', async function (ctx) {
         let [teacher] = await db.user.find({"name":{"$eq":ctx.request.body.teacher}})
