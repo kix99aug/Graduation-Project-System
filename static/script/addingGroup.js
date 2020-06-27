@@ -15,7 +15,7 @@ function onInput(e) {
 function addInputBar() {
   var div = document.createElement("div");
   div.setAttribute("class", "col-3 pb-2");
-  div.setAttribute("style","margin-left: 119px;")
+  div.setAttribute("style","margin-left: 119px;");
   var input = document.createElement("input");
   input.setAttribute("type", "text");
   input.setAttribute("class", "form-control");

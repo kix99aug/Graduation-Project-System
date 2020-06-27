@@ -285,8 +285,11 @@ router
         }
     })
     .post('/api/admin/newTeam', async function (ctx) {
+        console.log(ctx.request.body)
         ctx.body = {
+            result: true,
         }
+        console.log(ctx)
     })
     .post('/api/team/newSchedule', async ctx => {
         console.log(ctx.request.body)
