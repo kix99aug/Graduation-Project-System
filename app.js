@@ -146,12 +146,16 @@ router
         })
     })
     .get('/team/judge', async ctx => {
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        let [team] = await db.team.find({"_id":{"$eq":user.team} })
+        let [teamMate] = await db.user.find({"team":team._id})
         await ctx.render("team/judge", {
             title: "畢業專題交流平台",
             subtitle: "專題評分",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             studentName: ctx.session.studentName ? ctx.session.studentName : "胡帥哥",
+            teamGrade: ctx.session.teamGrade? ctx.session.teamGrade:"0",
         })
     })
     .get('/team/info', async ctx => {
@@ -305,6 +309,14 @@ router
         await team.update({"name":ctx.request.body.projectName})
         ctx.body = {
             result:true,
+        }
+    })
+    .get('/api/team/judge',async ctx=>{
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        let teamMate= await db.user.find({"team":{"$eq":user.team}})
+        ctx.body = {
+            result:true,
+            teamMate:teamMate,
         }
     })
     .post('/api/admin/newTeam', async function (ctx) {
