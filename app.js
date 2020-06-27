@@ -282,11 +282,12 @@ router
             id: ctx.session.id
         }
     })
-    .post('/api/admin/newTeam',async function(ctx){
+    .post('/api/admin/newTeam', async function (ctx) {
+        console.log(ctx.request.body)
         ctx.body = {
-            
-
+            result: true,
         }
+        console.log(ctx)
     })
     .post('/api/team/AllSchedule', async ctx => {
         console.log(ctx.request.body)
@@ -307,6 +308,19 @@ router
             result: true,
         }
     })
+    .post('/api/profile',async ctx =>{
+        ctx.request.body.content
+        ctx.body = {
+            result:true,
+        }
+    })
+
+
+app.keys = [crypto.randomBytes(20).toString("hex")]
+
+app.use(views(path.join(__dirname, './views'), {
+    extension: 'ejs'
+}))
 app.use(session({ store: new MongooseStore() }, app))
 app.use(async (ctx, next) => {
     ctx.set("Server", "Koa 2.12.0")
@@ -326,11 +340,30 @@ app.use(async (ctx, next) => {
         }
     }
 })
-
+app.use(async (ctx, next) => {
+    if (ctx.url.startsWith("/team/") || ctx.url.startsWith("/api/team/")) {
+        if (!ctx.session.team) {
+            ctx.throw(403)
+            return
+        }
+    }
+   /* if (ctx.url.startsWith("/admin/")) {
+        if (!ctx.session.admin) {
+            ctx.throw(403)
+            return
+        }
+    }*/
+    await next()
+})
+app.use(bodyParser)
 app.use(router.routes())
 app.use(mount("/static", serve("./static")))
 
 app.listen(3000, async e => {
+    // let [user] = await db.user.find({"name":{"$eq":"謝豐安"}})
+    // let [user2] = await db.user.find({"name":{"$eq":"李明潔"}})
+    // db.user.modify({"name":user.name},{"team":user2.team})
+
 
     // let T = ["brchang","張保榮","http://www.csie.nuk.edu.tw/~brchang/"]
     // let L  = ["a1055502","洪至謙"]

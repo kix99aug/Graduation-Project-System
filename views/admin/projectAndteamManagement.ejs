@@ -8,7 +8,8 @@
 <body style="height: 100vh;">
   <%- include('../nav') -%>
   <div class="wrapper mt-n5">
-    <div class="alert fixed-top alert-success m-5 d-none" role="alert">
+    <div class="alert fixed-top alert-light w-25 mx-auto" role="alert" style="text-align: center;box-shadow: 0px 0px 10px rgba(0,0,0,0.35); display: none;">
+      <img src="/static/images/tick.png" style="width: 30px;margin:10px; ">
       新增成功!
     </div>
     <%- include('sidebar') -%>
@@ -81,25 +82,29 @@
           </div>
           <script>
             $('.newTeam').click(evt=>{
-              var members = document.getElementById("addingMembers").querySelectorAll(".form-control");
+              var membersObject = document.getElementById("addingMembers").querySelectorAll(".form-control");
+              var members = [];
               var teacher = document.querySelector('.teacher').value;
               var projectName = document.querySelector('.projectName').value;
+              membersObject.forEach(item=>members.push(item.value))
+              members.splice(members.indexOf(""),1)
               $.ajax({
                 method:'POST',
                 url:'/api/admin/newTeam',
+                type:'json',
                 data:{
                   name:projectName,
                   teacher:teacher,
                   members:members
                 }
               }).done(msg=>{
-                $('.alert-success').removeClass('d-none')
+                if(msg){
+                $('#addingTeam').modal('hide');
+                $( ".alert-light" ).show( "slow" );
                 setTimeout(()=>{
-                  window.location.href = "/admin/managePT"
-                },3000)
-              })
-              console.log(members[0].value);
-              console.log(teacher);
+                  $(".alert-light").slideUp();
+                },1500)
+              }})
             })
           </script>
           <input class="form-control text-dark ml-2 border-dark border-right-0" type="text" placeholder="搜尋">
