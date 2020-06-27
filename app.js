@@ -106,6 +106,7 @@ router
             ctx.session.login = true
             ctx.session.id = user._id
             ctx.session.name = googleData.name
+            ctx.session.team = user.team
             ctx.session.image = googleData.picture
             ctx.redirect("/index")
         } else {
@@ -274,6 +275,7 @@ router
     })
     .get('/api/team/storage/:id',async ctx=>{
         let [res] = await db.storage.find({"owner":{"$eq":ctx.session.team},"_id":{"$eq":ctx.params.id}})
+        console.log(res)
         await send(ctx,res.path)
     })
     .put('/api/team/storage', async ctx => {
@@ -342,6 +344,7 @@ app.use(async (ctx, next) => {
         }
     } catch (err) {
         ctx.status = err.status || 500
+        console.err(err)
         if (ctx.status != 200) {
             if (ctx.method == "GET") await ctx.render("error", { code: ctx.status, server: "Koa 2.12.0" })
         }
@@ -350,7 +353,8 @@ app.use(async (ctx, next) => {
 app.use(async (ctx, next) => {
     if (ctx.url.startsWith("/team/") || ctx.url.startsWith("/api/team/")) {
         if (!ctx.session.team) {
-            ctx.throw(403)
+            ctx.redirect("/login")
+            // ctx.throw(403)
             return
         }
     }
