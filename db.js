@@ -170,13 +170,13 @@ let reminder = {
 
 let backup = {
     new: async function (time) {
-        let model = new Models.storage({
+        let model = new Models.backup({
             time: time
         })
         return model.save()
     },
     find: async function (obj) {
-        let query = await Models.storage.find(obj)
+        let query = await Models.backup.find(obj)
         return query
     },
     modify: async function (objWhere, objUpdate) {

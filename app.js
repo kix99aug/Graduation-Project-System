@@ -421,6 +421,11 @@ router
             await db.systemSet.new(null);
         }
         let [timeset] =  await db.systemSet.find({})
+        let backUpData=await db.backup.find({})
+        let sendBackUpData=[]
+        for(i in backUpData){
+            sendBackUpData.push(backUpData[i].time)
+        }
         console.log(timeset)
         await ctx.render("admin/time", {
             title: "畢業專題交流平台",
@@ -433,6 +438,7 @@ router
             year: timeset.year ? timeset.year:"00",
             month: timeset.month ? timeset.month:"00",
             day: timeset.day ? timeset.day:"00",
+            data:sendBackUpData
         })
     })
 
@@ -1041,5 +1047,6 @@ app.listen(3000, async (e) => {
     //             db.user.modify(id_2._id,{"team":res._id})
     //             db.user.modify(id_3._id,{"team":res._id})
     //         })
+    //db.backup.new(new Data())
     console.log("Koa server run on http://localhost:3000/");
 });
