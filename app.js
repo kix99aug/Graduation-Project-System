@@ -307,7 +307,7 @@ router
     })
     .post('/api/team/newSchedule', async ctx => {
         console.log(ctx.request.body)
-        
+        let [user] = await db.user.find({"name":{"$eq":"謝豐安"}})
         ctx.body = {
             result: true,
         }
