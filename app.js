@@ -134,15 +134,25 @@ router
             let account = googleData.email.split('@')[0]
             let [user] = await db.user.find({ "account": { "$eq": account } })
             if (!user) user = await db.user.new(account, googleData.name, null, null, googleData.email, null, null, null, null,null)
-            console.log(user)
-            ctx.session.login = true
-            ctx.session.id = user._id
-            ctx.session.name = googleData.name
-            ctx.session.team = user.team
-            ctx.session.image = googleData.picture
-            ctx.session.grade = user.grade
-            ctx.session.admin = user.group
-            ctx.redirect("/index")
+            if (account === "a1065510"){
+                await db.user.modify({"_id":user._id},{"group":1})
+                console.log(user)
+                ctx.session.login = true
+                ctx.session.id = user._id
+                ctx.session.name = googleData.name
+                ctx.session.team = user.team
+                ctx.session.image = googleData.picture
+                ctx.redirect("/admin")
+            }
+            else{
+                console.log(user)
+                ctx.session.login = true
+                ctx.session.id = user._id
+                ctx.session.name = googleData.name
+                ctx.session.team = user.team
+                ctx.session.image = googleData.picture
+                ctx.redirect("/index")
+            }
         } else {
             // 回傳錯誤
             ctx.throw(400)
@@ -273,6 +283,14 @@ router
     })
 
     // apis
+    // team
+    .post('/api/profile',async ctx =>{
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        await user.update({"intro":ctx.request.body.content})
+        ctx.body = {
+            result:true,
+        }
+    })
     .get('/api/team/blackboard/all', async ctx => {
         ctx.body = {
             result: true,
@@ -411,13 +429,35 @@ router
             result: true,
         }
     })
+    
 
-    .post('/api/profile',async ctx =>{
-        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
-        await user.update({"intro":ctx.request.body.content})
+    //admin
+    .post('/api/admin/ptList',async function(ctx){
+        let ptList = await db.team.find();
         ctx.body = {
-            result:true,
+            result: ptList,
         }
+    })
+    .post('/api/admin/newTeam', async function (ctx) {
+        let [teacher] = await db.user.find({"name":{"$eq":ctx.request.body.teacher}})
+        let [leader] = await db.user.find({"account":{"$eq":ctx.request.body.members[0]}})
+        if(!teacher || !leader) ctx.body = {result: false};
+        else{
+            await db.team.new(ctx.request.body.name,109,teacher._id,leader._id,null,null,null,null,null,null,null,4,null).then(async res=>{
+                db.user.modify({"_id":teacher._id},{"team":res._id})
+                db.user.modify({"_id":leader._id},{"team":res._id})
+                for(var i = 1;i < ctx.request.body.members.length;i++){
+                    let member = await db.user.find({"account":{"$eq":ctx.request.body.members[i]}})
+                    db.user.modify({"_id":member[0]._id},{"team":res._id})
+                }
+            })
+            ctx.body = {
+                result: true
+            }
+        }
+    })
+    .get('/api/admin/editPI',async function(ctx){
+        console.log("WTF")
     })
     
 
@@ -453,7 +493,9 @@ app.use(async (ctx, next) => {
         }
     }
     if (ctx.url.startsWith("/admin/")) {
-        if (!ctx.session.admin) {
+        console.log(ctx.session.id )
+        let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
+        if (user.group != 1) {
             ctx.throw(403)
             return
         }
