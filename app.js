@@ -895,10 +895,12 @@ router
         await timeSet.update({ "year": ctx.request.body.year })
         await timeSet.update({ "month": ctx.request.body.month })
         await timeSet.update({ "day": ctx.request.body.day })
-
+    })
     .post('/api/admin/projecTimeSetting', async function (ctx) {
         await db.backup.new(Date(ctx.request.body.date))
         console.log(" 有new 了喔")
+        let lastestBack = await db.backup.find({})
+        let backupLength = (await db.backup.find({})).length
         ctx.body = {
             result: true
         }
@@ -1096,4 +1098,4 @@ app.listen(3000, async (e) => {
     //         })
     //db.backup.new(new Data())
     console.log("Koa server run on http://localhost:3000/");
-});
+})
