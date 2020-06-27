@@ -371,7 +371,7 @@ app.use(router.routes())
 
 
 app.listen(3000, async e => {
-    
+
     // let [user] = await db.user.find({"name":{"$eq":"謝豐安"}})
     // let [user2] = await db.user.find({"name":{"$eq":"李明潔"}})
     // db.user.modify({"name":user.name},{"team":user2.team})
@@ -384,6 +384,7 @@ app.listen(3000, async e => {
     // let S3 = ["a1055537","李宛萱"]
     // let TEAMNAME = "WOW!DISCO!"
 
+    //新增entity
     // db.user.new(T[0],T[1],null,2,null,null,null,T[2],null)
     // db.user.new(L[0],L[1],null,3,null,null,109,null,null)
     // db.user.new(S1[0],S1[1],null,3,null,null,109,null,null)
@@ -395,6 +396,8 @@ app.listen(3000, async e => {
     // let [id_1] = await db.user.find({"account":{"$eq":S1[0]}})
     // let [id_2] = await db.user.find({"account":{"$eq":S2[0]}})
     // //let [id_3] = await db.user.find({"account":{"$eq":S3[0]}})
+
+    
     //     db.team.new(TEAMNAME,109,id_teacher._id,id_leader._id,null,null,null,null,null,null,null,4,null).then(res=>{
     //             db.user.modify(id_teacher._id,{"team":res._id})
     //             db.user.modify(id_leader._id,{"team":res._id})

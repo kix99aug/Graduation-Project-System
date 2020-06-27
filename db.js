@@ -242,9 +242,13 @@ let systemSet = {
     },
 }
 let schedule = {
-    new:async function(time){
+    new:async function(teamId,name,year,month,day){
         let model = new Models.storage({
-            time:time
+            teamId:teamId,
+            name:name,
+            year:year,
+            month:month,
+            day:day,
         })
         return model.save()
     },

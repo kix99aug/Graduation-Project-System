@@ -65,9 +65,10 @@ const storageSchema = new Schema({
 
 const scheduleSchema = new Schema({
     name: String,
-    year:int,
-    month:int,
-    day:int,          //team._id
+    year:Number,
+    month:Number,
+    day:Number,
+    teamId:Schema.Types.ObjectId,
 })
 module.exports = {
     user: model('User', userSchema),
