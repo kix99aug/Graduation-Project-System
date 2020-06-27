@@ -16,12 +16,15 @@
           class: "projects-item",
           style: "color:#212529; font-size:20px;"
         }).html(`<input type="checkbox" class="m-2">` + ele.name + 
-        `<button type="button" class="btn btn-light btn-sm edit"><a href="/api/admin/editPI" style="color:black;text-decoration:none;"><i class="fas fa-file-signature"></i> 編輯專題團隊內容</button></a>`))
+        `<button type="button" class="btn btn-light btn-sm edit" name="` + ele._id + `"><i class="fas fa-file-signature"></i> 編輯專題團隊內容</button>`))
         
         $('form.ptList').append(div)
       })
     });
-  $
+
+  $("button.edit").click(function(e){
+    alert(e.name);
+  })
   </script>
 </head>
 
