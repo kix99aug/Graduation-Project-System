@@ -45,8 +45,8 @@ function appendChilds(teamMate) {
   div.appendChild(p1);
   p2.innerHTML = teamMate.name;
   div.appendChild(p2);
-  if (teamMate.score == null) teamMate.score = 0;
-  p3.innerHTML = teamMate.score + "分";
+  if (teamMate.score == null) p3.innerHTML = "尚未評分";
+  else p3.innerHTML = teamMate.score + "分";
   div.appendChild(p3);
   rec.appendChild(div);
 }
@@ -69,7 +69,8 @@ function appendChilds2(teamMate) {
   var p3 = document.createElement("input");
   p3.setAttribute("class", "form-control ");
   p3.setAttribute("type", "text");
-  p3.setAttribute("placeholder", "分數");
+  if(teamMate.score == null) p3.setAttribute("placeholder", "分數");
+  else p3.setAttribute("value", teamMate.score);
   p3.setAttribute("style", "width:15%");
   div.appendChild(i);
   p1.innerHTML = teamMate.account;
@@ -78,6 +79,8 @@ function appendChilds2(teamMate) {
   div.appendChild(p2);
   div.appendChild(p3);
   hiderec.appendChild(div);
+  var id = teamMate._id;
+  
 }
 
 var length;
@@ -86,7 +89,6 @@ fetch("/api/team/judge")
     return res.json();
   })
   .then((json) => {
-    console.log(json.group);
     if (json.result) {
       let ele = {};
 
@@ -95,6 +97,7 @@ fetch("/api/team/judge")
         appendChilds2(json.teamMate[i]);
 
       }
+
       if (json.group == 3) {
         var refreshbtn = document.getElementById("refreshbtn");
         refreshbtn.style.visibility = "hidden";
@@ -105,7 +108,18 @@ fetch("/api/team/judge")
 
       var push = document.getElementById("push");
       push.addEventListener("click", function () {
-        $.post(`/api/team/judge/score`, ele, (res) => console.log(ele));
+        var input = document.querySelectorAll("#hiderec input");
+        let score = {}
+        for(var i = 0; i < input.length; i++){
+            score[i] = input[i].value
+            ele[i] = score[i]
+        }
+
+        var teamMateScore = document.getElementById("teamscore");
+      
+        ele.teamscore = teamMateScore.value;
+        $.post(`/api/team/judge/score`, ele, (res) => window.location.reload());
+
       });
     }
   });
