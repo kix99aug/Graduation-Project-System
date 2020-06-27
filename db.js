@@ -191,10 +191,11 @@ let backup = {
 }
 
 let storage = {
-    new:async function(message,time){
+    new:async function(filename,path,owner){
         let model = new Models.storage({
-            message: message,
-            time:time,
+            filename: filename,
+            path:path,
+            owner:owner
         })
         return model.save()
     },
@@ -238,7 +239,31 @@ let systemSet = {
         if(err) console.error(err)
         else console.log(res)
         })
-    }
+    },
+}
+let schedule = {
+    new:async function(time){
+        let model = new Models.storage({
+            time:time
+        })
+        return model.save()
+    },
+    find:async function(obj){
+        let query = await Models.storage.find(obj)
+        return query
+    },
+    modify:async function(objWhere,objUpdate){
+        Models.schedule.update(objWhere,objUpdate,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    },
+    remove:async function(objWhere){
+        Models.systemSet.remove(objWhere,function(err,res){
+        if(err) console.error(err)
+        else console.log(res)
+        })
+    },
 }
 
 module.exports = {
@@ -250,4 +275,5 @@ module.exports = {
     reminder:reminder,
     backup:backup,
     systemSet:systemSet,
+    schedule:schedule,
 }

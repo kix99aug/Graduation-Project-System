@@ -1,9 +1,7 @@
 $(".card").each(function () {
     $(this).hover(function () {
-        console.log($(this), "in")
         $(this).find(".selection").fadeIn(100)
     }, function () {
-        console.log($(this), "out")
         $(this).find(".selection").fadeOut(100)
     })
 })
@@ -25,7 +23,7 @@ $(".content")
             $(".drop-prompt").fadeOut(100)
             for (let i = 0; i < e.originalEvent.dataTransfer.files.length; i++) {
                 let div = document.createElement('div')
-                $(div).attr("class","card")
+                $(div).attr("class", "card")
                 $(div).html(`
                     <div class="card-body d-flex">
                         <div class="d-flex w-100 h-100 justify-content-center align-items-center">
@@ -72,11 +70,15 @@ $(".content")
                             }, function () {
                                 $(this).find(".selection").fadeOut(100)
                             })
-                            $(div).find(".selection > .download").click(e=>{
-                                console.log("download "+res.id)
+                            $(div).find(".selection > .download").click(e => {
+                                var a = document.createElement('a');
+                                var filename = res.name;
+                                a.href = "/api/team/storage/" + res.id;
+                                a.download = filename;
+                                a.click();
                             })
-                            $(div).find(".selection > .delete").click(e=>{
-                                console.log("delete "+res.id)
+                            $(div).find(".selection > .delete").click(e => {
+                                console.log("delete " + res.id)
                             })
                         }
                     },

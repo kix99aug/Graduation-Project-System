@@ -63,6 +63,12 @@ const storageSchema = new Schema({
     owner:Schema.Types.ObjectId,          //team._id
 })
 
+const scheduleSchema = new Schema({
+    name: String,
+    year:int,
+    month:int,
+    day:int,          //team._id
+})
 module.exports = {
     user: model('User', userSchema),
     comment: model('Comment', commentSchema),
@@ -72,4 +78,5 @@ module.exports = {
     storage: model('Storage', storageSchema),
     backups: model('Backup', backupSchema),
     systemSet: model('systemSet', systemSetSchema),
+    schedule: model('schedule', scheduleSchema),
 }

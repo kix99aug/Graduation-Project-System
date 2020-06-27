@@ -3,6 +3,7 @@ const crypto = require("crypto")
 const fetch = require("node-fetch")
 const views = require("koa-views")
 const serve = require("koa-static")
+const send = require('koa-send');
 const mount = require("koa-mount")
 const session = require("koa-session")
 const bodyParser = require('koa-body')({
@@ -22,15 +23,12 @@ const { createContext } = require("vm")
 const client_id = "712826989675-rs5ej0evsmp78hsphju6sudhhn3pb38s.apps.googleusercontent.com"
 const client_secret = "zlT87D-MtpTF5ltC3w5k2hKN"
 
-
-
 let notes = {
     1: { x: .1, y: .1, content: "123" },
     2: { x: .2, y: .2, content: "123" },
     3: { x: .3, y: .3, content: "123" },
     4: { x: .4, y: .4, content: "123" },
 }
-
 
 router
     .get('/', async ctx => {
@@ -109,10 +107,9 @@ router
             console.log(user)
             ctx.session.login = true
             ctx.session.id = user._id
-            console.log(ctx.session.id)
             ctx.session.name = googleData.name
-            ctx.session.image = googleData.picture
             ctx.session.team = user.team
+            ctx.session.image = googleData.picture
             ctx.redirect("/index")
         } else {
             // 回傳錯誤
@@ -240,25 +237,25 @@ router
     })
 
     // apis
-    .get('/api/team/blackboard/all', async ctx => {
+    .get('/api/blackboard/all', async ctx => {
         ctx.body = {
             result: true,
             data: notes
         }
     })
-    .get('/api/team/blackboard/remove/:id', async ctx => {
+    .get('/api/blackboard/remove/:id', async ctx => {
         delete notes[ctx.params.id]
         ctx.body = {
             result: true
         }
     })
-    .post('/api/team/blackboard/modify/:id', async ctx => {
+    .post('/api/blackboard/modify/:id', async ctx => {
         notes[ctx.params.id] = ctx.request.body
         ctx.body = {
             result: true
         }
     })
-    .post('/api/team/blackboard/new', async ctx => {
+    .post('/api/blackboard/new', async ctx => {
         let newKey = parseInt(Math.random() * Number.MAX_SAFE_INTEGER)
         notes[newKey] = ctx.request.body
         ctx.body = {
@@ -266,25 +263,33 @@ router
             id: newKey
         }
     })
-    .post('/api/team/storage/list', async ctx => {
-        let res = await db.storage.new(ctx.request.files.file.name, ctx.request.files.file.path)
+    .post('/api/storage/list', async ctx => {
+        let res = await db.storage.new(ctx.request.files.file.name,ctx.request.files.file.path)
         ctx.body = {
             result: true,
-            id: res._id,
-            name: ctx.request.files.file.name
+            id:res._id,
+            name:ctx.request.files.file.name
         }
+    })
+    .get('/api/team/storage',async ctx=>{
+        let res = await db.storage.find({"owner":{"$eq":ctx.session.team}})
+        let ans = res.map(x=>Object({id:x._id,filename:x.filename}))
+        ctx.body = ans
+    })
+    .get('/api/team/storage/:id',async ctx=>{
+        let [res] = await db.storage.find({"owner":{"$eq":ctx.session.team},"_id":{"$eq":ctx.params.id}})
+        console.log(res)
+        await send(ctx,res.path)
     })
     .put('/api/team/storage', async ctx => {
-        console.log(ctx.request.files.file.name)
-        console.log(ctx.request.files.file.path)
-        let res = await db.storage.new(ctx.request.files.file.name, ctx.request.files.file.path)
+        let res = await db.storage.new(ctx.request.files.file.name, ctx.request.files.file.path,ctx.session.team)
         ctx.body = {
             result: true,
-            id: res._id,
-            name: ctx.request.files.file.name
+            id:res._id,
+            name:ctx.request.files.file.name
         }
     })
-    .get("/api/team/conference/myname", async (ctx) => {
+    .get("/api/conference/myname", async (ctx) => {
         ctx.body = {
             result: true,
             id: ctx.session.id
@@ -306,7 +311,20 @@ router
         }
         console.log(ctx)
     })
+    .post('/api/team/AllSchedule', async ctx => {
+        console.log(ctx.request.body)
+        ctx.body = {
+            result: true,
+        }
+    })
     .post('/api/team/newSchedule', async ctx => {
+        console.log(ctx.request.body)
+        
+        ctx.body = {
+            result: true,
+        }
+    })
+    .post('/api/team/deleteSchedule', async ctx => {
         console.log(ctx.request.body)
         ctx.body = {
             result: true,
@@ -338,34 +356,37 @@ app.use(async (ctx, next) => {
         }
     } catch (err) {
         ctx.status = err.status || 500
+        console.err(err)
         if (ctx.status != 200) {
             if (ctx.method == "GET") await ctx.render("error", { code: ctx.status, server: "Koa 2.12.0" })
         }
     }
 })
-// app.use(async (ctx, next) => {
-//     if (ctx.url.startsWith("/team/") || ctx.url.startsWith("/api/team/")) {
-//         if (!ctx.session.team) {
-//             ctx.throw(403)
-//             return
-//         }
-//     }
-//    /* if (ctx.url.startsWith("/admin/")) {
-//         if (!ctx.session.admin) {
-//             ctx.throw(403)
-//             return
-//         }
-//     }*/
-//     await next()
-// })
+app.use(async (ctx, next) => {
+    if (ctx.url.startsWith("/team/") || ctx.url.startsWith("/api/team/")) {
+        if (!ctx.session.team) {
+            ctx.redirect("/login")
+            // ctx.throw(403)
+            return
+        }
+    }
+    if (ctx.url.startsWith("/admin/")) {
+        if (!ctx.session.admin) {
+            ctx.throw(403)
+            return
+        }
+    }
+    await next()
+})
 app.use(bodyParser)
 app.use(router.routes())
 
-app.listen(3000, async e => {
 
-    let [user] = await db.user.find({"name":{"$eq":"潘彥霖"}})
-    let [user2] = await db.user.find({"name":{"$eq":"李明潔"}})
-    db.user.modify({"name":user.name},{"team":user2.team})
+app.listen(3000, async e => {
+    
+    // let [user] = await db.user.find({"name":{"$eq":"謝豐安"}})
+    // let [user2] = await db.user.find({"name":{"$eq":"李明潔"}})
+    // db.user.modify({"name":user.name},{"team":user2.team})
 
 
     // let T = ["brchang","張保榮","http://www.csie.nuk.edu.tw/~brchang/"]
@@ -381,18 +402,17 @@ app.listen(3000, async e => {
     // db.user.new(S2[0],S2[1],null,3,null,null,109,null,null)
     // db.user.new(S3[0],S3[1],null,3,null,null,109,null,null)
 
-    // let [teacher] = await db.user.find({"account":{"$eq":T[0]}})
-    // let [leader] = await db.user.find({"account":{"$eq":L[0]}})
-    // let [member_1] = await db.user.find({"account":{"$eq":S1[0]}})
-    // let [member_2] = await db.user.find({"account":{"$eq":S2[0]}})
-    // let [member_3] = await db.user.find({"account":{"$eq":S3[0]}})
-
+    // let [id_teacher] = await db.user.find({"account":{"$eq":T[0]}})
+    // let [id_leader] = await db.user.find({"account":{"$eq":L[0]}})
+    // let [id_1] = await db.user.find({"account":{"$eq":S1[0]}})
+    // let [id_2] = await db.user.find({"account":{"$eq":S2[0]}})
+    // //let [id_3] = await db.user.find({"account":{"$eq":S3[0]}})
     //     db.team.new(TEAMNAME,109,id_teacher._id,id_leader._id,null,null,null,null,null,null,null,4,null).then(res=>{
-    //             db.user.modify({"_id":teacher._id},{"team":res._id})
-    //             db.user.modify({"_id":leader._id},{"team":res._id})
-    //             db.user.modify({"_id":member_1._id},{"team":res._id})
-    //             db.user.modify({"_id":member_2._id},{"team":res._id})
-    //             db.user.modify({"_id":member_3._id},{"team":res._id})
+    //             db.user.modify(id_teacher._id,{"team":res._id})
+    //             db.user.modify(id_leader._id,{"team":res._id})
+    //             db.user.modify(id_1._id,{"team":res._id})
+    //             db.user.modify(id_2._id,{"team":res._id})
+    //             db.user.modify(id_3._id,{"team":res._id})
     //         })
     console.log("Koa server run on http://localhost:3000/")
 })
