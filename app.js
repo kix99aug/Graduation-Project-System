@@ -88,11 +88,8 @@ router
     .get('/project/:id', async ctx => {
         //切出team id
         url=ctx.request.url
-        start=url.lastIndexOf("ject/")
-        projectID=ctx.request.url.substring(start+5,url.length)
-        console.log(projectID)
-        let [projectContext] = await db.team.find({"_id":{"$eq":projectID}})
-        let member=await db.user.find({"team":{"$eq":projectID}})
+        let [projectContext] = await db.team.find({"_id":{"$eq":ctx.params.id}})
+        let member=await db.user.find({"team":{"$eq":ctx.params.id}})
         let memberAccount=[] //學生的學號
         let teachName=""//
         for(i in member){
@@ -137,7 +134,7 @@ router
             let account = googleData.email.split('@')[0]
             let [user] = await db.user.find({ "account": { "$eq": account } })
             if (!user) user = await db.user.new(account, googleData.name, null, null, googleData.email, null, null, null, null,null)
-            if (account === "a1065510"){
+            if (account === "a1065523"){
                 await db.user.modify({"_id":user._id},{"group":1})
                 console.log(user)
                 ctx.session.login = true
@@ -259,7 +256,7 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
-    .get('/admin/accountM', async ctx => {
+    .get('/admin/users', async ctx => {
         await ctx.render("admin/accountManagement", {
             title: "畢業專題交流平台",
             subtitle: "管理使用者",
@@ -267,12 +264,25 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
-    .get('/admin/editAC', async ctx => {
+    .get('/admin/user/edit/:id', async ctx => {
+        let [user] = await db.user.find({_id:{"$eq":ctx.params.id}})
         await ctx.render("admin/editingAccount", {
             title: "畢業專題交流平台",
             subtitle: "管理使用者",
             name: ctx.session.name ? ctx.session.name : "訪客",
-            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            user:user
+        })
+    })
+    .post('/admin/user/edit/:id', async ctx => {
+        let [user] = await db.user.find({_id:{"$eq":ctx.params.id}})
+        await user.update(ctx.request.body)
+        await ctx.render("admin/editingAccount", {
+            title: "畢業專題交流平台",
+            subtitle: "管理使用者",
+            name: ctx.session.name ? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            user:ctx.request.body
         })
     })
     .get('/admin/timeSetting', async ctx => {
@@ -462,7 +472,10 @@ router
     .get('/api/admin/editPI',async function(ctx){
         console.log("WTF")
     })
-    
+    .get('/api/admin/users',async function(ctx){
+        let users = await db.user.find({},"account name")
+        ctx.body = users
+    })
 
 
 
@@ -498,7 +511,7 @@ app.use(async (ctx, next) => {
             return
         }
     }
-    if (ctx.url.startsWith("/admin/")) {
+    if (ctx.url.startsWith("/admin/") || ctx.url.startsWith("/api/admin/")) {
         console.log(ctx.session.id )
         let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
         if (user.group != 1) {
