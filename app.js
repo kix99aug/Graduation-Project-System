@@ -634,6 +634,7 @@ router
             await user1.update({score:ctx.request.body[j]})
             j++
         }
+    }
     })
 
     // apis
