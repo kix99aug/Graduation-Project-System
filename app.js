@@ -279,16 +279,21 @@ router
         })
     })
     .get('/admin/timeSetting', async ctx => {
+        if((await db.systemSet.find()).length == 0){
+            console.log("有啦幹")
+            await db.systemSet.new(null);
+        }
+        let [timeset] =  await db.systemSet.find({})
+        console.log(timeset)
         await ctx.render("admin/time", {
             title: "畢業專題交流平台",
             subtitle: "系統時程設定",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             recordtime: ctx.session.recordtime ? ctx.session.recordtime : "109/06/09",
-            year: db.systemSet.year ? db.systemSet.year:"00",
-            month: db.systemSet.month ? db.systemSet.month:"00",
-            day: db.systemSet.day ? db.systemSet.day:"00",
-
+            year: timeset.year ? timeset.year:"00",
+            month: timeset.month ? timeset.month:"00",
+            day: timeset.day ? timeset.day:"00",
         })
     })
 
@@ -334,7 +339,7 @@ router
     })
     .get('/api/team/storage/:id', async ctx => {
         let [res] = await db.storage.find({ "owner": { "$eq": ctx.session.team }, "_id": { "$eq": ctx.params.id } })
-        console.log(res)
+        //console.log(res)
         await send(ctx, res.path)
     })
     .delete('/api/team/storage/:id', async ctx => {
@@ -414,7 +419,7 @@ router
       owner: { $eq: ctx.session.team },
       _id: { $eq: ctx.params.id },
     });
-    console.log(res);
+    //console.log(res);
     await send(ctx, res.path);
   })
   .delete("/api/team/storage/:id", async (ctx) => {
@@ -514,7 +519,7 @@ router
         }
     })
     .post('/api/team/AllSchedule', async ctx => {
-        console.log(ctx.request.body)
+        //console.log(ctx.request.body)
         let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
         let eventList=await db.schedule.find({"teamId":{"$eq":user.team} })
         ctx.body = {
@@ -535,7 +540,7 @@ router
         }
     })
     .post('/api/team/deleteSchedule', async ctx => {
-        console.log(ctx.request.body)
+        //console.log(ctx.request.body)
         deleteData=ctx.request.body
         for(i in deleteData){
             await db.schedule.remove({"_id":deleteData[i]})
@@ -577,22 +582,20 @@ router
         }
     })
     .get('/api/admin/editPI',async function(ctx){
-        console.log("WTF")
     })
 
-    .post('/api/admin/timeSet',async function(ctx){
-        if(db.systemSet.find().count() == 0){
+    .post('/api/admin/backupTimeSetting',async function(ctx){
+        if((await db.systemSet.find()).length == 0){
             await db.systemSet.new(null);
         }
-        var [timeSet] = db.systemSet.find()
+        let [timeSet] = await db.systemSet.find({})
+        console.log("0000000000000000000.0000"+ctx.request.body.year)
         await timeSet.update({"year":ctx.request.body.year})
         await timeSet.update({"month":ctx.request.body.month})
         await timeSet.update({"day":ctx.request.body.day})
 
         ctx.body = {
-            year:timeSet.year,
-            month:timeSet.month,
-            day:timeSet.day,
+            result:true
         }
     })
 
@@ -638,6 +641,7 @@ app.use(async (ctx, next) => {
       // ctx.throw(403)
       return;
     }
+}
     if (ctx.url.startsWith("/admin/")) {
         console.log(ctx.session.id )
 
@@ -646,7 +650,7 @@ app.use(async (ctx, next) => {
             return
         }
     }
-    await next()
+        await next()
 })
 app.use(bodyParser)
 app.use(router.routes())
@@ -699,7 +703,8 @@ app.io.on('connection', client => {
 })
 
 app.listen(3000, async e => {
-
+    
+    //db.systemSet.new(null)
     // db.user.modify({"name":"胡勝清"},{"group":1})
     //db.user.modify({"name":"胡勝清"},{"group":3})
     // let T = ["brchang","張保榮","http://www.csie.nuk.edu.tw/~brchang/"]

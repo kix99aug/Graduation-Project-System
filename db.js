@@ -219,13 +219,13 @@ let storage = {
 
 let systemSet = {
     new:async function(time){
-        let model = new Models.storage({
+        let model = new Models.systemSet({
             time:time
         })
         return model.save()
     },
     find:async function(obj){
-        let query = await Models.storage.find(obj)
+        let query = await Models.systemSet.find(obj)
         return query
     },
     modify:async function(objWhere,objUpdate){
