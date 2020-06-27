@@ -2,7 +2,7 @@
 //   console.log(data);
 // });
 var id
-fetch("/api/conference")
+fetch("/api/team/conference/myname")
   .then((res) => {
     return res.json();
   })
@@ -12,7 +12,7 @@ fetch("/api/conference")
     }
   });
 console.log(id)
-// const socket = io(document.location.href);
+// c2t = io(document.location.href);
 // socket.on("userin", (e) => {
 //   document.querySelector("#messages").innerHTML =
 //     `

@@ -110,7 +110,7 @@ router
             console.log(ctx.session.id)
             ctx.session.name = googleData.name
             ctx.session.image = googleData.picture
-            ctx.session.team = 123
+            ctx.session.team = user.team
             ctx.redirect("/index")
         } else {
             // 回傳錯誤
@@ -339,6 +339,10 @@ app.use(bodyParser)
 app.use(router.routes())
 
 app.listen(3000, async e => {
+    // let [user] = await db.user.find({"name":{"$eq":"謝豐安"}})
+    // let [user2] = await db.user.find({"name":{"$eq":"李明潔"}})
+    // db.user.modify({"name":user.name},{"team":user2.team})
+
 
     // let T = ["brchang","張保榮","http://www.csie.nuk.edu.tw/~brchang/"]
     // let L  = ["a1055502","洪至謙"]
