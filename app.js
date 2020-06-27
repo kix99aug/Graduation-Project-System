@@ -173,7 +173,7 @@ router
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             teamMateName: ctx.session.teamMateName ? ctx.session.teamMateName : "黃翰俞",
-            guideTeacherName: ctx.session.guideTeacherName ? ctx.session.guideTeacherName : "張寶榮",
+            guideTeacherName: ctx.session.guideTeacherName ? ctx.session.guideTeacherName : "???",
         })
     })
 
@@ -299,12 +299,23 @@ router
     .post('/api/team/info',async ctx =>{
         let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
         let [team] = await db.team.find({"_id":{"$eq":user.team} })
+        let teamMate= await db.user.find({"team":{"$eq":user.team}})
         await team.update({"info":ctx.request.body.info})
         await team.update({"name":ctx.request.body.projectName})
         ctx.body = {
             result:true,
+            teamMate:teamMate,
         }
     })
+    .get('/api/team/info_2',async ctx =>{
+        let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
+        let teamMate= await db.user.find({"team":{"$eq":user.team}})
+        ctx.body = {
+            result:true,
+            teamMate:teamMate,
+        }
+    })
+
     .get('/api/team/judge',async ctx=>{
         let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
         let teamMate= await db.user.find({"team":{"$eq":user.team}})
@@ -362,6 +373,7 @@ router
             result: true,
         }
     })
+
     .post('/api/profile',async ctx =>{
         let [user] = await db.user.find({"_id":{"$eq":ctx.session.id}})
         await user.update({"intro":ctx.request.body.content})
@@ -415,10 +427,7 @@ app.use(router.routes())
 
 
 app.listen(3000, async e => {
-
-    // let [user] = await db.user.find({"name":{"$eq":"謝豐安"}})
-    // let [user2] = await db.user.find({"name":{"$eq":"李明潔"}})
-    // db.user.modify({"name":user.name},{"team":user2.team})
+    //db.user.modify({"name":"胡勝清"},{"team":"5ef4bd04fc4bd0032415b39d"})
 
 
     // let T = ["brchang","張保榮","http://www.csie.nuk.edu.tw/~brchang/"]
