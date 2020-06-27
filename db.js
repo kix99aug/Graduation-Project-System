@@ -27,6 +27,10 @@ let user = {
         })
         return model.save()
     },
+    new: async function (obj) {
+        let model = new Models.user(obj)
+        return model.save()
+    },
     find: async function (obj, col) {
         let query
         if (col) query = await Models.user.find(obj, col)
