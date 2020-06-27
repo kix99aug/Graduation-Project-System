@@ -73,15 +73,15 @@
               <div class="modal-footer">
                 <div class="container">
                   <div class="row justify-content-center">
-                    <button type="button" class="btn btn-primary rounded" id="projecTtimeSetting">設定！</button>
+                    <button type="button" class="btn btn-primary rounded" id="projecTimeSetting">設定！</button>
                     <script>
-                      var edit = document.getElementById("backupTimeSetting");
+                      var edit = document.getElementById("projecTimeSetting");
 
                       edit.addEventListener("click", editor)
                       function editor() {
                         var date = $("#dateBackup").data("date");
 
-                        $.post(`/api/admin/backupTimeSetting`, {
+                        $.post(`/api/admin/projecTtimeSetting`, {
                           "date":date.toDateString()
                         }, (res) => console.log(""));
                       }
@@ -139,15 +139,15 @@
               <div class="modal-footer">
                 <div class="container">
                   <div class="row justify-content-center">
-                    <button type="button" class="btn btn-primary rounded" id="reminderTtimeSetting">設定！</button>
+                    <button type="button" class="btn btn-primary rounded" id="reminderTimeSetting">設定！</button>
                     <script>
-                      var edit = document.getElementById("backupTimeSetting");
+                      var edit = document.getElementById("reminderTimeSetting");
 
                       edit.addEventListener("click", editor)
                       function editor() {
                         var date = $("#dateBackup").data("date");
 
-                        $.post(`/api/admin/backupTimeSetting`, {
+                        $.post(`/api/admin/reminderTimeSetting`, {
                           "date":date.toDateString()
                         }, (res) => console.log(""));
                       }
@@ -223,7 +223,6 @@
                           "date":date.toDateString()
                         }, (res) => console.log(""));
                       }
-
                     </script>
                   </div>
                 </div>

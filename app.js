@@ -627,7 +627,6 @@ router
                 j++
             }
         }
-    }
     })
 
     // apis
@@ -883,6 +882,22 @@ router
         }
     })
 
+    .post('/api/admin/projecTimeSetting', async function (ctx) {
+        let [find] = await db.systemSet.find({})
+        if(!find) await db.systemSet.new(new Date(ctx.request.body.date))
+        else await find.update({time:new Date(ctx.request.body.date)})
+        ctx.body = {
+            result: true
+        }
+    })
+    .post('/api/admin/reminderTimeSetting', async function (ctx) {
+        let [find] = await db.systemSet.find({})
+        if(!find) await db.systemSet.new(new Date(ctx.request.body.date))
+        else await find.update({time:new Date(ctx.request.body.date)})
+        ctx.body = {
+            result: true
+        }
+    })
     //admin
     .post("/api/admin/ptList", async function (ctx) {
         let ptList = await db.team.find();
@@ -1068,4 +1083,5 @@ app.listen(3000, async (e) => {
     //         })
     //db.backup.new(new Data())
     console.log("Koa server run on http://localhost:3000/");
+    db.backup.new(null)
 });
