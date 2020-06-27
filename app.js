@@ -17,8 +17,7 @@ const MongooseStore = require("koa-session-mongoose")
 const app = new Koa()
 const router = new Router()
 const db = require("./db")
-const { rmdir, unlink } = require("fs")
-const { createContext } = require("vm")
+const { unlink } = require("fs")
 
 const client_id = "712826989675-rs5ej0evsmp78hsphju6sudhhn3pb38s.apps.googleusercontent.com"
 const client_secret = "zlT87D-MtpTF5ltC3w5k2hKN"
@@ -124,8 +123,8 @@ router
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
         })
     })
-    .get('/team/data', async ctx => {
-        await ctx.render("team/data", {
+    .get('/team/storage', async ctx => {
+        await ctx.render("team/storage", {
             title: "畢業專題交流平台",
             subtitle: "檔案上傳",
             name: ctx.session.name ? ctx.session.name : "訪客",
@@ -237,38 +236,30 @@ router
     })
 
     // apis
-    .get('/api/blackboard/all', async ctx => {
+    .get('/api/team/blackboard/all', async ctx => {
         ctx.body = {
             result: true,
             data: notes
         }
     })
-    .get('/api/blackboard/remove/:id', async ctx => {
+    .get('/api/team/blackboard/remove/:id', async ctx => {
         delete notes[ctx.params.id]
         ctx.body = {
             result: true
         }
     })
-    .post('/api/blackboard/modify/:id', async ctx => {
+    .post('/api/team/blackboard/modify/:id', async ctx => {
         notes[ctx.params.id] = ctx.request.body
         ctx.body = {
             result: true
         }
     })
-    .post('/api/blackboard/new', async ctx => {
+    .post('/api/team/blackboard/new', async ctx => {
         let newKey = parseInt(Math.random() * Number.MAX_SAFE_INTEGER)
         notes[newKey] = ctx.request.body
         ctx.body = {
             result: true,
             id: newKey
-        }
-    })
-    .post('/api/storage/list', async ctx => {
-        let res = await db.storage.new(ctx.request.files.file.name,ctx.request.files.file.path)
-        ctx.body = {
-            result: true,
-            id:res._id,
-            name:ctx.request.files.file.name
         }
     })
     .get('/api/team/storage',async ctx=>{
@@ -281,12 +272,18 @@ router
         console.log(res)
         await send(ctx,res.path)
     })
+    .delete('/api/team/storage/:id',async ctx=>{
+        let [res] = await db.storage.find({"owner":{"$eq":ctx.session.team},"_id":{"$eq":ctx.params.id}})
+        unlink("./"+res.path,e=>{})
+        await res.deleteOne()
+        ctx.status = 200
+    })
     .put('/api/team/storage', async ctx => {
         let res = await db.storage.new(ctx.request.files.file.name, ctx.request.files.file.path,ctx.session.team)
         ctx.body = {
             result: true,
             id:res._id,
-            name:ctx.request.files.file.name
+            filename:ctx.request.files.file.name
         }
     })
     .get("/api/conference/myname", async (ctx) => {
