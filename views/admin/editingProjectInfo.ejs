@@ -13,11 +13,11 @@
             <div class="w-75  border rounded p-3 px-4 bg-white shadow h-100 d-flex flex-column justify-content-around">
                 <div class="overflow-auto ">
                     <div class=" d-flex flex-row">
-                        <a href="/admin/editPI" class=" mt-4 ml-5 mr-3"
+                        <a href="/admin/editPI/<%= teamId%>" class=" mt-4 ml-5 mr-3"
                           style="text-decoration:none;font-size: 1.3rem;  color: #003CFF;">
                           團隊資訊
                         </a>
-                        <a href="/admin/editPF" class=" mt-4 border-right border-left px-4"
+                        <a href="/admin/editPF/<%= teamId%>" class=" mt-4 border-right border-left px-4"
                           style="text-decoration:none;font-size: 1.3rem;color: black;">
                           專題檔案
                         </a>
@@ -35,7 +35,7 @@
                         <div class="row d-flex flex-row px-5 pb-0">
                             <i class="fas fa-arrow-right mt-2"></i>
                             <p class="px-3 mb-2" style="font-size: 24px;">專題名稱</p>
-                            <input type="text" style="width: 50%;" class="form-control">
+                            <input type="text" style="width: 50%;" class="form-control" value="<%= projectName%>">
                         </div>
                         <div class="col px-5 pb-0">
                             <div class="row py-1">
@@ -44,9 +44,13 @@
                             </div>
                             <div class="col " id="member">
                                 <div class="row mb-2 px-3">
-                                    <input type="text" style="width: 50%;" class="form-control ">
+                                    <input type="text" style="width: 50%;" placeholder="隊長學號" class="form-control" value="<%= leaderAccount%>">
                                 </div>
-
+                                <% for(var i=0;i<memberAccount.length;i++) {%>
+                                    <div class="row mb-2 px-3 mem">
+                                        <input type="text" style="width: 50%;" placeholder="成員學號" class="form-control " value="<%= memberAccount[i].account%>">
+                                    </div>
+                                <% } %>
                             </div>
                             <script src="/static/script/editingProjectInfo.js"></script>
                         </div>
@@ -57,7 +61,7 @@
                             </div>
                             <div class="col">
                                 <div class="row px-3 pb-2">
-                                    <input type="text" style="width: 50%;" class="form-control">
+                                    <input type="text" style="width: 50%;" class="form-control" value="<%= teacherName%>">
                                 </div>
 
                             </div>
@@ -69,7 +73,7 @@
                                 <p class="px-3 mb-2" style="font-size: 24px;">簡介</p>
                             </div>
                             <div class="row" style="padding-left:30px;">
-                                <textarea name="" id="" cols="50" rows="4" class="form-control w-75"></textarea>
+                                <textarea name="" id="" cols="50" rows="4" class="form-control w-75"><%= projectInfo%></textarea>
                                 <button class="btn btn-primary  ml-auto mr-0 h-25 mb-0 mt-auto">更新！</button>
 
                             </div>
