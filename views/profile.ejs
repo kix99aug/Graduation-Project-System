@@ -4,20 +4,22 @@
 <head>
     <%- include('header') -%>
     <style>
-        .list-row::before{
+        .list-row::before {
             content: url("/static/images/Polygon 5.png");
         }
-        .list-row::after{
+
+        .list-row::after {
             content: url("/static/images/Polygon 4.png");
         }
-        .post-row::before{
+
+        .post-row::before {
             content: url("/static/images/Polygon 5.png");
             margin-right: 0.5em;
         }
     </style>
 </head>
 
-<body >
+<body>
     <%- include('nav') -%>
     <div class="container">
         <div class="row">
@@ -38,8 +40,13 @@
         </div>
         <div class="row">
             <div class="col m-5">
+                <div class="row">
                     <h3 class="row post-row">個人簡介：</h3>
-                    <p><%= introduction %></p>
+                    <img src="/static/images/edit (1).png" alt="" class="pb-3 ml-4" id="edit">
+                </div>
+                <div class="form-group " >
+                    <textarea disabled  class="form-control" id="textarea" rows="5" ><%= introduction %></textarea>
+                </div>
             </div>
         </div>
     </div>
