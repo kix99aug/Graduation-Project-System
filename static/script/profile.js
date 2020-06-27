@@ -10,5 +10,6 @@ function editor() {
     let ele = {};
     ele.content = text;
     $.post(`/api/profile`, ele, (res) => console.log(ele));
+    textarea.disabled = true
   }
 }
