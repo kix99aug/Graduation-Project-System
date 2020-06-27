@@ -55,7 +55,7 @@ let comment = {
         return model.save()
     },
     find:async function(obj){
-        let query = await Models.storage.find(obj)
+        let query = await Models.comment.find(obj)
         return query
     },
     modify:async function(objWhere,objUpdate){
@@ -74,7 +74,7 @@ let comment = {
 
 let message = {
     new:async function(type,text,image,sender,time){
-        let model = new Models.comment({
+        let model = new Models.message({
             type:type,
             text:text,
             image:image,
@@ -84,7 +84,7 @@ let message = {
         return model.save()
     },
     find:async function(obj){
-        let query = await Models.storage.find(obj)
+        let query = await Models.message.find(obj)
         return query
     },
     modify:async function(objWhere,objUpdate){
@@ -140,7 +140,7 @@ let team = {
 
 let reminder = {
     new:async function(filename,path,owner){
-        let model = new Models.storage({
+        let model = new Models.reminder({
             filename: filename,
             path:path,
             owner:owner
@@ -148,7 +148,7 @@ let reminder = {
         return model.save()
     },
     find:async function(obj){
-        let query = await Models.storage.find(obj)
+        let query = await Models.reminder.find(obj)
         return query
     },
     modify:async function(objWhere,objUpdate){
@@ -243,7 +243,7 @@ let systemSet = {
 }
 let schedule = {
     new:async function(teamId,name,year,month,day){
-        let model = new Models.storage({
+        let model = new Models.schedule({
             teamId:teamId,
             name:name,
             year:year,
@@ -253,7 +253,7 @@ let schedule = {
         return model.save()
     },
     find:async function(obj){
-        let query = await Models.storage.find(obj)
+        let query = await Models.schedule.find(obj)
         return query
     },
     modify:async function(objWhere,objUpdate){
@@ -263,7 +263,7 @@ let schedule = {
         })
     },
     remove:async function(objWhere){
-        Models.systemSet.remove(objWhere,function(err,res){
+        Models.schedule.remove(objWhere,function(err,res){
         if(err) console.error(err)
         else console.log(res)
         })
