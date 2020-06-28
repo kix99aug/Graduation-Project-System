@@ -26,17 +26,30 @@
             <div class="col d-flex align-items-center h-100 justify-content-center">
                 <img class="profileicon rounded-circle border border-dark" src="<%= image %>">
             </div>
-            <div class="col d-flex flex-column align-items-left justify-content-around">
-                <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
-                    姓名：<span class=""><%= name %></span>同學
-                </h3>
-                <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
-                    系級：<span><%= grade %></span>級
-                </h3>
-                <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
-                    指導教授：<span><%= professor %> </span>教授
-                </h3>
-            </div>
+            <% if(group==3){ %>
+                <div class="col d-flex flex-column align-items-left justify-content-around">
+                    <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                        姓名：<span class=""><%= name %></span>同學
+                    </h3>
+                    <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                        系級：<span><%= grade %></span>級
+                    </h3>
+                    <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                        指導教授：<span><%= professor %> </span>教授
+                    </h3>
+                </div>
+            <%}%>
+            <% if(group==2){ %>
+                <div class="col d-flex flex-column align-items-left justify-content-around">
+                    <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                        姓名：<span class=""><%= name %></span>教授
+                    </h3>
+                    <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                        個人網站:<div class=""  onclick="javascript:window.location.href='<%= link %>'">點此前往 </div>
+                        
+                    </h3>
+                </div>
+            <%}%>
         </div>
         <div class="row">
             <div class="col p-0 mt-5">

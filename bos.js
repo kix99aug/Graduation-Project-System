@@ -30,7 +30,8 @@ router
         let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
         let [team] = await db.team.find({ "_id": { "$eq": user.team } })
         let [professor] = await db.user.find({ "_id": { "$eq": team.teacher } })
-
+        //學生的profile
+        console.log(user)
         await ctx.render("profile", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
@@ -38,8 +39,13 @@ router
             grade: "避不了業",
             professor: "沒人要你",
             introduction: user.intro ? user.intro : "親~請輸入您的簡介歐~~~",
-            canFix: true
-        })
+            canFix: true,
+            group:user.group,
+            link:user.link,
+        })            
+        
+        
+
     })
     .get('/profile/:id', async ctx => {
         let [user] = await db.user.find({ "_id": { "$eq": ctx.params.id } })
