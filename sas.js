@@ -251,8 +251,11 @@ router
     })
 
     .post('/api/admin/reminderTimeSetting', async function (ctx) {
-        await db.reminder.new("",new Date(ctx.request.body.date))
-        console.log(' 有new 了喔')
+        let date = new Date(ctx.request.body.date)
+        let message = "導師繳交期限於 " + date.getFullYear() + " 年 " 
+                    + (date.getMonth()+1) + " 月 " 
+                    + date.getDate() + " 日 ! <br>記得繳交喔~";
+        await db.reminder.new(message,new Date(ctx.request.body.date))
         ctx.body = {
             result: true
         }
