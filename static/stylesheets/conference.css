@@ -6,6 +6,9 @@ div#messages {
   box-shadow: 0px 0px 10px rgba(0,0,0,0.35);
   border-radius:  1rem;
   overflow-y: auto;
+  background-color: white;
+  background-image: url(/static/images/unnamed.gif);
+  background-size: cover;
 }
 
 .messageicon {

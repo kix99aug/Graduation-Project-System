@@ -22,9 +22,6 @@ class EventInfo{
     }
 }
 getAllEvent()
-addEvent("希望",1,2,2,'QQ111')
-
-
 
 //使用者加入事件
 function addEvent(name,year,month,day,id){

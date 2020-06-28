@@ -1,11 +1,10 @@
-const socketIO = require("socket.io")
 const nodemailer = require('nodemailer');
 const path = require("path")
 const views = require("koa-views")
 const serve = require("koa-static")
 const mount = require("koa-mount")
 const session = require("koa-session")
-const bodyParser = require("koa-body")
+const body = require("koa-body")
 const http = require("http")
 const koa = new (require("koa"))()
 const bos = require("./bos")
@@ -62,11 +61,7 @@ koa.use(async (ctx, next) => {
     await next()
 })
 
-koa.use(bodyParser({
-    formidable: { uploadDir: "./uploads" }, //This is where the files would come
-    multipart: true,
-    urlencoded: true,
-}))
+koa.use(body({ formidable: { uploadDir: "./uploads" }, multipart: true, urlencoded: true, }))
 
 koa.use(bos.routes)
 
@@ -74,54 +69,55 @@ koa.use(pms.routes)
 
 koa.use(sas.routes)
 
-const server = http.createServer(koa.callback())
+koa.server = http.createServer(koa.callback())
 
-pms.io(server,koa)
+koa.http = http
 
-server.listen(3000, async (e) => {
-    // var today = new Date();
-    // var notify = new Date();
-    // notify = await db.reminder.find({})
-    // console.log(notify[0].message)
-    // var mailTransport = nodemailer.createTransport('SMTP', {
-    //     service: 'Gmail',
-    //     auth: {
-    //       user: credentials.gmail.user,
-    //       pass: credentials.gmail.pass,
-    //     },
-    // });
-    // for(var i = 0;i<notify.length;i++){
+pms.io(koa)
 
-    // }
-    //   db.user.modify({"name":"潘彥霖"},{"group":1})
-    //db.user.modify({"name":"胡勝清"},{"group":3})
-    // let T = ["brchang","張保榮","http://www.csie.nuk.edu.tw/~brchang/"]
-    // let L  = ["a1055502","洪至謙"]
-    // let S1 = ["a1053340","張丞賢"]
-    // let S2 = ["a1055510","黃冠淇"]
-    // let S3 = ["a1055537","李宛萱"]
-    // let TEAMNAME = "WOW!DISCO!"
+koa.server.listen(3000, async (e) => {
+    if (e) console.error(e)
+    else console.log("Koa server run on http://localhost:3000/")
+    if(await db.reminder.find({}) === undefined);
+    else{
+        var today = new Date();
+        var notify = new Date();
+        var email_arr = []
+        var remind = await db.reminder.find({})
+        notify = remind[remind.length-1].time;
+        let message = remind[remind.length-1].message;
+        let emails = await db.user.find({"group":{$eq:2}}) //teachers
+        for(var i =0;i<emails.length-6;i++){
+            console.log(emails[i].email)
+            email_arr.push(emails[i].email);
+        }
+        var smtpTransport = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false, // true for 465, false for other ports
+            auth: {
+                user: credentials.gmail.user, // generated gmail user
+                pass: credentials.gmail.pass // generated gmail account password
+            }
+        });
+        if(today.getFullYear() === notify.getFullYear() &&
+            (today.getMonth()+1) === (notify.getMonth()+1) &&
+            today.getDate() === notify.getDate()){
+            let mailOptions = { 
+                from: "a1065510@mail.nuk.edu.tw", // sender address 
+                subject: "導師文件繳交期限提醒", // Subject line 
+                html: message+"test for 軟工", // plaintext body 
+                to: email_arr[1]
+            } 
 
-    //新增entity
-    // db.user.new(T[0],T[1],null,2,null,null,null,T[2],null)
-    // db.user.new(L[0],L[1],null,3,null,null,109,null,null)
-    // db.user.new(S1[0],S1[1],null,3,null,null,109,null,null)
-    // db.user.new(S2[0],S2[1],null,3,null,null,109,null,null)
-    // db.user.new(S3[0],S3[1],null,3,null,null,109,null,null)
-
-    // let [id_teacher] = await db.user.find({"account":{"$eq":T[0]}})
-    // let [id_leader] = await db.user.find({"account":{"$eq":L[0]}})
-    // let [id_1] = await db.user.find({"account":{"$eq":S1[0]}})
-    // let [id_2] = await db.user.find({"account":{"$eq":S2[0]}})
-    // //let [id_3] = await db.user.find({"account":{"$eq":S3[0]}})
-
-    //     db.team.new(TEAMNAME,109,id_teacher._id,id_leader._id,null,null,null,null,null,null,null,4,null).then(res=>{
-    //             db.user.modify(id_teacher._id,{"team":res._id})
-    //             db.user.modify(id_leader._id,{"team":res._id})
-    //             db.user.modify(id_1._id,{"team":res._id})
-    //             db.user.modify(id_2._id,{"team":res._id})
-    //             db.user.modify(id_3._id,{"team":res._id})
-    //         })
-    //db.backup.new(new Data())
+            // send mail with defined transport object 
+            smtpTransport.sendMail(mailOptions, (error, info)=>{ 
+                if (error) { 
+                 return console.log(error); 
+                } 
+                console.log('Message %s sent: %s', info.messageId, info.response); 
+            }); 
+        }
+    }
     console.log("Koa server run on http://localhost:3000/")
 })
