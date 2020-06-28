@@ -418,14 +418,14 @@ router
         });
     })
     .get('/admin/timeSetting', async ctx => {
-        if ((await db.systemSet.find()).length == 0) {
+        if((await db.systemSet.find()).length == 0){
             console.log("有啦幹")
             await db.systemSet.new(null);
         }
-        let [timeset] = await db.systemSet.find({})
-        let backUpData = await db.backup.find({})
-        let sendBackUpData = []
-        for (i in backUpData) {
+        let [timeset] =  await db.systemSet.find({})
+        let backUpData=await db.backup.find({})
+        let sendBackUpData=[]
+        for(i in backUpData){
             sendBackUpData.push(backUpData[i].time)
         }
         console.log(timeset)
@@ -437,13 +437,12 @@ router
                 ? ctx.session.image
                 : "/static/images/favicon_sad.png",
             recordtime: ctx.session.recordtime ? ctx.session.recordtime : "109/06/09",
-            year: timeset.year ? timeset.year : "00",
-            month: timeset.month ? timeset.month : "00",
-            day: timeset.day ? timeset.day : "00",
-            data: sendBackUpData
+            year: timeset.year ? timeset.year:"00",
+            month: timeset.month ? timeset.month:"00",
+            day: timeset.day ? timeset.day:"00",
+            data:sendBackUpData
         })
     })
-
     // apis
     // team
     .post('/api/profile', async ctx => {
@@ -896,7 +895,19 @@ router
         await timeSet.update({ "year": ctx.request.body.year })
         await timeSet.update({ "month": ctx.request.body.month })
         await timeSet.update({ "day": ctx.request.body.day })
-
+    })
+    .post('/api/admin/projecTimeSetting', async function (ctx) {
+        await db.backup.new(Date(ctx.request.body.date))
+        console.log(" 有new 了喔")
+        let lastestBack = await db.backup.find({})
+        let backupLength = (await db.backup.find({})).length
+        ctx.body = {
+            result: true
+        }
+    })
+    .post('/api/admin/reminderTimeSetting', async function (ctx) {
+        await db.reminder.new(new Date(ctx.request.body.date))
+        console.log(" 有new 了喔")
         ctx.body = {
             result: true
         }
@@ -949,8 +960,38 @@ router
             };
         }
     })
-    .get("/api/admin/editPI", async function (ctx) {
-        console.log("WTF");
+    .post("/api/admin/editPI/:id", async function (ctx) {
+        let members = await db.user.find({team:{$eq:ctx.params.id},group:{$eq:3}})
+        let userToDelete = []
+        console.log(ctx.request.body.mas)
+        members.forEach(ele=>{
+            if(ctx.request.body.mas.indexOf(ele.account)==-1) userToDelete.push(ele)
+        })
+        for(let i=0;i<userToDelete.length;i++){
+            await userToDelete[i].update({team:null})
+        }
+        for(let i=0;i<ctx.request.body.mas.length;i++){
+            await db.user.modify({account:{$eq:ctx.request.body.mas[i]}},{team:ctx.params.id})
+        }
+        let [team] = await db.team.find({ "_id": { "$eq": ctx.params.id } })
+        let [leader] = await db.user.find({ "_id": { "$eq": team.leader } })
+        let [teacher] = await db.user.find({ "_id": { "$eq": team.teacher } })
+        await team.update({"name":ctx.request.body.pN,"info":ctx.request.body.pI,"leader":leader._id,teacher:teacher._id})
+        ctx.body = {
+            result:true
+        }
+    })
+    .delete("/api/admin/editPI/:id", async (ctx) => {
+        let [res] = await db.user.find({
+                account: { $eq: ctx.params.id },
+            });
+        console.log(res)
+        // let [res] = await db.user.find({
+        //     _id: { $eq: ctx.params.id },
+        // });
+        // unlink("./" + res.path, (e) => { });
+        // await res.deleteOne();
+        // ctx.status = 200;
     })
 
     .post("/api/profile", async (ctx) => {
@@ -1087,4 +1128,4 @@ app.listen(3000, async (e) => {
     //         })
     //db.backup.new(new Data())
     console.log("Koa server run on http://localhost:3000/");
-});
+})
