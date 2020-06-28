@@ -65,9 +65,9 @@ $(function () {
     ele.teamid = teamid;
     ele.sender = id;
     ele.time = new Date().toLocaleString();
-    ele.text = m.message;
+    ele.content = m.message;
     console.log(ele);
-    $.post(`/api/team/conference/text`, ele, (res) => console.log(ele));
+    $.post(`/api/team/conference/content`, ele, (res) => console.log(ele));
   });
 
   let handleEnter = (event) => {

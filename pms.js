@@ -80,12 +80,12 @@ router
             teamid:ctx.session.team?ctx.session.team:"null"
         })
     })
-    .post('/api/team/conference/text' , async ctx =>{
+    .post('/api/team/conference/content' , async ctx =>{
         let res = await db.conference.new(
             ctx.request.body.teamid,
             ctx.request.body.sender,
             ctx.request.body.time,
-            ctx.request.body.text,
+            ctx.request.body.content,
         );
         ctx.body = {
             result: true,

@@ -278,12 +278,12 @@ let schedule = {
     },
 }
 let conference = {
-    new: async function (teamId, text, image, sender, time) {
+    new: async function (content, sender, time, teamId) {
         let model = new Models.conference({
-            teamId: teamId,
-            text: text,
+            content: content,
             sender: sender,
             time: time,
+            teamId: teamId
         })
         return model.save()
     },
@@ -305,6 +305,7 @@ let conference = {
     }
 }
 
+
 module.exports = {
     user: user,
     team: team,
@@ -315,4 +316,5 @@ module.exports = {
     backup: backup,
     systemSet: systemSet,
     schedule: schedule,
+    conference:conference,
 }
