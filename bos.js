@@ -37,14 +37,14 @@ router
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             grade: "避不了業",
-            professor: "沒人要你",
+            professor: professor.name ? professor.name : "???",
             introduction: user.intro ? user.intro : "親~請輸入您的簡介歐~~~",
             canFix: true,
             group:user.group,
             link:user.link,
-        })            
-        
-        
+            gender: user.gender ? user.gender : "未知",
+        })
+
 
     })
     .get('/profile/:id', async ctx => {
