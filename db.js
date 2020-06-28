@@ -13,6 +13,10 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 let user = {
     new: async function (account, name, avatar, group, email, team, grade, link, score, intro) {
+        if (typeof account !== "string") {
+            let model = new Models.user(obj)
+            return model.save()
+        }
         let model = new Models.user({
             account: account,
             name: name,
@@ -48,12 +52,12 @@ let user = {
 }
 
 let comment = {
-    new:async function(content,sender,time,teamId){
+    new: async function (content, sender, time, teamId) {
         let model = new Models.comment({
-            content:content,
-            sender:sender,
-            time:time,
-            teamId:teamId
+            content: content,
+            sender: sender,
+            time: time,
+            teamId: teamId
         })
         return model.save()
     },
@@ -142,11 +146,10 @@ let team = {
 }
 
 let reminder = {
-    new: async function (filename, path, owner) {
+    new: async function (message,time) {
         let model = new Models.reminder({
-            filename: filename,
-            path: path,
-            owner: owner
+            message: message,
+            time:time,
         })
         return model.save()
     },
@@ -202,8 +205,10 @@ let storage = {
         })
         return model.save()
     },
-    find: async function (obj) {
-        let query = await Models.storage.find(obj)
+    find: async function (obj, col) {
+        let query
+        if (col) query = await Models.storage.find(obj, col)
+        else query = await Models.storage.find(obj)
         return query
     },
     modify: async function (objWhere, objUpdate) {
@@ -221,13 +226,13 @@ let storage = {
 }
 
 let systemSet = {
-    new:async function(time){
+    new: async function (time) {
         let model = new Models.systemSet({
-            time:time
+            time: time
         })
         return model.save()
     },
-    find:async function(obj){
+    find: async function (obj) {
         let query = await Models.systemSet.find(obj)
         return query
     },

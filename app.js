@@ -305,23 +305,25 @@ router
         })
     })
     .get('/admin/editPF/:id', async ctx => {
-        console.log("ctx.params.id")
-        var filesName = []
-        let [team] = await db.team.find({ "_id": { "$eq": ctx.params.id } }) //array of storage._id
-        if (team.files != null) {
-            for (var i = 0; i < team.files.length; i++) {
-                filesName.push(await db.storage.find({ "_id": { "$eq": team.files[i] } }))
-            }
-        }
-        console.log(team.files)
+        let files = await db.storage.find({ "owner": { "$eq": ctx.params.id }},"filename") //array of storage._id
         await ctx.render("admin/editingProjectFiles", {
             title: "畢業專題交流平台",
             subtitle: "管理專題 & 團隊",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             teamId: ctx.params.id,
-            filesName: filesName
+            files: files
         })
+    })
+    
+    .delete("/api/admin/team/storage/:id", async (ctx) => {
+        let [res] = await db.storage.find({
+            _id: { $eq: ctx.params.id }
+        });
+        console.log(res)
+        unlink("./" + res.path, (e) => { });
+        await res.deleteOne();
+        ctx.status = 200;
     })
     .get('/admin/users', async ctx => {
         await ctx.render("admin/accountManagement", {
@@ -416,11 +418,16 @@ router
         });
     })
     .get('/admin/timeSetting', async ctx => {
-        if ((await db.systemSet.find()).length == 0) {
+        if((await db.systemSet.find()).length == 0){
             console.log("有啦幹")
             await db.systemSet.new(null);
         }
-        let [timeset] = await db.systemSet.find({})
+        let [timeset] =  await db.systemSet.find({})
+        let backUpData=await db.backup.find({})
+        let sendBackUpData=[]
+        for(i in backUpData){
+            sendBackUpData.push(backUpData[i].time)
+        }
         console.log(timeset)
         await ctx.render("admin/time", {
             title: "畢業專題交流平台",
@@ -430,12 +437,12 @@ router
                 ? ctx.session.image
                 : "/static/images/favicon_sad.png",
             recordtime: ctx.session.recordtime ? ctx.session.recordtime : "109/06/09",
-            year: timeset.year ? timeset.year : "00",
-            month: timeset.month ? timeset.month : "00",
-            day: timeset.day ? timeset.day : "00",
+            year: timeset.year ? timeset.year:"00",
+            month: timeset.month ? timeset.month:"00",
+            day: timeset.day ? timeset.day:"00",
+            data:sendBackUpData
         })
     })
-
     // apis
     // team
     .post('/api/profile', async ctx => {
@@ -806,6 +813,19 @@ router
     })
 
     //admin
+
+    .put("/api/admin/user", async (ctx) => {
+        let res = await db.user.new(
+            ctx.request.body
+        );
+        ctx.body = {
+            result: true,
+            id: res._id,
+        };
+    })
+
+
+
     .post('/api/admin/ptList', async function (ctx) {
         let ptList = await db.team.find();
         ctx.body = {
@@ -838,6 +858,29 @@ router
             }
         }
     })
+    .put("/api/admin/projectTeam", async (ctx) => {
+        let res = await db.team.new(
+            ctx.request.body
+        );
+        ctx.body = {
+            result: true,
+            id: res._id,
+        };
+    })
+    .delete('/api/admin/projectTeam/:id', async function (ctx) {
+        let res = await db.team.remove({ _id: { "$eq": ctx.params.id } })
+        ctx.status = res > 0 ? 200 : 204
+        ctx.body = {
+            result: res > 0
+        }
+    })
+    .delete('/api/admin/user/:id', async function (ctx) {
+        let res = await db.user.remove({ _id: { "$eq": ctx.params.id } })
+        ctx.status = res > 0 ? 200 : 204
+        ctx.body = {
+            result: res > 0
+        }
+    })
     .get('/api/admin/users', async function (ctx) {
         let users = await db.user.find({}, "account name")
         ctx.body = users
@@ -852,7 +895,19 @@ router
         await timeSet.update({ "year": ctx.request.body.year })
         await timeSet.update({ "month": ctx.request.body.month })
         await timeSet.update({ "day": ctx.request.body.day })
-
+    })
+    .post('/api/admin/projecTimeSetting', async function (ctx) {
+        await db.backup.new(Date(ctx.request.body.date))
+        console.log(" 有new 了喔")
+        let lastestBack = await db.backup.find({})
+        let backupLength = (await db.backup.find({})).length
+        ctx.body = {
+            result: true
+        }
+    })
+    .post('/api/admin/reminderTimeSetting', async function (ctx) {
+        await db.reminder.new(new Date(ctx.request.body.date))
+        console.log(" 有new 了喔")
         ctx.body = {
             result: true
         }
@@ -1071,5 +1126,6 @@ app.listen(3000, async (e) => {
     //             db.user.modify(id_2._id,{"team":res._id})
     //             db.user.modify(id_3._id,{"team":res._id})
     //         })
+    //db.backup.new(new Data())
     console.log("Koa server run on http://localhost:3000/");
-});
+})

@@ -3,6 +3,7 @@
 
 <head>
   <%- include('../header') -%>
+  <script src="/static/script/admin/setTime.js"></script>
 </head>
 
 <body style="height: 100vh;">
@@ -48,20 +49,23 @@
                   <div class="row justify-content-center">
                     <div class='col-sm-6' style="text-align: center;">
                       <h5>日期選擇</h5>
-                      <input type="text" name="date" class="form-control datepicker" id="date">
+                      <input type="text" name="date" class="form-control datepicker" id="dateArchive">
                       </span>
                       <script>
-                        //$('.datepicker').datepicker()
                         $('.datepicker').datepicker({
-                          format: "yyyy-mm-dd",
                           autoclose: true,
+                          format: "yyyy-mm-dd",
                           startDate: "today",
                           clearBtn: true,
                           calendarWeeks: true,
                           todayHighlight: true,
-                          language: 'zh-TW'
+                          language: 'zh-TW',
+                          onSelect: (d, i) => console.log(d, i)
+                        }).on("changeDate", function (e) {
+                          $(this).data("date",e.date)
+                          console.log($(this).data("date"))
                         });
-                      </script>
+                    </script>
                     </div>
                   </div>
                 </div>
@@ -69,25 +73,19 @@
               <div class="modal-footer">
                 <div class="container">
                   <div class="row justify-content-center">
-                    <button type="button" class="btn btn-primary rounded" id="projecTtimeSetting">設定！</button>
+                    <button type="button" class="btn btn-primary rounded" id="projecTimeSetting">設定！</button>
                     <script>
-                      var edit = document.getElementById("projecTtimeSetting");
-                      var date = document.getElementById("date").innerText;
-                      date.split("-");
-                      var month = date[1];
-                      var day = date[2];
+                      var edit = document.getElementById("projecTimeSetting");
+
                       edit.addEventListener("click", editor)
                       function editor() {
-                        console.log("projecTtimeSetting有喔!")
-                        let ele = {};
-                        ele.year = date[0]
-                        ele.month = date[1]
-                        ele.day = date[2]
-                        $.post(`/api/admin/timeSet`, ele, (res) => console.log(ele));
+                        var date = $("#dateArchive").data("date");
+
+                        $.post(`/api/admin/projecTimeSetting`, {
+                          "date":date.toDateString()
+                        }, (res) => window.location.reload());
                       }
-
                     </script>
-
                   </div>
                 </div>
               </div>
@@ -116,20 +114,24 @@
                   <div class="row justify-content-center">
                     <div class='col-sm-6' style="text-align: center;">
                       <h5>日期選擇</h5>
-                      <input type="text" name="date" class="form-control datepicker">
+                      <input type="text" name="date" class="form-control datepicker" id = "reminder">
                       </span>
                       <script>
-                        //$('.datepicker').datepicker()
                         $('.datepicker').datepicker({
-                          format: "yyyy-mm-dd",
                           autoclose: true,
+                          format: "yyyy-mm-dd",
                           startDate: "today",
                           clearBtn: true,
                           calendarWeeks: true,
                           todayHighlight: true,
-                          language: 'zh-TW'
+                          language: 'zh-TW',
+                          onSelect: (d, i) => console.log(d, i)
+                        }).on("changeDate", function (e) {
+                          $(this).data("date",e.date)
+                          console.log($(this).data("date"))
                         });
-                      </script>
+
+                    </script>
                     </div>
                   </div>
                 </div>
@@ -137,24 +139,21 @@
               <div class="modal-footer">
                 <div class="container">
                   <div class="row justify-content-center">
-                    <button type="button" class="btn btn-primary rounded" id="reminderTtimeSetting">設定！</button>
+                    <button type="button" class="btn btn-primary rounded" id="reminderTimeSetting">設定！</button>
                     <script>
-                      var edit = document.getElementById("reminderTtimeSetting");
-                      var date = document.getElementById("date").innerText;
-                      date.split("-");
-                      var month = date[1];
-                      var day = date[2];
+                      var edit = document.getElementById("reminderTimeSetting");
+
                       edit.addEventListener("click", editor)
                       function editor() {
-                        console.log("reminderTtimeSetting有喔!")
-                        let ele = {};
-                        ele.year = date[0]
-                        ele.month = date[1]
-                        ele.day = date[2]
-                        $.post(`/api/admin/timeSet`, ele, (res) => console.log(ele));
+                        var date = $("#reminder").data("date");
+
+                        $.post(`/api/admin/reminderTimeSetting`, {
+                          "date":date.toDateString()
+                        }, (res) => window.location.reload());
                       }
 
                     </script>
+
                   </div>
                 </div>
               </div>
@@ -163,7 +162,7 @@
         </div>
         <div class=" d-flex flex-row mt-3 mb-3">
           <p class="ml-5 mb-0" style="font-size: 24px;">備份時程：</p>
-          <p class="ml-1 mb-0 font-weight-bold" style="font-size: 24px;"><%= year %>年<%= month %>月<%= day %>日</p>
+          <p class="ml-1 mb-0 font-weight-bold" style="font-size: 24px;" id="showBackUpTime"><%= year %>年<%= month %>月<%= day %>日</p>
           <button type="button" class="btn btn-warning ml-4" data-toggle="modal" data-target="#backup">設置</button>
         </div>
         <div class="modal fade" id="backup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
@@ -188,20 +187,7 @@
                   <div class="row justify-content-center">
                     <div class='col-sm-6' style="text-align: center;">
                       <h5>日期選擇</h5>
-                      <input type="text" id="date" name="date" class="form-control datepicker">
-                      </span>
-                      <script>
-                        $('.datepicker').datepicker({
-                          autoclose:true,
-                          format: "yyyy-mm-dd",
-                          startDate: "today",
-                          clearBtn: true,
-                          calendarWeeks: true,
-                          todayHighlight: true,
-                          language: 'zh-TW',
-                          onSelect:(d,i)=>console.log(d,i)
-                        });
-                      </script>
+                      <input type="text" id="dateBackup" name="date" class="form-control datepicker">
                     </div>
                   </div>
                 </div>
@@ -209,27 +195,7 @@
               <div class="modal-footer">
                 <div class="container">
                   <div class="row justify-content-center">
-                    <button type="button" class="btn btn-primary rounded" id="backupTimeSetting">設定！</button>
-                    <script>
-                      var edit = document.getElementById("backupTimeSetting");
-
-                      edit.addEventListener("click", editor)
-                      function editor() {
-                        var date = document.getElementById("date");
-
-                        console.log(date.value)
-                        date.split("--");
-
-                        console.log("backupTimeSetting有喔!")
-                        let ele = {};
-                        ele.year = date[0]
-                        ele.month = date[1]
-                        ele.day = date[2]
-                        console.log(ele)
-                        $.post(`/api/admin/backupTimeSetting`, ele, (res) => console.log(""));
-                      }
-
-                    </script>
+                    <button type="button" class="btn btn-primary rounded" id="backupTimeSetting" onclick="backUpTime()">設定！</button>
                   </div>
                 </div>
               </div>
@@ -261,105 +227,17 @@
         </div>
         <div class="project-list mb-4 ml-5 mr-5 overflow-auto">
           <form role="form">
-            <div class="checkbox">
-              <label class="projects-item" style="color: black;">
-                <input type="checkbox" class="m-2 ">
-                <p style="font-size: 20px;" class="mt-3">備份紀錄</p>
-                <div class="mt-3 ml-4">
-                  <p style="font-size: 20px;"><%= recordtime %></p>
-                </div>
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item" style="color: black;">
-                <input type="checkbox" class="m-2 ">
-                <p style="font-size: 20px;" class="mt-3">備份紀錄</p>
-                <div class="mt-3 ml-4">
-                  <p style="font-size: 20px;"><%= recordtime %></p>
-                </div>
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item" style="color: black;">
-                <input type="checkbox" class="m-2 ">
-                <p style="font-size: 20px;" class="mt-3">備份紀錄</p>
-                <div class="mt-3 ml-4">
-                  <p style="font-size: 20px;"><%= recordtime %></p>
-                </div>
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item" style="color: black;">
-                <input type="checkbox" class="m-2 ">
-                <p style="font-size: 20px;" class="mt-3">備份紀錄</p>
-                <div class="mt-3 ml-4">
-                  <p style="font-size: 20px;"><%= recordtime %></p>
-                </div>
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item" style="color: black;">
-                <input type="checkbox" class="m-2 ">
-                <p style="font-size: 20px;" class="mt-3">備份紀錄</p>
-                <div class="mt-3 ml-4">
-                  <p style="font-size: 20px;"><%= recordtime %></p>
-                </div>
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item" style="color: black;">
-                <input type="checkbox" class="m-2 ">
-                <p style="font-size: 20px;" class="mt-3">備份紀錄</p>
-                <div class="mt-3 ml-4">
-                  <p style="font-size: 20px;"><%= recordtime %></p>
-                </div>
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item" style="color: black;">
-                <input type="checkbox" class="m-2 ">
-                <p style="font-size: 20px;" class="mt-3">備份紀錄</p>
-                <div class="mt-3 ml-4">
-                  <p style="font-size: 20px;"><%= recordtime %></p>
-                </div>
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item" style="color: black;">
-                <input type="checkbox" class="m-2 ">
-                <p style="font-size: 20px;" class="mt-3">備份紀錄</p>
-                <div class="mt-3 ml-4">
-                  <p style="font-size: 20px;"><%= recordtime %></p>
-                </div>
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item" style="color: black;">
-                <input type="checkbox" class="m-2 ">
-                <p style="font-size: 20px;" class="mt-3">備份紀錄</p>
-                <div class="mt-3 ml-4">
-                  <p style="font-size: 20px;"><%= recordtime %></p>
-                </div>
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item" style="color: black;">
-                <input type="checkbox" class="m-2 ">
-                <p style="font-size: 20px;" class="mt-3">備份紀錄</p>
-                <div class="mt-3 ml-4">
-                  <p style="font-size: 20px;"><%= recordtime %></p>
-                </div>
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="projects-item" style="color: black;">
-                <input type="checkbox" class="m-2 ">
-                <p style="font-size: 20px;" class="mt-3">備份紀錄</p>
-                <div class="mt-3 ml-4">
-                  <p style="font-size: 20px;"><%= recordtime %></p>
-                </div>
-              </label>
-            </div>
+            <% for(var i=0; i<data.length; i++) {%>
+              <div class="checkbox">
+                <label class="projects-item" style="color: black;">
+                  <input type="checkbox" class="m-2 ">
+                  <p style="font-size: 20px;" class="mt-3">備份紀錄</p>
+                  <div class="mt-3 ml-4">
+                    <p style="font-size: 20px;"><%= data[i] %></p>
+                  </div>
+                </label>
+              </div>
+            <% } %>
           </form>
         </div>
       </div>
