@@ -1,11 +1,10 @@
-const socketIO = require("socket.io")
 const nodemailer = require('nodemailer');
 const path = require("path")
 const views = require("koa-views")
 const serve = require("koa-static")
 const mount = require("koa-mount")
 const session = require("koa-session")
-const bodyParser = require("koa-body")
+const body = require("koa-body")
 const http = require("http")
 const koa = new (require("koa"))()
 const bos = require("./bos")
@@ -108,11 +107,7 @@ koa.use(async (ctx, next) => {
     await next()
 })
 
-koa.use(bodyParser({
-    formidable: { uploadDir: "./uploads" }, //This is where the files would come
-    multipart: true,
-    urlencoded: true,
-}))
+koa.use(body({ formidable: { uploadDir: "./uploads" }, multipart: true, urlencoded: true, }))
 
 koa.use(bos.routes)
 
@@ -120,9 +115,9 @@ koa.use(pms.routes)
 
 koa.use(sas.routes)
 
-const server = http.createServer(koa.callback())
+koa.server = http.createServer(koa.callback())
 
-pms.io(server,koa)
+koa.http = http
 
 
 server.listen(3000, async (e) => {

@@ -61,13 +61,6 @@ $(function () {
     document
       .querySelector("#messages")
       .firstElementChild.querySelector("span").innerText = m.message;
-    let ele = {};
-    ele.teamid = teamid;
-    ele.sender = id;
-    ele.time = new Date().toLocaleString();
-    ele.content = m.message;
-    console.log(ele);
-    $.post(`/api/team/conference/content`, ele, (res) => console.log(ele));
   });
 
   let handleEnter = (event) => {

@@ -4,41 +4,42 @@ const model = require('mongoose').model
 const userSchema = new Schema({
     account: String,
     name: String,
-    avatar: Schema.Types.ObjectId,          //storage._id
+    avatar: String,          //storage._id
     group: Number,          //1:Admin 2:Teacher 3:Student 4:User
     email: String,
-    team: Schema.Types.ObjectId,           //team._id
+    team: { type: Schema.Types.ObjectId, ref: "Team" },           //team._id
     grade: Number,          //學生才擁有，系級
     link: String,           //個人網站的link
     score: Number,
     intro: String,
     imageLink:String,
+    gender: String,
 })
 
 const commentSchema = new Schema({
     content: String,
-    sender: Schema.Types.ObjectId,         //訊息的傳送者,user._id
+    sender: { type: Schema.Types.ObjectId, ref: "User" },         //訊息的傳送者,user._id
     time: Date,//訊息傳送時間
-    teamId:Schema.Types.ObjectId,           
+    teamId: Schema.Types.ObjectId,
 })
 
 const messageSchema = new Schema({
     type: String,           //1:Text 2:Image
     text: String,
-    image: Schema.Types.ObjectId,
-    sender: Schema.Types.ObjectId,         //訊息的傳送者,user.id
+    image: { type: Schema.Types.ObjectId, ref: "Storage" },
+    sender: { type: Schema.Types.ObjectId, ref: "User" },         //訊息的傳送者,user.id
     time: Date,             //訊息傳送時間
 })
 
 const teamSchema = new Schema({
     name: String,
     grade: Number,          //該組別的系級
-    teacher: Schema.Types.ObjectId,        //user._id
-    leader: Schema.Types.ObjectId,        //user._id
-    poster: Schema.Types.ObjectId,          //storage._id
-    report: Schema.Types.ObjectId,          //storage._id
-    code: Schema.Types.ObjectId,            //storage._id
-    files: [Schema.Types.ObjectId],            //Array of storage._id
+    teacher: { type: Schema.Types.ObjectId, ref: "User" },        //user._id
+    leader: { type: Schema.Types.ObjectId, ref: "User" },        //user._id
+    poster: { type: Schema.Types.ObjectId, ref: "Storage" },          //storage._id
+    report: { type: Schema.Types.ObjectId, ref: "Storage" },          //storage._id
+    code: { type: Schema.Types.ObjectId, ref: "Storage" },            //storage._id
+    files: [{ type: Schema.Types.ObjectId, ref: "Storage" }],            //Array of storage._id
     info: String,             //專題簡介
     archived: Boolean,        //是否歸檔
     score: Number,            //專題成績
@@ -61,16 +62,29 @@ const systemSetSchema = new Schema({
 
 const storageSchema = new Schema({
     filename: String,
-    path:String,
-    owner:Schema.Types.ObjectId,          //team._id
+    path: String,
+    owner: Schema.Types.ObjectId,          //team._id
 })
 
 const scheduleSchema = new Schema({
-    teamId:Schema.Types.ObjectId,
+    teamId: Schema.Types.ObjectId,
     name: String,
-    year:Number,
-    month:Number,
-    day:Number,
+    year: Number,
+    month: Number,
+    day: Number,
+})
+
+const blackboardSchema = new Schema({
+    content: String,
+    x: Number,
+    y: Number,
+    owner: Schema.Types.ObjectId,          //team._id
+})
+const conferenceSchema = new Schema({
+    teamId:Schema.Types.ObjectId, 
+    sender: {type:Schema.Types.ObjectId,ref:"User"},         //訊息的傳送者,user._id
+    time: Date,//訊息傳送時間
+    content: String,
 })
 module.exports = {
     user: model('User', userSchema),
@@ -82,4 +96,6 @@ module.exports = {
     backup: model('Backup', backupSchema),
     systemSet: model('systemSet', systemSetSchema),
     schedule: model('schedule', scheduleSchema),
+    blackboard: model('blackboard', blackboardSchema),
+    conference:model('conference', conferenceSchema),
 }

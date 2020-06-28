@@ -22,9 +22,6 @@ class EventInfo{
     }
 }
 getAllEvent()
-addEvent("希望",1,2,2,'QQ111')
-
-
 
 //使用者加入事件
 function addEvent(name,year,month,day,id){
@@ -82,7 +79,7 @@ function sortEvent(){
     }
 }
 //按下確認按鈕
-function newEventBtn(){
+async function newEventBtn(){
     var Input=document.getElementById("addEvent").querySelectorAll("input")
     if(Input[0].value=="" || Input[1].value=="" ||Input[2].value==""||Input[3].value==""){
         alert('輸入不可為空白');
@@ -97,19 +94,18 @@ function newEventBtn(){
             //加到list中
             //
             newEvent={'Name':name,'Year':year,'Month':month,'Day':day}
-            var Sid=sendNewEvent(newEvent)
+            var Sid=await sendNewEvent(newEvent)
 
             addEvent(name,year,month,day,Sid)
             console.log(Sid)
             //按下關閉鍵
             document.getElementById("addEvent").querySelectorAll("button")[1].click()
         }
-        
-    }
-    
+    }   
 }
+
 //按下刪除按鈕
-function deleteEventBtn(){
+async function deleteEventBtn(){
     //檢查有被勾選checkbox之事件
     modelBody=document.getElementById('deleteEvent').querySelector(".modal-body")
     AllDiv=modelBody.querySelectorAll('div')
@@ -126,8 +122,7 @@ function deleteEventBtn(){
     if(deleteIndex.length>0){
         deleteList={}
         for(var i=0;i<deleteIndex.length;i++){
-            var deletEvent=EventList[deleteIndex[i]]
-            console.log(deletEvent)
+            var deletEvent=await EventList[deleteIndex[i]]
             //在EventList中把要刪除的資料刪除
             for(var j=0;j<tempList.length;j++){
                 if(deletEvent==tempList[j]){
@@ -137,6 +132,7 @@ function deleteEventBtn(){
             //EventList.splice(deleteIndex[i],1)
             deleteList['Event'+i]=deletEvent.id
         }
+        console.log('deleteList',deleteList)
         sendDeleteEvent(deleteList)
         EventList=tempList
         drawEvent()
@@ -178,6 +174,7 @@ function getAllEvent(){
         url: "/api/team/AllSchedule",   //後端的URL
         type: "POST",   //用POST的方式
         dataType: "json",   //response的資料格式
+        async:true,
         cache: true,   //是否暫存
         data: data1, //傳送給後端的資料
         success: function(response) {
@@ -192,6 +189,7 @@ function getAllEvent(){
         }
     });
 }
+
 //送新事件回後端
 async function sendNewEvent(newEvent){
     Sid=""
@@ -199,6 +197,7 @@ async function sendNewEvent(newEvent){
         url: "/api/team/newSchedule",   //後端的URL
         type: "POST",   //用POST的方式
         dataType: "json",   //response的資料格式
+        async:true,
         cache: true,   //是否暫存
         data: newEvent, //傳送給後端的資料
         success: function(response) {
@@ -209,13 +208,14 @@ async function sendNewEvent(newEvent){
     return Sid
 }
 
-
 //送被刪除的事件回後端
 function sendDeleteEvent(eventList){
+    console.log(eventList)
     $.ajax({
         url: "/api/team/deleteSchedule",   //後端的URL
         type: "POST",   //用POST的方式
         dataType: "json",   //response的資料格式
+        async:true,
         cache: true,   //是否暫存
         data: eventList, //傳送給後端的資料
         success: function(response) {
