@@ -77,9 +77,21 @@ router
             id: ctx.session.id,
             teamMateName: ctx.session.teamMateName ? ctx.session.teamMateName : '黃翰俞',
             guideTeacherName: ctx.session.guideTeacherName ? ctx.session.guideTeacherName : '???',
+            teamid:ctx.session.team?ctx.session.team:"null"
         })
     })
-
+    .post('/api/team/conference/content' , async ctx =>{
+        let res = await db.conference.new(
+            ctx.request.body.teamid,
+            ctx.request.body.sender,
+            ctx.request.body.time,
+            ctx.request.body.content,
+        );
+        ctx.body = {
+            result: true,
+        };
+    })
+    
     // apis
     .delete('/api/team/storage/:id', async (ctx) => {
         let [res] = await db.storage.find({
@@ -268,6 +280,7 @@ function io(server,koa) {
                 name: client.session.name,
             })
         })
+        
     })
     
 }

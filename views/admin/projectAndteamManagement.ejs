@@ -133,7 +133,7 @@
             <% for(var i=0;i <ptItems.length;i++) {%>
               <div class="checkbox">
                 <label class="projects-item" style="font-size: 20px; color:#212529;">
-                  <input type="checkbox" class="m-2">
+                  <input type="checkbox" class="m-2" id="<%= ptItems[i]._id%>">
                       <%= ptItems[i].name%>
                       <a type="button" class="btn btn-light btn-sm edit" href="editPI/<%= ptItems[i]._id%>">
                         <i class="fas fa-file-signature"></i> 編輯專題團隊內容</a>

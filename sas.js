@@ -184,7 +184,6 @@ router
         }
     })
     //admin
-
     .put('/api/admin/user', async (ctx) => {
         let res = await db.user.new(
             ctx.request.body
@@ -194,7 +193,6 @@ router
             id: res._id,
         };
     })
-
 
     .put('/api/admin/projectTeam', async (ctx) => {
         let res = await db.team.new(
@@ -207,6 +205,10 @@ router
     })
     .delete('/api/admin/projectTeam/:id', async function (ctx) {
         let res = await db.team.remove({ _id: { '$eq': ctx.params.id } })
+        let member=await db.user.find({ team: { '$eq': ctx.params.id } })
+        for(i in member){
+            await db.user.modify({ team: { '$eq': ctx.params.id }},{team:null} )
+        }
         ctx.status = res > 0 ? 200 : 204
         ctx.body = {
             result: res > 0
@@ -233,7 +235,11 @@ router
         await timeSet.update({ 'year': ctx.request.body.year })
         await timeSet.update({ 'month': ctx.request.body.month })
         await timeSet.update({ 'day': ctx.request.body.day })
+        ctx.body = {
+            result: true
+        }
     })
+
     .post('/api/admin/projecTimeSetting', async function (ctx) {
         await db.backup.new(Date(ctx.request.body.date))
         console.log(' 有new 了喔')
@@ -243,6 +249,7 @@ router
             result: true
         }
     })
+
     .post('/api/admin/reminderTimeSetting', async function (ctx) {
         let date = new Date(ctx.request.body.date)
         let message = "導師繳交期限於 " + date.getFullYear() + " 年 " 
@@ -253,7 +260,6 @@ router
             result: true
         }
     })
-
     //admin
     .post('/api/admin/ptList', async function (ctx) {
         let ptList = await db.team.find();
@@ -295,8 +301,6 @@ router
         // ctx.status = 200;
     })
 
-
     module.exports = {
         routes:router.routes()
     }
-    
