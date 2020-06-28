@@ -20,26 +20,37 @@ router
         ctx.redirect(url)
     })
     .get('/index', async ctx => {
-        await ctx.render("index", {
-            title: "畢業專題交流平台",
-            name: ctx.session.name ? ctx.session.name : "訪客",
-            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
-        })
+        if(ctx.session.admin === 1){
+            ctx.redirect("/admin/index")
+        }
+        else{
+            await ctx.render("index", {
+                title: "畢業專題交流平台",
+                name: ctx.session.name ? ctx.session.name : "訪客",
+                image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+            })
+        }
     })
     .get('/profile', async ctx => {
         let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
         let [team] = await db.team.find({ "_id": { "$eq": user.team } })
         let [professor] = await db.user.find({ "_id": { "$eq": team.teacher } })
-
+        //學生的profile
+        console.log(user)
         await ctx.render("profile", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             grade: "避不了業",
-            professor: "沒人要你",
+            professor: professor.name ? professor.name : "???",
             introduction: user.intro ? user.intro : "親~請輸入您的簡介歐~~~",
-            canFix: true
+            canFix: true,
+            group:user.group,
+            link:user.link,
+            gender: user.gender ? user.gender : "未知",
         })
+
+
     })
     .get('/profile/:id', async ctx => {
         let [user] = await db.user.find({ "_id": { "$eq": ctx.params.id } })
@@ -52,7 +63,10 @@ router
             grade: user.grade,
             professor: professor ? professor.name : 無,
             introduction: user.intro ? user.intro : "無",
-            canFix: false
+            canFix: false,
+            group:user.group,
+            link:user.link,
+            gender:user.gender,
         })
     })
     .get('/projects', async ctx => {
@@ -69,6 +83,7 @@ router
         let members = await db.user.find({ group: { $eq: 3 }, team: { $eq: ctx.params.id } })
         let [teahcer] = await db.user.find({ group: { $eq: 2 }, team: { $eq: ctx.params.id } })
         let comments = await db.comment.find({ "teamId": ctx.params.id })
+        console.log(comments)
         await ctx.render("project", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",

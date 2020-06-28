@@ -12,7 +12,7 @@ const db = mongoose.connection
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 let user = {
-    new: async function (account, name, avatar, group, email, team, grade, link, score, intro) {
+    new: async function (account, name, avatar, group, email, team, grade, link, score, intro,gender) {
         if (typeof account !== "string") {
             let model = new Models.user(obj)
             return model.save()
@@ -28,6 +28,7 @@ let user = {
             link: link,           //個人網站的link
             score: score,
             intro: intro,
+            gender: gender,
         })
         return model.save()
     },
