@@ -1,5 +1,6 @@
-const router = new (require('koa-router'))();
-const db = require("./db");
+const router = new (require('koa-router'))()
+const fetch = require("node-fetch")
+const db = require("./db")
 
 const client_id =
     "712826989675-rs5ej0evsmp78hsphju6sudhhn3pb38s.apps.googleusercontent.com"
@@ -174,11 +175,11 @@ router
     })
 
     .post("/api/profile", async (ctx) => {
-        let [user] = await db.user.find({ _id: { $eq: ctx.session.id } });
-        await user.update({ intro: ctx.request.body.content });
+        let [user] = await db.user.find({ _id: { $eq: ctx.session.id } })
+        await user.update({ intro: ctx.request.body.content })
         ctx.body = {
             result: true,
-        };
+        }
     })
 
 module.exports = router.routes()
