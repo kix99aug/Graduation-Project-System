@@ -13,7 +13,6 @@ btn.addEventListener("click",function(){
 
     let ele = {}
     let ma = {}
-    let del_ma = {}
     ele.tN = tN
     ele.pI = pI
     ele.pN = pN
@@ -31,6 +30,7 @@ btn.addEventListener("click",function(){
             $( ".alert-light.success" ).show( "slow" );
             setTimeout(()=>$(".alert-light.success").slideUp(),1500)
             setTimeout(()=>window.location.reload(),2000)
-          }
+        }
+       
     });
 })

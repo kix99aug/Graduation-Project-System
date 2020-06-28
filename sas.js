@@ -98,7 +98,7 @@ router
             teacherName: teacher.name,
             projectInfo: team.info,
             teamId: ctx.params.id,
-            result:true
+            result: true
         })
     })
     .get('/admin/editPF/:id', async ctx => {
@@ -200,9 +200,9 @@ router
     })
     .delete('/api/admin/projectTeam/:id', async function (ctx) {
         let res = await db.team.remove({ _id: { '$eq': ctx.params.id } })
-        let member=await db.user.find({ team: { '$eq': ctx.params.id } })
-        for(i in member){
-            await db.user.modify({ team: { '$eq': ctx.params.id }},{team:null} )
+        let member = await db.user.find({ team: { '$eq': ctx.params.id } })
+        for (i in member) {
+            await db.user.modify({ team: { '$eq': ctx.params.id } }, { team: null })
         }
         ctx.status = res > 0 ? 200 : 204
         ctx.body = {
@@ -253,10 +253,10 @@ router
 
     .post('/api/admin/reminderTimeSetting', async function (ctx) {
         let date = new Date(ctx.request.body.date)
-        let message = "導師繳交期限於 " + date.getFullYear() + " 年 " 
-                    + (date.getMonth()+1) + " 月 " 
-                    + date.getDate() + " 日 ! <br>記得繳交喔~";
-        await db.reminder.new(message,new Date(ctx.request.body.date))
+        let message = "導師繳交期限於 " + date.getFullYear() + " 年 "
+            + (date.getMonth() + 1) + " 月 "
+            + date.getDate() + " 日 ! <br>記得繳交喔~";
+        await db.reminder.new(message, new Date(ctx.request.body.date))
         ctx.body = {
             result: true
         }
@@ -271,7 +271,6 @@ router
     .post('/api/admin/editPI/:id', async function (ctx) {
         let members = await db.user.find({ team: { $eq: ctx.params.id }, group: { $eq: 3 } })
         let userToDelete = []
-        console.log(ctx.request.body.mas)
         members.forEach(ele => {
             if (ctx.request.body.mas.indexOf(ele.account) == -1) userToDelete.push(ele)
         })
@@ -279,15 +278,21 @@ router
             await userToDelete[i].update({ team: null })
         }
         for (let i = 0; i < ctx.request.body.mas.length; i++) {
+
             await db.user.modify({ account: { $eq: ctx.request.body.mas[i] } }, { team: ctx.params.id })
+
+
         }
         let [team] = await db.team.find({ '_id': { '$eq': ctx.params.id } })
         let [leader] = await db.user.find({ '_id': { '$eq': team.leader } })
         let [teacher] = await db.user.find({ '_id': { '$eq': team.teacher } })
         await team.update({ 'name': ctx.request.body.pN, 'info': ctx.request.body.pI, 'leader': leader._id, teacher: teacher._id })
+
         ctx.body = {
             result: true
         }
+
+
     })
     .delete('/api/admin/editPI/:id', async (ctx) => {
         let [res] = await db.user.find({
@@ -309,6 +314,6 @@ router
             result: res > 0
         }
     })
-    module.exports = {
-        routes:router.routes()
-    }
+module.exports = {
+    routes: router.routes()
+}
