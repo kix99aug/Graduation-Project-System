@@ -277,6 +277,34 @@ let schedule = {
         })
     },
 }
+let conference = {
+    new: async function (teamId,sender,time,content, ) {
+        let model = new Models.conference({
+            content: content,
+            sender: sender,
+            time: time,
+            teamId: teamId,
+        })
+        return model.save()
+    },
+    find: async function (obj) {
+        let query = await Models.conference.find(obj).populate("sender","avatar name").exec()
+        return query
+    },
+    modify: async function (objWhere, objUpdate) {
+        Models.conference.update(objWhere, objUpdate, function (err, res) {
+            if (err) console.error(err)
+            else console.log(res)
+        })
+    },
+    remove: async function (objWhere) {
+        Models.conference.remove(objWhere, function (err, res) {
+            if (err) console.error(err)
+            else console.log(res)
+        })
+    }
+}
+
 
 module.exports = {
     user: user,
@@ -288,5 +316,6 @@ module.exports = {
     backup: backup,
     systemSet: systemSet,
     schedule: schedule,
-    blackboard:Models.blackboard
+    blackboard:Models.blackboard,
+    conference:conference,
 }

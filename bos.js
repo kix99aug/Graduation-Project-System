@@ -113,7 +113,13 @@ router
             // 確認資料庫
             let account = googleData.email.split('@')[0]
             let [user] = await db.user.find({ "account": { "$eq": account } })
-            if (!user) user = await db.user.new(account, googleData.name, null, null, googleData.email, null, null, null, null, null)
+            if (!user){
+                 user = await db.user.new(account, googleData.name, null, null, googleData.email, null, null, null, null, null,googleData.picture)
+            }else{
+                console.log('picture')
+                console.log(googleData.picture)
+                await db.user.modify( { "account": { "$eq": account } }, { "avatar": googleData.picture } )
+            }
             if (user.group === 1) {
                 await db.user.modify({ "_id": user._id }, { "group": 1 })
                 console.log(user)

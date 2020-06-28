@@ -14,11 +14,7 @@
             "program": "${workspaceFolder}\\app.js",
             "runtimeArgs": ["--no-deprecation"],
             "env": {
-<<<<<<< HEAD
-                // "DEBUG":"koa-views"
-=======
                 "DEBUG":"koa-views"
->>>>>>> 5605420c144dd90fa61c0ac5c5f85a32f6de7ff1
             },
             "console": "integratedTerminal",
         },{

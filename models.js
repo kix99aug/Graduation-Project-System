@@ -4,7 +4,7 @@ const model = require('mongoose').model
 const userSchema = new Schema({
     account: String,
     name: String,
-    avatar: { type: Schema.Types.ObjectId, ref: "Storage" },          //storage._id
+    avatar: String,          //storage._id
     group: Number,          //1:Admin 2:Teacher 3:Student 4:User
     email: String,
     team: { type: Schema.Types.ObjectId, ref: "Team" },           //team._id
@@ -12,6 +12,7 @@ const userSchema = new Schema({
     link: String,           //個人網站的link
     score: Number,
     intro: String,
+    imageLink:String,
 })
 
 const commentSchema = new Schema({
@@ -78,6 +79,12 @@ const blackboardSchema = new Schema({
     y: Number,
     owner: Schema.Types.ObjectId,          //team._id
 })
+const conferenceSchema = new Schema({
+    teamId:Schema.Types.ObjectId, 
+    sender: {type:Schema.Types.ObjectId,ref:"User"},         //訊息的傳送者,user._id
+    time: Date,//訊息傳送時間
+    content: String,
+})
 module.exports = {
     user: model('User', userSchema),
     comment: model('Comment', commentSchema),
@@ -89,4 +96,5 @@ module.exports = {
     systemSet: model('systemSet', systemSetSchema),
     schedule: model('schedule', scheduleSchema),
     blackboard: model('blackboard', blackboardSchema),
+    conference:model('conference', conferenceSchema),
 }

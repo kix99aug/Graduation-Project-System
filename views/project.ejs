@@ -66,7 +66,7 @@
                                     <% for(var i=0; i<comments.length; i++) {%>
                                         <div class="content">
                                             <div class="media m-3">
-                                                <a ><img src="<%= image %>" class="mr-3 messageicon"
+                                                <a ><img src="<%= comments[i].SenderImage %>" class="mr-3 messageicon"
                                                         alt="avatar"></a>
                                                 <div class="media-body">
                                                     <h5 class="m-0"><a href="/profile/<%= comments[i].SenderID %>"><%= comments[i].sender.name %></a></h5>
