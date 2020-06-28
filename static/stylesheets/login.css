@@ -1,0 +1,19 @@
+body {
+    background-image: url("/static/images/mczh-tw1920x1920_large24959_173078990923.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.login {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-image: url(/static/images/icon.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    padding: 17% 0;
+}
+.login img:hover{
+    opacity: 0.7;
+}

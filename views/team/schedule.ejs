@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../header') -%>
+    
+    <script src="/static/script/scheduleSvg.js" defer="defer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.min.js" ></script>
+</head>
+
+<body style="height: 100vh;">
+    <%- include('../nav') -%>
+    <div class="wrapper mt-n5">
+        <%- include('sidebar') -%>
+        <div class="justify-content-center p-5" style="width: 100%;">
+            <div id="timeline"></div>
+
+            <div class="d-flex flex-row justify-content-center my-4">
+              
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-primary mx-4" data-toggle="modal" data-target="#addEvent">
+                新增事件
+              </button>
+              <!-- Modal -->
+              <button type="button" class="btn btn-primary mx-4" data-toggle="modal" data-target="#deleteEvent" >
+                刪除事件
+              </button>
+              <!-- Modal -->
+              
+            </div>
+        </div>
+    </div>
+    </div>
+  </div>
+  </div>
+  <script src="/static/script/blackboard.js"></script>
+  <%- include('../footer'); -%>
+
+
+</body>
+
+<!-- 新增事件 -->
+<div class="modal fade" id="addEvent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">新增事件</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="my-4">名稱:<input class="mx-2" type="text"></div>
+        <div class="d-flex flex-row my-4">
+          <p>日期:</p>
+          <div style="width: 25%;"><input class="mx-2" style="width: 50%;">年</div>
+          <div style="width: 25%;"><input class="mx-2" style="width: 50%;">月</div>
+          <div style="width: 25%;"><input class="mx-2" style="width: 50%;">日</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onClick="newEventBtn()">確定新增</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 刪除事件 -->
+<div class="modal fade" id="deleteEvent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">刪除事件</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onClick="deleteEventBtn()">確認刪除</button>
+      </div>
+    </div>
+  </div>
+</div>

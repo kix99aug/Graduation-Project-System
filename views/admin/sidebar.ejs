@@ -1,0 +1,29 @@
+<nav id="sidebar" class="border-right bg-white overflow-auto">
+    <ul class="list-unstyled components">
+        <a class="p-3 py-4 text-left 
+        <% if (subtitle == '管理專題 & 團隊') { %>
+            highlight
+            " href=" /admin/managePT"<% } else { %> "
+        href=" /admin/managePT" <% } %>>
+            <img class="img-fluid mx-1" src="/static/images/project.png" alt="">
+
+            管理專題 & 團隊
+        </a>
+        <a class="p-3 py-4 text-left 
+        <% if (subtitle == '管理使用者') { %>
+            highlight
+            " href=" /admin/users" <% } else { %> "
+        href=" /admin/users" <% } %>>
+            <img class="img-fluid mx-1" src="/static/images/manageUser.png" alt="">
+            管理使用者
+        </a>
+        <a class="p-3 py-4 text-left 
+        <% if (subtitle == '系統時程設定') { %>
+            highlight
+            " href=" /admin/timeSetting"<% } else { %> "
+        href=" /admin/timeSetting" <% } %>>
+            <img class="img-fluid mx-1" src="/static/images/time.png" alt="">
+            系統時程設定
+        </a>
+    </ul>
+</nav>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="/static/script/project.js" defer="defer"></script>
+    <%- include('header') -%>
+</head>
+
+<body>
+    <%- include('nav') -%>
+    <div class="container-fluid mt-n5 py-5" style="height: 90vh;">
+        <div class="container h-100">
+            <div class="card border-0 h-100">
+                <div class="card-header bg-transparent px-0 border-0">
+                    <ul class="nav nav-tabs card-header-tabs mx-0">
+                        <li class="nav-item  ml-0">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                                aria-controls="home" aria-selected="true"><%= projectName%></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                                aria-controls="profile" aria-selected="false">海報</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body border rounded-bottom rounded-right p-5 overflow-auto h-100">
+                    <div class="tab-content " id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <h3>專題成員</h3>
+                            <div class="my-3 ">
+                                <% for(var i=0; i<member.length; i++) {%>
+                                    <h6>學號: <%= member[i]['account']%> &nbsp&nbsp 姓名:<%= member[i]['name']%></br></h6>
+                                <% } %>
+                            </div>
+                            <h3>指導老師</h3>
+                            <div class="my-3">
+                                <h5><%= teachName%>教授</h5>
+                            </div>
+                            <h3>簡介</h3>
+                            <div class="my-3">
+                                <h5><%= projectInfo%></h5></br>
+                            </div>
+                            <div class="w-100 h-auto p-4 border rounded discuss" id="forum">
+                                <h4>討論區</h4>
+                                <div id="forum_content">
+                                    <div class="content">
+                                        <div class="media m-3">
+                                            <a ><img src="<%= image %>" class="mr-3 messageicon"
+                                                    alt="avatar"></a>
+                                            <div class="media-body">
+                                                <h5 class="m-0"><a href="/profile/%>"></a>機器人</h5>
+                                                <div id='time' style="font-size:0.2rem">Sat Jun 27 2020 23:05:06 GMT+0800 (台北標準時間)</div>
+                                                <span>我是範例留言</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% for(var i=0; i<comments.length; i++) {%>
+                                        <div class="content">
+                                            <div class="media m-3">
+                                                <a ><img src="<%= image %>" class="mr-3 messageicon"
+                                                        alt="avatar"></a>
+                                                <div class="media-body">
+                                                    <h5 class="m-0"><a href="/profile/<%= comments[i].SenderID %>"><%= comments[i].name %></a></h5>
+                                                    <div id='time' style="font-size:0.2rem"><%= comments[i].time %></div>
+                                                    <span><%= comments[i].content %></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                </div>
+                                <div class="input-group mt-3">
+                                    <input class="form-control"></input>
+                                    <div class="input-group-append" onclick="commentBtn()">
+                                        <button class="btn btn-outline-dark" type="button" id="submit"><img
+                                                src="/static/images/enter.svg" class="img-fluid"
+                                                style="width: 1rem;" ></button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <h1>海報</h1>
+                            <img src="https://miro.medium.com/max/2764/1*B4X2Gzt2QIDCB2ra2t0OtQ.jpeg" class="img-fluid"
+                                alt="">
+                        </div>
+                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('footer') -%>
+</body>
+
+</html>

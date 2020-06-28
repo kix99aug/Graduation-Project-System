@@ -1,0 +1,24 @@
+<script src="/static/script/nav.js"></script>
+<nav id="desktop" class="d-flex flex-row align-items-center p-3 bg-color sticky-top mb-5">
+    <a href="/index">
+        <h2 class="text-light m-0 mx-3"><%= title %></h2>
+    </a>
+    <div class="input-group mx-auto w-50">
+        <input class="form-control px-3 text-light" id="search" type="text" placeholder="搜尋" aria-label="Search">
+        <div class="input-group-append bg-transparent ">
+            <button class="btn btn-outline-light " type="button" onclick="searchBtn()" ><i class="fas fa-search bg-transparent "></i>
+            </button>
+        </div>
+    </div>
+    <button type="button" class="btn btn-light d-flex" role="button" id="logoutMenu" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <span class="p-2 mx-auto mt-1 text-dark" id="name"><%= name %></span>
+        <img class="img-fluid rounded-circle float-right" src="<%= image %>" style="height:50px" alt=""></img>
+    </button>
+    <div class="dropdown-menu mt-2" aria-labelledby="logoutMenu">
+        <a class="dropdown-item" href="/">主頁</a>
+        <a class="dropdown-item" href="/team/info">我的團隊</a>
+        <a class="dropdown-item" href="/profile">我的資料</a>
+        <a class="dropdown-item" href="/">登出</a>
+    </div>
+</nav>

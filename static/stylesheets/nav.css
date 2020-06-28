@@ -1,0 +1,39 @@
+.bg-color {
+  background-image: linear-gradient(330deg, #5ee7df 0%, #b490ca 100%);
+}
+
+nav#desktop .input-group * {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+nav#desktop a:hover {
+  text-decoration: none;
+}
+
+nav#desktop {
+  height: 10vh;
+}
+
+nav#sidebar {
+  min-width: 200px;
+  max-width: 200px;
+  height: 90vh;
+}
+nav#sidebar > ul > a {
+  display:block;
+  cursor: default;
+}
+
+nav#sidebar > ul > a[href]:hover {
+  text-decoration: none;
+  cursor: pointer;
+  background: rgb(220,220,220);
+}
+
+nav#sidebar > ul > a.highlight {
+  background: #defefb;
+}
+
+nav#sidebar > ul > a > img {
+  width: 2rem;
+}

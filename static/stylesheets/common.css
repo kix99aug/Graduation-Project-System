@@ -1,0 +1,151 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
+
+body {
+  font-family: "Noto Sans TC", sans-serif;
+}
+
+
+/* scrollbar width */
+*::-webkit-scrollbar {
+  width: 7.5px;
+}
+
+/* scrollbar track */
+*::-webkit-scrollbar-track {
+  background: #eee;
+}
+
+/* scrollbar handle */
+*::-webkit-scrollbar-thumb {
+  border-radius: 1rem;
+  background-color: #5ee7df;
+  background-image: -webkit-gradient(linear, left bottom, left top, from(#5ee7df), to(#b490ca));
+  background-image: -webkit-linear-gradient(bottom, #5ee7df 0%, #b490ca 100%);
+  background-image: linear-gradient(to top, #5ee7df 0%, #b490ca 100%);
+}
+
+
+.messageicon {
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+}
+.messageicon2 {
+  width: 6rem;
+  height: 6rem;
+  object-fit: cover;
+}
+.messageicon3 {
+  width: 35rem;
+  height: 6rem;
+  object-fit: cover;
+}
+.discuss {
+  background: rgba(255, 255, 210);
+}
+
+.profileicon {
+  background: rgba(255, 255, 210);
+  width: 20rem;
+  height: 20rem;
+  object-fit: cover;
+}
+
+.wrapper {
+  display: flex;
+  height: 90vh;
+  width: 100vw;
+  align-items: stretch;
+  overflow:auto;
+}
+
+.wrapper > .content {
+  height: 100%;
+  overflow: auto;
+  background-origin: content-box;
+}
+
+.note {
+  width: 10vw;
+  height: 10vw;
+  padding: 0.5vw 0.5vw 3vw 0.5vw;
+  position: absolute;
+  background: url("/static/images/note.png");
+  background-size: cover;
+  z-index: 1;
+}
+
+.note:hover {
+  cursor: move;
+}
+
+.note textarea,
+.note div {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: none;
+  resize: none;
+  outline: none;
+  word-wrap: break-word;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.note textarea {
+  display: none;
+}
+
+.note textarea,
+.note div:hover {
+  cursor: text;
+}
+
+.content.blackboard {
+  position: relative;
+  width: 100%;
+  background: url("/static/images/blackboard.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/*project and team management*/
+.manageBg {
+  width: 50%;
+  height: auto;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.35);
+}
+
+.project-list {
+  display: flex;
+
+  background-color: white;
+  border: 1px #707070 solid;
+  flex-direction: column;
+}
+
+.projects-item {
+  background-color: white;
+  padding-left: 5px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  color: #707070;
+  font-size: 1.5rem;
+  border-bottom: 1px #707070 solid;
+  height: 50px;
+  margin: 0px;
+}
+
+.edit {
+  margin-left: auto;
+  margin-right: 1em;
+  border: 1px #707070 solid;
+}
+
+#select,
+#delete {
+  margin: 5px;
+  border: 1px #707070 solid;
+}

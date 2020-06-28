@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('header') -%>
+    <style>
+        .list-row::before {
+            content: url("/static/images/Polygon 5.png");
+        }
+
+        .list-row::after {
+            content: url("/static/images/Polygon 4.png");
+        }
+
+        .post-row::before {
+            content: url("/static/images/Polygon 5.png");
+            margin-right: 0.5em;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('nav') -%>
+    <div class="container">
+        <div class="row">
+            <div class="col d-flex align-items-center h-100 justify-content-center">
+                <img class="profileicon rounded-circle border border-dark" src="<%= image %>">
+            </div>
+            <div class="col d-flex flex-column align-items-left justify-content-around">
+                <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    姓名：<span class=""><%= name %></span>同學
+                </h3>
+                <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    系級：<span><%= grade %></span>級
+                </h3>
+                <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    指導教授：<span><%= professor %> </span>教授
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col m-5">
+                <div class="row">
+                    <h3 class="row post-row">個人簡介：</h3>
+                    <% if(canFix==true){ %>
+                        <img src="/static/images/edit (1).png" alt="" class="pb-3 ml-4" id="edit">
+                    <% } %>
+                </div>
+                <div class="form-group " >
+                    <textarea disabled class="form-control" id="textarea" rows="5" ><%= introduction %></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/script/profile.js"></script>
+    <%-include('footer'); -%>
+</body>
