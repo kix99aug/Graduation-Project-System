@@ -9,7 +9,7 @@ function editor() {
   } else {
     let ele = {};
     ele.content = text;
-    $.post(`/api/profile`, ele, (res) => console.log(ele));
-    textarea.disabled = true
+    $.post(`/api/profile`, ele, (res) => window.location.reload());
+
   }
 }
