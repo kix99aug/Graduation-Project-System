@@ -12,6 +12,7 @@ const bos = require("./bos")
 const pms = require("./pms")
 const sas = require("./sas")
 const credentials = require("./credentials")
+const db = require("./db")
 const MongooseStore = require("koa-session-mongoose")
 
 koa.keys = ["088f149f3e8d7a69f3999f0c850f71140168bc18"]
@@ -78,10 +79,10 @@ const server = http.createServer(koa.callback())
 pms.io(server,koa)
 
 server.listen(3000, async (e) => {
-    // var today = new Date();
-    // var notify = new Date();
-    // notify = await db.reminder.find({})
-    // console.log(notify[0].getFullYear())
+    var today = new Date();
+    var notify = new Date();
+    notify = await db.reminder.find({})
+    console.log(notify[0].getFullYear())
     // var mailTransport = nodemailer.createTransport('SMTP', {
     //     service: 'Gmail',
     //     auth: {
