@@ -1,16 +1,8 @@
 const socketIO = require("socket.io")
 const router = new (require('koa-router'))();
 const db = require("./db");
-const http = require("http")
 const send = require("koa-send");
 const { unlink } = require("fs");
-
-let notes = {
-    1: { x: 0.1, y: 0.1, content: "123" },
-    2: { x: 0.2, y: 0.2, content: "123" },
-    3: { x: 0.3, y: 0.3, content: "123" },
-    4: { x: 0.4, y: 0.4, content: "123" },
-}
 
 router
     .get('/team', async ctx => {
@@ -91,27 +83,29 @@ router
         ctx.status = 200;
     })
     .get('/api/team/blackboard/all', async ctx => {
+        let notes = await db.blackboard.find({owner:{$eq:ctx.session.team}})
         ctx.body = {
             result: true,
             data: notes
         }
     })
     .get('/api/team/blackboard/remove/:id', async ctx => {
-        delete notes[ctx.params.id]
+        await db.blackboard.deleteOne({_id:{$eq:ctx.params.id}})
         ctx.body = {
             result: true
         }
     })
     .post('/api/team/blackboard/new', async ctx => {
-        let newKey = parseInt(Math.random() * Number.MAX_SAFE_INTEGER)
-        notes[newKey] = ctx.request.body
+        let note = new db.blackboard(ctx.request.body)
+        let res = await note.save()
         ctx.body = {
             result: true,
-            id: newKey
+            id: res._id
         }
     })
     .post('/api/team/blackboard/modify/:id', async ctx => {
-        notes[ctx.params.id] = ctx.request.body
+        let [note] = await db.blackboard.find({_id:{$eq:ctx.params.id}})
+        note.update(ctx.request.body)
         ctx.body = {
             result: true
         }
@@ -232,13 +226,14 @@ router
         }
     })
 
-function io(server,koa) {
-    koa.io = socketIO(server, {})
+function IO(koa) {
 
-    koa.io.use(async (socket, next) => {
+    const io = socketIO(koa.server, {})
+
+    io.use(async (socket, next) => {
         let error = null
         try {
-            let ctx = koa.createContext(socket.request, new http.OutgoingMessage())
+            let ctx = koa.createContext(socket.request, new koa.http.OutgoingMessage())
             await ctx.session._sessCtx.initFromExternal()
             socket.session = ctx.session
         } catch (err) {
@@ -247,15 +242,15 @@ function io(server,koa) {
         return next(error)
     })
     
-    koa.io.on("connection", (client) => {
+    io.on("connection", (client) => {
         client.join(client.session.team)
         client.room = client.session.team
-        koa.io.in(client.room).emit("userin", {
+        io.in(client.room).emit("userin", {
             id: client.session.id,
             name: client.session.name,
         })
         client.on("message", async function (message) {
-            koa.io.in(client.room).emit("message", {
+            io.in(client.room).emit("message", {
                 id: client.session.id,
                 picture: client.session.image,
                 name: client.session.name,
@@ -263,7 +258,7 @@ function io(server,koa) {
             })
         })
         client.on("disconnect", async function () {
-            koa.io.in(client.room).emit("userout", {
+            io.in(client.room).emit("userout", {
                 id: client.session.id,
                 name: client.session.name,
             })
@@ -274,5 +269,5 @@ function io(server,koa) {
 
 module.exports = {
     routes: router.routes(),
-    io:io
+    io:IO
 }

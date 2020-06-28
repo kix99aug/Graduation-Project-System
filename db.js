@@ -62,7 +62,7 @@ let comment = {
         return model.save()
     },
     find: async function (obj) {
-        let query = await Models.comment.find(obj)
+        let query = await Models.comment.find(obj).populate("sender","name").exec()
         return query
     },
     modify: async function (objWhere, objUpdate) {
@@ -288,4 +288,5 @@ module.exports = {
     backup: backup,
     systemSet: systemSet,
     schedule: schedule,
+    blackboard:Models.blackboard
 }
