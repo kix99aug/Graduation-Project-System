@@ -1,10 +1,10 @@
 $("button#delete").click((e) => {
-    let list = $("input:checked ~ label")
+    let list = $("input:checked")
     if (list.length == 0) return
     $(".modal-body > ul").empty()
-    $("input:checked ~ label").each(
+    $("input:checked").each(
         function () {
-            $(".modal-body > ul").append(`<li>${$(this).text()}</li>`)
+            $(".modal-body > ul").append(`<li>${$(this).parent().text().split("編輯專題團隊內容")[0]}</li>`)
         }
     )
     $("#confirmDelete").modal()
@@ -26,7 +26,7 @@ $("button#confirm").click(e => {
 $("input.search").on('input', function () {
     const query = $(this).val()
     $(`input[type="checkbox"]`).each(function () {
-        if ($(this).siblings("label").text().search(query) == -1) {
+        if ($(this).parent().text().split("編輯專題團隊內容")[0].search(query) == -1) {
             $(this).prop(`checked`, false)
             $(this).parent().hide()
         } else {

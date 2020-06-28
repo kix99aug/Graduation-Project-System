@@ -1,4 +1,3 @@
-
 start=location.href.lastIndexOf("ject/")
 projectID=location.href.substring(start+5,location.href.length)
 console.log(projectID)
@@ -21,12 +20,17 @@ function commentBtn(){
     });
     //新增留言到畫面
  
-    forum=document.getElementById('forum_content')
-    copyDiv=forum.querySelector(".content").cloneNode(true)
-    //改 連結 時間 姓名 內容
-    copyDiv.querySelector('span').innerHTML=input
-    copyDiv.querySelector('#time').innerHTML=new Date()
-    namePart=copyDiv.querySelector('.m-0').querySelector('a')
-    namePart.innerHTML=document.getElementById('name').innerHTML
-    forum.appendChild(copyDiv)
+    $("#forum_content").append(`
+    <div class="content">
+        <div class="media m-3">
+            <a ><img src="${$("#logoutMenu img").attr("src")}" class="mr-3 messageicon"
+                    alt="avatar"></a>
+            <div class="media-body">
+                <h5 class="m-0"><a href="/profile">${$("#logoutMenu span").text()}</a></h5>
+                <div id='time' style="font-size:0.2rem">${new Date().toLocaleString()}</div>
+                <span>${input}</span>
+            </div>
+        </div>
+    </div>
+    `)
 }

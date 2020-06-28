@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-    <script src="/static/script/project.js" defer="defer"></script>
     <%- include('header') -%>
 </head>
 
@@ -43,17 +42,6 @@
                             <div class="w-100 h-auto p-4 border rounded discuss" id="forum">
                                 <h4>討論區</h4>
                                 <div id="forum_content">
-                                    <div class="content">
-                                        <div class="media m-3">
-                                            <a ><img src="<%= image %>" class="mr-3 messageicon"
-                                                    alt="avatar"></a>
-                                            <div class="media-body">
-                                                <h5 class="m-0"><a href="/profile/%>"></a>機器人</h5>
-                                                <div id='time' style="font-size:0.2rem">Sat Jun 27 2020 23:05:06 GMT+0800 (台北標準時間)</div>
-                                                <span>我是範例留言</span>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <% for(var i=0; i<comments.length; i++) {%>
                                         <div class="content">
                                             <div class="media m-3">
@@ -61,7 +49,7 @@
                                                         alt="avatar"></a>
                                                 <div class="media-body">
                                                     <h5 class="m-0"><a href="/profile/<%= comments[i].SenderID %>"><%= comments[i].name %></a></h5>
-                                                    <div id='time' style="font-size:0.2rem"><%= comments[i].time %></div>
+                                                    <div id='time' style="font-size:0.2rem"><%= new Date(comments[i].time).toLocaleString() %></div>
                                                     <span><%= comments[i].content %></span>
                                                 </div>
                                             </div>
@@ -91,6 +79,7 @@
             </div>
         </div>
     </div>
+    <script src="/static/script/project.js"></script>
     <%- include('footer') -%>
 </body>
 
