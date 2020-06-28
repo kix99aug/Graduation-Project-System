@@ -10,6 +10,5 @@ function editor() {
     let ele = {};
     ele.content = text;
     $.post(`/api/profile`, ele, (res) => window.location.reload());
-
   }
 }
