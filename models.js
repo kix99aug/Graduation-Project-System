@@ -57,7 +57,7 @@ const backupSchema = Schema({
 })
 
 const systemSetSchema = new Schema({
-    time: Date,
+    date: Date,
 })
 
 const storageSchema = new Schema({
@@ -82,10 +82,13 @@ const blackboardSchema = new Schema({
     owner: Schema.Types.ObjectId,          //team._id
 })
 const conferenceSchema = new Schema({
-    teamId:Schema.Types.ObjectId, 
+    teamId:Schema.Types.ObjectId,
     sender: {type:Schema.Types.ObjectId,ref:"User"},         //訊息的傳送者,user._id
     time: Date,//訊息傳送時間
     content: String,
+})
+const routineSchema = new Schema({
+    time: Number,
 })
 module.exports = {
     user: model('User', userSchema),
@@ -99,4 +102,5 @@ module.exports = {
     schedule: model('schedule', scheduleSchema),
     blackboard: model('blackboard', blackboardSchema),
     conference:model('conference', conferenceSchema),
+    routine:model('routine', routineSchema),
 }
