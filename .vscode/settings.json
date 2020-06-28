@@ -1,6 +1,6 @@
 {
   "code-runner.defaultLanguage": "javascript",
   "code-runner.executorMap": {
-    "javascript": "nodemon ./app.js"
+    "javascript": "npm start"
   }
 }

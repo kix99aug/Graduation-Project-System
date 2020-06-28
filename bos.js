@@ -1,5 +1,6 @@
-const router = new (require('koa-router'))();
-const db = require("./db");
+const router = new (require('koa-router'))()
+const fetch = require("node-fetch")
+const db = require("./db")
 
 const client_id =
     "712826989675-rs5ej0evsmp78hsphju6sudhhn3pb38s.apps.googleusercontent.com"
@@ -72,9 +73,8 @@ router
     })
     .get('/project/:id', async ctx => {
         //切出team id
-        url = ctx.request.url
-        start = url.lastIndexOf("ject/")
-        projectID = ctx.request.url.substring(start + 5, url.length)
+        projectID = ctx.params.id
+        ctx.params.id
         let [projectContext] = await db.team.find({ "_id": { "$eq": projectID } })
         let member = await db.user.find({ "team": { "$eq": projectID } })
         let memberAccount = [] //學生的學號
@@ -83,18 +83,30 @@ router
         let comments = await db.comment.find({ "teamId": projectID })
         let commentSend = []
         //將資料庫的評論資料換成要顯示的方式
+        //評論資料
         for (i in comments) {
-            sender = await db.user.find({ "_id": { "$eq": comments[i].sender } })
-            senderName = sender[0].name
-            Acomment = { 'name': senderName, 'time': comments[i].time, 'content': comments[i].content, 'SenderID': comments[i].sender }
+            [sender] = await db.user.find({ "_id": { "$eq": comments[i].sender } })
+            senderName = sender.name
+            Acomment = { 
+                'name': senderName, 
+                'time': comments[i].time, 
+                'content': comments[i].content, 
+                'SenderID': comments[i].sender,
+                'SenderImage':sender.imageLink,
+            }
             commentSend.push(Acomment)
         }
+        //團隊成員資料
         for (i in member) {
             if (member[i].group == 3) {
                 memberAccount.push({ 'account': member[i].account, 'name': member[i].name })
             } else {
                 teachName = member[i].name
             }
+        }
+        reward=projectContext.reward
+        if(reward==null){
+            reward=[]
         }
         await ctx.render("project", {
             title: "畢業專題交流平台",
@@ -104,7 +116,8 @@ router
             member: memberAccount,
             teachName: teachName,
             projectInfo: projectInfo,
-            comments: commentSend
+            comments: commentSend,
+            reward:reward
         })
     })
     .post('/search', async ctx => {
@@ -146,7 +159,13 @@ router
             // 確認資料庫
             let account = googleData.email.split('@')[0]
             let [user] = await db.user.find({ "account": { "$eq": account } })
-            if (!user) user = await db.user.new(account, googleData.name, null, null, googleData.email, null, null, null, null, null)
+            if (!user){
+                 user = await db.user.new(account, googleData.name, null, null, googleData.email, null, null, null, null, null,googleData.picture)
+            }else{
+                console.log('picture')
+                console.log(googleData.picture)
+                await db.user.modify( { "account": { "$eq": account } }, { "imageLink": googleData.picture } )
+            }
             if (user.group === 1) {
                 await db.user.modify({ "_id": user._id }, { "group": 1 })
                 console.log(user)
@@ -174,11 +193,13 @@ router
     })
 
     .post("/api/profile", async (ctx) => {
-        let [user] = await db.user.find({ _id: { $eq: ctx.session.id } });
-        await user.update({ intro: ctx.request.body.content });
+        let [user] = await db.user.find({ _id: { $eq: ctx.session.id } })
+        await user.update({ intro: ctx.request.body.content })
         ctx.body = {
             result: true,
-        };
+        }
     })
 
-module.exports = router.routes()
+module.exports = {
+    routes:router.routes()
+}

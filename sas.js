@@ -293,4 +293,8 @@ router
         // ctx.status = 200;
     })
 
-module.exports = router.routes()
+
+    module.exports = {
+        routes:router.routes()
+    }
+    

@@ -12,6 +12,7 @@ const userSchema = new Schema({
     link: String,           //個人網站的link
     score: Number,
     intro: String,
+    imageLink:String,
 })
 
 const commentSchema = new Schema({
