@@ -65,50 +65,15 @@ koa.use(bodyParser({
     urlencoded: true,
 }))
 
-koa.use(bos)
+koa.use(bos.routes)
 
-koa.use(pms)
+koa.use(pms.routes)
 
-koa.use(sas)
+koa.use(sas.routes)
 
 const server = http.createServer(koa.callback())
 
-koa.io = socketIO(server, {})
-
-koa.io.use(async (socket, next) => {
-    let error = null
-    try {
-        let ctx = koa.createContext(socket.request, new http.OutgoingMessage())
-        await ctx.session._sessCtx.initFromExternal()
-        socket.session = ctx.session
-    } catch (err) {
-        error = err
-    }
-    return next(error)
-})
-
-koa.io.on("connection", (client) => {
-    client.join(client.session.team)
-    client.room = client.session.team
-    koa.io.in(client.room).emit("userin", {
-        id: client.session.id,
-        name: client.session.name,
-    })
-    client.on("message", async function (message) {
-        koa.io.in(client.room).emit("message", {
-            id: client.session.id,
-            picture: client.session.image,
-            name: client.session.name,
-            message: message,
-        })
-    })
-    client.on("disconnect", async function () {
-        koa.io.in(client.room).emit("userout", {
-            id: client.session.id,
-            name: client.session.name,
-        })
-    })
-})
+pms.io(server,koa)
 
 server.listen(3000, async (e) => {
     //   db.user.modify({"name":"潘彥霖"},{"group":1})

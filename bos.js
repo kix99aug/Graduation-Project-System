@@ -182,4 +182,6 @@ router
         }
     })
 
-module.exports = router.routes()
+module.exports = {
+    routes:router.routes()
+}
