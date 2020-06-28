@@ -23,14 +23,8 @@ btn.addEventListener("click",function(){
         ma[i] = mA[i].value
     }
 
-    for(var i = 0;i<origin_ma.length;i++){
-        for(var j =0; j <ma.length;j++){
-            if(ma[j] == origin_ma[i]) break;
-            else if(j == ma.length-1) del_ma
-        }
-    }
     ma[mA.length] = lA
     ele.mas = ma
     $.post(`/api/admin/editPI${window.location.pathname.substr(window.location.pathname.lastIndexOf("/"))
-}`, ele, (res) => window.location.reload());
+    }`, ele, (res) => window.location.reload());
 })

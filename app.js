@@ -278,12 +278,14 @@ router
     })
     .get('/admin/managePT', async ctx => {
         let ptList = await db.team.find({});
+        let teachers = await db.user.find({group:{$eq:"2"}});
         await ctx.render("admin/projectAndteamManagement", {
             title: "畢業專題交流平台",
             subtitle: "管理專題 & 團隊",
             name: ctx.session.name ? ctx.session.name : "訪客",
             image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
             ptItems: ptList,
+            teachers:teachers
         })
     })
     .get('/admin/editPI/:id', async ctx => {
