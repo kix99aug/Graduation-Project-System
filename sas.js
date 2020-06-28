@@ -184,7 +184,6 @@ router
         }
     })
     //admin
-
     .put('/api/admin/user', async (ctx) => {
         let res = await db.user.new(
             ctx.request.body
@@ -194,7 +193,6 @@ router
             id: res._id,
         };
     })
-
 
     .put('/api/admin/projectTeam', async (ctx) => {
         let res = await db.team.new(
@@ -233,7 +231,11 @@ router
         await timeSet.update({ 'year': ctx.request.body.year })
         await timeSet.update({ 'month': ctx.request.body.month })
         await timeSet.update({ 'day': ctx.request.body.day })
+        ctx.body = {
+            result: true
+        }
     })
+
     .post('/api/admin/projecTimeSetting', async function (ctx) {
         await db.backup.new(Date(ctx.request.body.date))
         console.log(' 有new 了喔')
@@ -243,14 +245,14 @@ router
             result: true
         }
     })
+
     .post('/api/admin/reminderTimeSetting', async function (ctx) {
-        await db.reminder.new(new Date(ctx.request.body.date))
+        await db.reminder.new("",new Date(ctx.request.body.date))
         console.log(' 有new 了喔')
         ctx.body = {
             result: true
         }
     })
-
     //admin
     .post('/api/admin/ptList', async function (ctx) {
         let ptList = await db.team.find();
@@ -292,8 +294,6 @@ router
         // ctx.status = 200;
     })
 
-
     module.exports = {
         routes:router.routes()
     }
-    
