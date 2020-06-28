@@ -10,6 +10,11 @@ function backUpTime(){
     year=setDay.getFullYear()
     month=setDay.getMonth()
     document.getElementById('showBackUpTime').innerHTML=year+"年"+(month+1)+"月"+day+"日"
+    let ele={};
+    ele.routine = parseInt(inputDays);
+    console.log(ele.routine+"00000000000000000000000000000")
+
+    $.post(`/api/admin/backupTimeSetting`, ele, (res) => window.location.reload());
 }
 
 $(function(){
