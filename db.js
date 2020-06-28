@@ -227,9 +227,9 @@ let storage = {
 }
 
 let systemSet = {
-    new: async function (time) {
+    new: async function (date) {
         let model = new Models.systemSet({
-            time: time
+            date: date,
         })
         return model.save()
     },
@@ -305,7 +305,30 @@ let conference = {
         })
     }
 }
-
+let routine = {
+    new: async function (time) {
+        let model = new Models.routine({
+            time: time,
+        })
+        return model.save()
+    },
+    find: async function (obj) {
+        let query = await Models.routine.find(obj).populate("sender","avatar name").exec()
+        return query
+    },
+    modify: async function (objWhere, objUpdate) {
+        Models.routine.update(objWhere, objUpdate, function (err, res) {
+            if (err) console.error(err)
+            else console.log(res)
+        })
+    },
+    remove: async function (objWhere) {
+        Models.routine.remove(objWhere, function (err, res) {
+            if (err) console.error(err)
+            else console.log(res)
+        })
+    }
+}
 
 module.exports = {
     user: user,
@@ -319,4 +342,5 @@ module.exports = {
     schedule: schedule,
     blackboard:Models.blackboard,
     conference:conference,
+    routine:routine
 }

@@ -44,6 +44,31 @@
     <%- include('../nav') -%>
     <div class="wrapper mt-n5">
         <%- include('sidebar') -%>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">指定為海報</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        將這張圖片設置為海報，提供給所有使用者查閱，可隨時更改其他圖片為海報。
+                    </div>
+                    <div class="modal-footer">
+                        <div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">否</button>
+                        </div>
+                        <div>
+                            <button type="button" class="confirm btn btn-primary" data-dismiss="modal">是</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="content w-100 p-5 mx-auto">
             <h4 class="w-100 h-100 m-0 align-items-center justify-content-center" id="empty" style="display: none;">目前沒有檔案<i class="ml-1 fas fa-coffee"></i></h4>
             <div class="card-columns">

@@ -46,9 +46,9 @@ router
         });
     })
     .get('/admin/timeSetting', async ctx => {
-        if ((await db.systemSet.find()).length == 0) {
-            await db.systemSet.new(null);
-        }
+        // if ((await db.systemSet.find()).length == 0) {
+        //     await db.systemSet.new(new Date());
+        // }
         let [timeset] = await db.systemSet.find({})
         let backUpData = await db.backup.find({})
         await ctx.render('admin/time', {
@@ -221,30 +221,35 @@ router
         ctx.body = users
     })
 
-    .post('/api/admin/projecTimeSetting', async function (ctx) {
-        if ((await db.systemSet.find()).length == 0) {
-            await db.systemSet.new(null);
+    .post('/api/admin/backupTimeSetting', async function (ctx) {
+        let routine = parseInt(ctx.request.body.routine)
+        await db.routine.new(routine)
+        let now = new Date()
+        let year=now.getFullYear()
+        let month=now.getMonth()
+        let day=now.getDate()
+        let latest = await db.systemSet.find({})
+        if(now.getTime()+routine*24*60*60 < latest[latest.length-1].date.getTime()){
+           await latest[latest.length-1].update({date:new Date(year,month,day+parseInt(routine))})
+           console.log("update 成功")
         }
-        console.log(ctx.request.body)
-        let [timeSet] = await db.systemSet.find({})
-        console.log('0000000000000000000.0000' + ctx.request.body.year)
-        await timeSet.update({ 'year': ctx.request.body.year })
-        await timeSet.update({ 'month': ctx.request.body.month })
-        await timeSet.update({ 'day': ctx.request.body.day })
+        else{
+            await db.systemSet.new(new Date(year,month,day+parseInt(routine)))
+        }
         ctx.body = {
             result: true
         }
     })
 
-    .post('/api/admin/backupTimeSetting', async function (ctx) {
-        await db.backup.new(Date(ctx.request.body.date))
-        console.log(' 有new 了喔')
-        let lastestBack = await db.backup.find({})
-        let backupLength = (await db.backup.find({})).length
-        ctx.body = {
-            result: true
-        }
-    })
+    // .post('/api/admin/backupTimeSetting', async function (ctx) {
+    //     await db.backup.new(Date(ctx.request.body.date))
+
+    //     let lastestBack = await db.backup.find({})
+    //     let backupLength = (await db.backup.find({})).length
+    //     ctx.body = {
+    //         result: true
+    //     }
+    // })
 
     .post('/api/admin/reminderTimeSetting', async function (ctx) {
         let date = new Date(ctx.request.body.date)
