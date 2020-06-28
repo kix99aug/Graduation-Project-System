@@ -62,8 +62,9 @@ const systemSetSchema = new Schema({
 
 const storageSchema = new Schema({
     filename: String,
-    path: String,
-    owner: Schema.Types.ObjectId,          //team._id
+    path:String,
+    owner:Schema.Types.ObjectId,          //team._id
+    public:Boolean,          //team._id
 })
 
 const scheduleSchema = new Schema({
@@ -75,9 +76,9 @@ const scheduleSchema = new Schema({
 })
 
 const blackboardSchema = new Schema({
-    content: String,
     x: Number,
     y: Number,
+    content: String,
     owner: Schema.Types.ObjectId,          //team._id
 })
 const conferenceSchema = new Schema({

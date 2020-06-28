@@ -96,35 +96,40 @@ router
       owner: { $eq: ctx.session.team },
       _id: { $eq: ctx.params.id },
     });
-    unlink("./" + res.path, (e) => {});
+    unlink("./" + res.path, (e) => { });
     await res.deleteOne();
     ctx.status = 200;
   })
-  .get("/api/team/blackboard/all", async (ctx) => {
+  .get('/api/team/blackboard/all', async ctx => {
+    let notes = await db.blackboard.find({ owner: { $eq: ctx.session.team } })
     ctx.body = {
       result: true,
-      data: notes,
-    };
+      data: notes
+    }
   })
-  .get("/api/team/blackboard/remove/:id", async (ctx) => {
-    delete notes[ctx.params.id];
+  .get('/api/team/blackboard/remove/:id', async ctx => {
+    await db.blackboard.deleteOne({ _id: { $eq: ctx.params.id } })
     ctx.body = {
-      result: true,
-    };
+      result: true
+    }
   })
-  .post("/api/team/blackboard/new", async (ctx) => {
-    let newKey = parseInt(Math.random() * Number.MAX_SAFE_INTEGER);
-    notes[newKey] = ctx.request.body;
+  .post('/api/team/blackboard/new', async ctx => {
+    ctx.request.body.owner = ctx.session.team
+    let note = new db.blackboard(ctx.request.body)
+    let res = await note.save()
     ctx.body = {
       result: true,
-      id: newKey,
-    };
+      id: res._id
+    }
   })
-  .post("/api/team/blackboard/modify/:id", async (ctx) => {
-    notes[ctx.params.id] = ctx.request.body;
+  .post('/api/team/blackboard/modify/:id', async ctx => {
+    let [note] = await db.blackboard.find({ _id: { $eq: ctx.params.id } })
+    let {x,y,content} = ctx.request.body
+    console.log(x,y,content)
+    await note.update({x:parseFloat(ctx.request.body.x),y:parseFloat(ctx.request.body.y),content:ctx.request.body.content})
     ctx.body = {
-      result: true,
-    };
+      result: true
+    }
   })
   .post("/api/team/info", async (ctx) => {
     let [user] = await db.user.find({ _id: { $eq: ctx.session.id } });
@@ -241,8 +246,19 @@ router
     await db.comment.new(data.content, ctx.session.id, new Date(), data.teamId);
     ctx.body = {
       result: true,
-    };
-  });
+    }
+  })
+  .get("/api/team/info/poster/:id",async ctx=>{
+    let [team] = await db.team.find({_id:{$eq:ctx.session.team}})
+    let [new_image] = await db.storage.find({_id:{$eq:ctx.params.id}})
+    let [old_image] = await db.storage.find({_id:{$eq:team.poster}})
+    if(old_image) await old_image.update({public:false})
+    await new_image.update({public:true})
+    await team.update({poster:new_image._id})
+    ctx.body = {
+      result: true,
+    }
+  })
 
 function io(koa) {
   koa.io = socketIO(koa.server, {});
@@ -264,17 +280,19 @@ function io(koa) {
     client.room = client.session.team;
     let history = await db.conference.find({
       teamId: { $eq: client.session.team },
-    });
+    })
+    let historyToSend = []
     for (let i in history) {
-      client.emit("message", {
+      historyToSend.push({
         id: history[i].sender._id,
         picture: history[i].sender.avatar
           ? history[i].sender.avatar
           : "/static/images/favicon_sad.png",
         name: history[i].sender.name,
         message: history[i].content,
-      });
+      })
     }
+    await client.emit("history",historyToSend)
     koa.io.in(client.room).emit("userin", {
       id: client.session.id,
       name: client.session.name,
@@ -286,7 +304,7 @@ function io(koa) {
         name: client.session.name,
         message: message,
       });
-      await db.conference.new(client.session.team,client.session.id,new Date(),message)
+      await db.conference.new(client.session.team, client.session.id, new Date(), message)
     });
     client.on("disconnect", async function () {
       koa.io.in(client.room).emit("userout", {

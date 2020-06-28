@@ -1,30 +1,36 @@
-const router = new (require('koa-router'))()
-const fetch = require("node-fetch")
-const db = require("./db")
+const router = new (require("koa-router"))();
+const fetch = require("node-fetch");
+const db = require("./db");
+const send = require("koa-send");
 
 const client_id =
-    "712826989675-rs5ej0evsmp78hsphju6sudhhn3pb38s.apps.googleusercontent.com"
-const client_secret = "zlT87D-MtpTF5ltC3w5k2hKN"
+    "712826989675-rs5ej0evsmp78hsphju6sudhhn3pb38s.apps.googleusercontent.com";
+const client_secret = "zlT87D-MtpTF5ltC3w5k2hKN";
 
 router
-    .get('/', async ctx => {
-        ctx.redirect("/intro")
+    .get("/", async (ctx) => {
+        ctx.redirect("/intro");
     })
-    .get('/intro', async ctx => {
+    .get("/intro", async (ctx) => {
         await ctx.render("intro", {
-            title: "高雄大學資訊工程學系 畢業專題交流平台"
-        })
+            title: "高雄大學資訊工程學系 畢業專題交流平台",
+        });
     })
-    .get('/login', async ctx => {
-        var url = `https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&redirect_uri=http://localhost:3000/loginCallback&response_type=code&client_id=${client_id}`
-        ctx.redirect(url)
+    .get("/login", async (ctx) => {
+        var url = `https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&redirect_uri=http://localhost:3000/loginCallback&response_type=code&client_id=${client_id}`;
+        ctx.redirect(url);
     })
     .get('/index', async ctx => {
-        await ctx.render("index", {
-            title: "畢業專題交流平台",
-            name: ctx.session.name ? ctx.session.name : "訪客",
-            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
-        })
+        if(ctx.session.admin === 1){
+            ctx.redirect("/admin/index")
+        }
+        else{
+            await ctx.render("index", {
+                title: "畢業專題交流平台",
+                name: ctx.session.name ? ctx.session.name : "訪客",
+                image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+            })
+        }
     })
     .get('/profile', async ctx => {
         let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
@@ -35,7 +41,9 @@ router
         await ctx.render("profile", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
-            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            image: ctx.session.image
+                ? ctx.session.image
+                : "/static/images/favicon_sad.png",
             grade: "避不了業",
             professor: professor.name ? professor.name : "???",
             introduction: user.intro ? user.intro : "親~請輸入您的簡介歐~~~",
@@ -99,70 +107,109 @@ router
             data: result
         })
     })
-    .get("/loginCallback", async ctx => {
+    .get("/loginCallback", async (ctx) => {
         let formData = {
             code: ctx.query.code,
             client_id: client_id,
             client_secret: client_secret,
             grant_type: "authorization_code",
-            redirect_uri: "http://localhost:3000/loginCallback"
-        }
+            redirect_uri: "http://localhost:3000/loginCallback",
+        };
         let json = await (
             await fetch("https://www.googleapis.com/oauth2/v4/token", {
-                method: 'POST',
+                method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: Object.keys(formData).map(keyName => {
-                    return encodeURIComponent(keyName) + '=' + encodeURIComponent(formData[keyName])
-                }).join('&')
+                body: Object.keys(formData)
+                    .map((keyName) => {
+                        return (
+                            encodeURIComponent(keyName) +
+                            "=" +
+                            encodeURIComponent(formData[keyName])
+                        );
+                    })
+                    .join("&"),
             })
-        ).json()
+        ).json();
         let googleData = await (
-            await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${json.access_token}`)
-        ).json()
-        if (googleData.hd === "mail.nuk.edu.tw" || googleData.hd === "go.nuk.edu.tw") {
+            await fetch(
+                `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${json.access_token}`
+            )
+        ).json();
+        
+        let gender = await fetch(
+                `https://www.googleapis.com/auth/user.gender.read?access_token=${json.access_token}`
+            )
+        let qqq = await gender.text()
+        console.log(qqq)
+        if (
+            googleData.hd === "mail.nuk.edu.tw" ||
+            googleData.hd === "go.nuk.edu.tw"
+        ) {
             // 確認資料庫
-            let account = googleData.email.split('@')[0]
-            let [user] = await db.user.find({ "account": { "$eq": account } })
-            if (!user){
-                 user = await db.user.new(account, googleData.name, null, null, googleData.email, null, null, null, null, null,googleData.picture)
-            }else{
-                console.log('picture')
-                console.log(googleData.picture)
-                await db.user.modify( { "account": { "$eq": account } }, { "avatar": googleData.picture } )
+            let account = googleData.email.split("@")[0];
+            let [user] = await db.user.find({ account: { $eq: account } });
+            if (!user) {
+                user = await db.user.new(
+                    account,
+                    googleData.name,
+                    null,
+                    null,
+                    googleData.email,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    googleData.picture
+                );
+            } else {
+                console.log("picture");
+                console.log(googleData.picture);
+                await db.user.modify(
+                    { account: { $eq: account } },
+                    { avatar: googleData.picture }
+                );
             }
             if (user.group === 1) {
-                await db.user.modify({ "_id": user._id }, { "group": 1 })
-                console.log(user)
-                ctx.session.login = true
-                ctx.session.id = user._id
-                ctx.session.name = googleData.name
-                ctx.session.team = user.team
-                ctx.session.image = googleData.picture
-                ctx.session.admin = user.group
-                ctx.redirect("/admin")
-            }
-            else {
-                console.log(user)
-                ctx.session.login = true
-                ctx.session.id = user._id
-                ctx.session.name = googleData.name
-                ctx.session.team = user.team
-                ctx.session.image = googleData.picture
-                ctx.redirect("/index")
+                await db.user.modify({ _id: user._id }, { group: 1 });
+                console.log(user);
+                ctx.session.login = true;
+                ctx.session.id = user._id;
+                ctx.session.name = googleData.name;
+                ctx.session.team = user.team;
+                ctx.session.image = googleData.picture;
+                ctx.session.admin = user.group;
+                ctx.redirect("/admin");
+            } else {
+                console.log(user);
+                ctx.session.login = true;
+                ctx.session.id = user._id;
+                ctx.session.name = googleData.name;
+                ctx.session.team = user.team;
+                ctx.session.image = googleData.picture;
+                ctx.redirect("/index");
             }
         } else {
             // 回傳錯誤
-            ctx.throw(400)
+            ctx.throw(400);
         }
     })
 
     .post("/api/profile", async (ctx) => {
-        let [user] = await db.user.find({ _id: { $eq: ctx.session.id } })
-        await user.update({ intro: ctx.request.body.content })
+        let [user] = await db.user.find({ _id: { $eq: ctx.session.id } });
+        await user.update({ intro: ctx.request.body.content });
         ctx.body = {
             result: true,
-        }
+        };
     })
+
+    .get("/api/storage/:id", async (ctx) => {
+        let [res] = await db.storage.find({
+            _id: { $eq: ctx.params.id },
+        });
+        if(res.public == true) await send(ctx, res.path);
+        else ctx.throw(403)
+    });
 
 module.exports = {
     routes: router.routes()

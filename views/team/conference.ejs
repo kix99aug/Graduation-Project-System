@@ -10,15 +10,17 @@
     <div class="wrapper mt-n5">
       <%- include('sidebar') -%>
       <div class="container-fluid p-3">
-        <div id="messages" class="card-body d-flex flex-column-reverse h-75" >
-
-        </div>
-        <div class="h-25 justify-content-center d-flex py-3">
-          <div id="inputbox" class="input-group">
-            <textarea id="input" class="form-control rounded"></textarea>
-            <button id="button" type="button" class="btn btn-primary ml-3" style="width: 5rem;">
-              <i class="fas fa-paper-plane"></i>
-            </button>
+        <div id="chat" class="h-100 bg-transparent d-flex flex-column" >
+          <div id="messages" class="flex-grow-1 card-body d-flex flex-column-reverse overflow-auto">
+            
+          </div>
+          <div class="justify-content-center d-flex py-3">
+            <div class="input-group m-3">
+              <input type="text" class="form-control" aria-describedby="message" id="message" >
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="button" id="submit"><i class="fas fa-paper-plane"></i></button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
