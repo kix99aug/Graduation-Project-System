@@ -277,6 +277,33 @@ let schedule = {
         })
     },
 }
+let conference = {
+    new: async function (teamId, text, image, sender, time) {
+        let model = new Models.conference({
+            teamId: teamId,
+            text: text,
+            sender: sender,
+            time: time,
+        })
+        return model.save()
+    },
+    find: async function (obj) {
+        let query = await Models.conference.find(obj)
+        return query
+    },
+    modify: async function (objWhere, objUpdate) {
+        Models.conference.update(objWhere, objUpdate, function (err, res) {
+            if (err) console.error(err)
+            else console.log(res)
+        })
+    },
+    remove: async function (objWhere) {
+        Models.conference.remove(objWhere, function (err, res) {
+            if (err) console.error(err)
+            else console.log(res)
+        })
+    }
+}
 
 module.exports = {
     user: user,
