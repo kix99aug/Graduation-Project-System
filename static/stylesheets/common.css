@@ -4,7 +4,6 @@ body {
   font-family: "Noto Sans TC", sans-serif;
 }
 
-
 /* scrollbar width */
 *::-webkit-scrollbar {
   width: 7.5px;
@@ -19,16 +18,22 @@ body {
 *::-webkit-scrollbar-thumb {
   border-radius: 1rem;
   background-color: #5ee7df;
-  background-image: -webkit-gradient(linear, left bottom, left top, from(#5ee7df), to(#b490ca));
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    from(#5ee7df),
+    to(#b490ca)
+  );
   background-image: -webkit-linear-gradient(bottom, #5ee7df 0%, #b490ca 100%);
   background-image: linear-gradient(to top, #5ee7df 0%, #b490ca 100%);
 }
-
 
 .messageicon {
   width: 4rem;
   height: 4rem;
   object-fit: cover;
+  border-radius: 50%;
 }
 .messageicon2 {
   width: 6rem;
@@ -56,7 +61,7 @@ body {
   height: 90vh;
   width: 100vw;
   align-items: stretch;
-  overflow:auto;
+  overflow: auto;
 }
 
 .wrapper > .content {
@@ -114,7 +119,7 @@ body {
 .manageBg {
   width: 50%;
   height: auto;
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.35);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.35);
 }
 
 .project-list {
