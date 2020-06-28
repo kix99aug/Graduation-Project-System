@@ -278,17 +278,17 @@ let schedule = {
     },
 }
 let conference = {
-    new: async function (content, sender, time, teamId) {
+    new: async function (teamId,sender,time,content, ) {
         let model = new Models.conference({
             content: content,
             sender: sender,
             time: time,
-            teamId: teamId
+            teamId: teamId,
         })
         return model.save()
     },
     find: async function (obj) {
-        let query = await Models.conference.find(obj)
+        let query = await Models.conference.find(obj).populate("sender","avatar name").exec()
         return query
     },
     modify: async function (objWhere, objUpdate) {
