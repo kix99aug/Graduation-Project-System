@@ -13,6 +13,7 @@ const userSchema = new Schema({
     score: Number,
     intro: String,
     imageLink:String,
+    gender: String,
 })
 
 const commentSchema = new Schema({
