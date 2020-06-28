@@ -20,11 +20,16 @@ router
         ctx.redirect(url)
     })
     .get('/index', async ctx => {
-        await ctx.render("index", {
-            title: "畢業專題交流平台",
-            name: ctx.session.name ? ctx.session.name : "訪客",
-            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
-        })
+        if(ctx.session.admin === 1){
+            ctx.redirect("/admin/index")
+        }
+        else{
+            await ctx.render("index", {
+                title: "畢業專題交流平台",
+                name: ctx.session.name ? ctx.session.name : "訪客",
+                image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+            })
+        }
     })
     .get('/profile', async ctx => {
         let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })

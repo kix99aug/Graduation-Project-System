@@ -41,10 +41,17 @@
         <div class="row">
             <div class="col p-0 mt-5">
                 <div class="row">
-                    <h3 class="row post-row ml-3">個人簡介：</h3>
+                    <h3 class="row post-row ml-3">個人簡介：
                     <% if(canFix==true){ %>
-                        <img src="/static/images/edit (1).png" alt="" class="pb-3 ml-4" id="edit">
+                        <!-- <button
+                        type="button"
+                        class="btn btn-light"
+                        id="edit"
+                        > -->
+                        <i class="far fa-edit" id="edit" style="font-size: 35px; margin-left: 5px;"></i>
+                        <!-- </button> -->
                     <% } %>
+                    </h3>
                 </div>
                 <div class="form-group " >
                     <textarea disabled class="form-control" id="textarea" rows="5" ><%= introduction %></textarea>
