@@ -20,20 +20,24 @@ router
         var url = `https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&redirect_uri=http://localhost:3000/loginCallback&response_type=code&client_id=${client_id}`;
         ctx.redirect(url);
     })
-    .get("/index", async (ctx) => {
-        await ctx.render("index", {
-            title: "畢業專題交流平台",
-            name: ctx.session.name ? ctx.session.name : "訪客",
-            image: ctx.session.image
-                ? ctx.session.image
-                : "/static/images/favicon_sad.png",
-        });
+    .get('/index', async ctx => {
+        if(ctx.session.admin === 1){
+            ctx.redirect("/admin/index")
+        }
+        else{
+            await ctx.render("index", {
+                title: "畢業專題交流平台",
+                name: ctx.session.name ? ctx.session.name : "訪客",
+                image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png"
+            })
+        }
     })
-    .get("/profile", async (ctx) => {
-        let [user] = await db.user.find({ _id: { $eq: ctx.session.id } });
-        let [team] = await db.team.find({ _id: { $eq: user.team } });
-        let [professor] = await db.user.find({ _id: { $eq: team.teacher } });
-
+    .get('/profile', async ctx => {
+        let [user] = await db.user.find({ "_id": { "$eq": ctx.session.id } })
+        let [team] = await db.team.find({ "_id": { "$eq": user.team } })
+        let [professor] = await db.user.find({ "_id": { "$eq": team.teacher } })
+        //學生的profile
+        console.log(user)
         await ctx.render("profile", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
@@ -41,117 +45,67 @@ router
                 ? ctx.session.image
                 : "/static/images/favicon_sad.png",
             grade: "避不了業",
-            professor: "沒人要你",
+            professor: professor.name ? professor.name : "???",
             introduction: user.intro ? user.intro : "親~請輸入您的簡介歐~~~",
             canFix: true,
-        });
+            group:user.group,
+            link:user.link,
+            gender: user.gender ? user.gender : "未知",
+        })
+
+
     })
-    .get("/profile/:id", async (ctx) => {
-        let [user] = await db.user.find({ _id: { $eq: ctx.params.id } });
+    .get('/profile/:id', async ctx => {
+        let [user] = await db.user.find({ "_id": { "$eq": ctx.params.id } })
+        let [team] = await db.team.find({ "_id": { "$eq": user.team } })
+        let [professor] = await db.user.find({ "_id": { "$eq": team.teacher } })
         await ctx.render("profile", {
             title: "畢業專題交流平台",
-            name: ctx.session.name ? ctx.session.name : "訪客",
-            image: ctx.session.image
-                ? ctx.session.image
-                : "/static/images/favicon_sad.png",
-            grade: "避不了業",
-            professor: "沒人要你",
-            introduction: user.intro ? user.intro : "親~請輸入您的簡介歐~~~",
+            name: user.name,
+            image: user.avatar ? user.avatar : "/static/images/favicon_sad.png",
+            grade: user.grade,
+            professor: professor ? professor.name : 無,
+            introduction: user.intro ? user.intro : "無",
             canFix: false,
-        });
+            group:user.group,
+            link:user.link,
+            gender:user.gender,
+        })
     })
-    .get("/projects", async (ctx) => {
-        let teams = await db.team.find({});
-        //資料庫中所有project的資料彙整
-        projectData = [];
-        for (i in teams) {
-            projectName = teams[i].name;
-            projectInfo = teams[i].info;
-            projectId = teams[i]._id;
-            var project = {
-                projectName: projectName,
-                projectInfo: projectInfo,
-                id: projectId,
-            };
-            projectData.push(project);
-        }
+    .get('/projects', async ctx => {
+        let teams = await db.team.find({})
         await ctx.render("projects", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
-            image: ctx.session.image
-                ? ctx.session.image
-                : "/static/images/favicon_sad.png",
-            data: projectData,
-        });
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            data: teams
+        })
     })
-    .get("/project/:id", async (ctx) => {
-        //切出team id
-        projectID = ctx.params.id;
-        ctx.params.id;
-        let [projectContext] = await db.team.find({ _id: { $eq: projectID } });
-        let member = await db.user.find({ team: { $eq: projectID } });
-        let memberAccount = []; //學生的學號
-        let teachName = ""; //
-        let projectInfo = projectContext.info;
-        let comments = await db.comment.find({ teamId: projectID });
-        let commentSend = [];
-        //將資料庫的評論資料換成要顯示的方式
-        //評論資料
-        for (i in comments) {
-            [sender] = await db.user.find({ _id: { $eq: comments[i].sender } });
-            senderName = sender.name;
-            Acomment = {
-                name: senderName,
-                time: comments[i].time,
-                content: comments[i].content,
-                SenderID: comments[i].sender,
-                SenderImage: sender.imageLink,
-            };
-            commentSend.push(Acomment);
-        }
-        //團隊成員資料
-        for (i in member) {
-            if (member[i].group == 3) {
-                memberAccount.push({
-                    account: member[i].account,
-                    name: member[i].name,
-                });
-            } else {
-                teachName = member[i].name;
-            }
-        }
-        reward = projectContext.reward;
-        if (reward == null) {
-            reward = [];
-        }
+    .get('/project/:id', async ctx => {
+        let [project] = await db.team.find({ "_id": { "$eq": ctx.params.id } })
+        let members = await db.user.find({ group: { $eq: 3 }, team: { $eq: ctx.params.id } })
+        let [teahcer] = await db.user.find({ group: { $eq: 2 }, team: { $eq: ctx.params.id } })
+        let comments = await db.comment.find({ "teamId": ctx.params.id })
+        console.log(comments)
         await ctx.render("project", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",
-            image: ctx.session.image
-                ? ctx.session.image
-                : "/static/images/favicon_sad.png",
-            projectName: projectContext.name,
-            member: memberAccount,
-            teachName: teachName,
-            projectInfo: projectInfo,
-            comments: commentSend,
-            reward: reward,
-        });
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            members: members,
+            teahcer: teahcer,
+            project: project,
+            comments: comments
+        })
     })
-    .post("/search", async (ctx) => {
-        input = ctx.request.body.searchInput;
-        console.log(input);
-        result = await db.team.find({ name: new RegExp(input, "g") });
-        console.log(result);
-        if (result.length == 0) {
-            redirect = "/projects";
-        } else {
-            redirect = "/project/" + result[0]._id;
-        }
-        ctx.body = {
-            result: true,
-            redirect: redirect,
-        };
+    .post('/search', async ctx => {
+        let input = ctx.request.body.search
+        let result = await db.team.find({ "name": new RegExp(input, "g") })
+        await ctx.render("projects", {
+            title: "畢業專題交流平台",
+            name: ctx.session.name ? ctx.session.name : "訪客",
+            image: ctx.session.image ? ctx.session.image : "/static/images/favicon_sad.png",
+            data: result
+        })
     })
     .get("/loginCallback", async (ctx) => {
         let formData = {
@@ -258,5 +212,5 @@ router
     });
 
 module.exports = {
-    routes: router.routes(),
-};
+    routes: router.routes()
+}

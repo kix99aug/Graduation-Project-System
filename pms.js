@@ -1,16 +1,8 @@
 const socketIO = require("socket.io");
 const router = new (require("koa-router"))();
 const db = require("./db");
-const http = require("http");
 const send = require("koa-send");
 const { unlink } = require("fs");
-
-let notes = {
-  1: { x: 0.1, y: 0.1, content: "123" },
-  2: { x: 0.2, y: 0.2, content: "123" },
-  3: { x: 0.3, y: 0.3, content: "123" },
-  4: { x: 0.4, y: 0.4, content: "123" },
-};
 
 router
   .get("/team", async (ctx) => {
@@ -104,35 +96,40 @@ router
       owner: { $eq: ctx.session.team },
       _id: { $eq: ctx.params.id },
     });
-    unlink("./" + res.path, (e) => {});
+    unlink("./" + res.path, (e) => { });
     await res.deleteOne();
     ctx.status = 200;
   })
-  .get("/api/team/blackboard/all", async (ctx) => {
+  .get('/api/team/blackboard/all', async ctx => {
+    let notes = await db.blackboard.find({ owner: { $eq: ctx.session.team } })
     ctx.body = {
       result: true,
-      data: notes,
-    };
+      data: notes
+    }
   })
-  .get("/api/team/blackboard/remove/:id", async (ctx) => {
-    delete notes[ctx.params.id];
+  .get('/api/team/blackboard/remove/:id', async ctx => {
+    await db.blackboard.deleteOne({ _id: { $eq: ctx.params.id } })
     ctx.body = {
-      result: true,
-    };
+      result: true
+    }
   })
-  .post("/api/team/blackboard/new", async (ctx) => {
-    let newKey = parseInt(Math.random() * Number.MAX_SAFE_INTEGER);
-    notes[newKey] = ctx.request.body;
+  .post('/api/team/blackboard/new', async ctx => {
+    ctx.request.body.owner = ctx.session.team
+    let note = new db.blackboard(ctx.request.body)
+    let res = await note.save()
     ctx.body = {
       result: true,
-      id: newKey,
-    };
+      id: res._id
+    }
   })
-  .post("/api/team/blackboard/modify/:id", async (ctx) => {
-    notes[ctx.params.id] = ctx.request.body;
+  .post('/api/team/blackboard/modify/:id', async ctx => {
+    let [note] = await db.blackboard.find({ _id: { $eq: ctx.params.id } })
+    let {x,y,content} = ctx.request.body
+    console.log(x,y,content)
+    await note.update({x:parseFloat(ctx.request.body.x),y:parseFloat(ctx.request.body.y),content:ctx.request.body.content})
     ctx.body = {
-      result: true,
-    };
+      result: true
+    }
   })
   .post("/api/team/info", async (ctx) => {
     let [user] = await db.user.find({ _id: { $eq: ctx.session.id } });
@@ -218,6 +215,7 @@ router
     };
   })
   .post("/api/team/newSchedule", async (ctx) => {
+    console.log(ctx.request.body)
     let [user] = await db.user.find({ _id: { $eq: ctx.session.id } });
     data = ctx.request.body;
     let Sid;
@@ -232,7 +230,7 @@ router
     };
   })
   .post("/api/team/deleteSchedule", async (ctx) => {
-    //console.log(ctx.request.body)
+    console.log(ctx.request.body)
     deleteData = ctx.request.body;
     for (i in deleteData) {
       await db.schedule.remove({ _id: deleteData[i] });
@@ -262,13 +260,13 @@ router
     }
   })
 
-function io(server, koa) {
-  koa.io = socketIO(server, {});
+function io(koa) {
+  koa.io = socketIO(koa.server, {});
 
   koa.io.use(async (socket, next) => {
     let error = null;
     try {
-      let ctx = koa.createContext(socket.request, new http.OutgoingMessage());
+      let ctx = koa.createContext(socket.request, new koa.http.OutgoingMessage());
       await ctx.session._sessCtx.initFromExternal();
       socket.session = ctx.session;
     } catch (err) {
@@ -282,17 +280,19 @@ function io(server, koa) {
     client.room = client.session.team;
     let history = await db.conference.find({
       teamId: { $eq: client.session.team },
-    });
+    })
+    let historyToSend = []
     for (let i in history) {
-      client.emit("message", {
+      historyToSend.push({
         id: history[i].sender._id,
         picture: history[i].sender.avatar
           ? history[i].sender.avatar
           : "/static/images/favicon_sad.png",
         name: history[i].sender.name,
         message: history[i].content,
-      });
+      })
     }
+    await client.emit("history",historyToSend)
     koa.io.in(client.room).emit("userin", {
       id: client.session.id,
       name: client.session.name,
@@ -304,7 +304,7 @@ function io(server, koa) {
         name: client.session.name,
         message: message,
       });
-      await db.conference.new(client.session.team,client.session.id,new Date(),message)
+      await db.conference.new(client.session.team, client.session.id, new Date(), message)
     });
     client.on("disconnect", async function () {
       koa.io.in(client.room).emit("userout", {

@@ -102,9 +102,10 @@ $("button.confirm").click(function(){
 })
 
 $(".content")
-    .on('dragover', function (e) {
+    .on('dragleave', function (e) {
         e.preventDefault();
         e.stopPropagation();
+        $(".drop-prompt").fadeOut(100)
     })
     .on('dragenter', function (e) {
         e.preventDefault();

@@ -1,4 +1,4 @@
-let notes;
+let notes={}
 
 let noteW, noteH;
 
@@ -148,7 +148,9 @@ fetch("/api/team/blackboard/all")
     if (json.result) {
       resetNoteSize();
       console.log(json.data);
-      notes = json.data;
+      for(let i in json.data){
+        notes[json.data[i]._id] = json.data[i]
+      }
       run();
     }
   });
