@@ -82,7 +82,7 @@ server.listen(3000, async (e) => {
     var today = new Date();
     var notify = new Date();
     notify = await db.reminder.find({})
-    console.log(notify[0].getFullYear())
+    console.log(notify[0].message)
     // var mailTransport = nodemailer.createTransport('SMTP', {
     //     service: 'Gmail',
     //     auth: {

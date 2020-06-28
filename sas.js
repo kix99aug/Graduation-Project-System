@@ -47,7 +47,6 @@ router
     })
     .get('/admin/timeSetting', async ctx => {
         if ((await db.systemSet.find()).length == 0) {
-            console.log('有啦幹')
             await db.systemSet.new(null);
         }
         let [timeset] = await db.systemSet.find({})
