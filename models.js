@@ -74,9 +74,9 @@ const scheduleSchema = new Schema({
 })
 
 const blackboardSchema = new Schema({
-    content: String,
     x: Number,
     y: Number,
+    content: String,
     owner: Schema.Types.ObjectId,          //team._id
 })
 const conferenceSchema = new Schema({
