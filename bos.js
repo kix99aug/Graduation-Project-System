@@ -58,7 +58,9 @@ router
             grade: user.grade,
             professor: professor ? professor.name : 無,
             introduction: user.intro ? user.intro : "無",
-            canFix: false
+            canFix: false,
+            group:user.group,
+            link:user.link,
         })
     })
     .get('/projects', async ctx => {
@@ -75,6 +77,7 @@ router
         let members = await db.user.find({ group: { $eq: 3 }, team: { $eq: ctx.params.id } })
         let [teahcer] = await db.user.find({ group: { $eq: 2 }, team: { $eq: ctx.params.id } })
         let comments = await db.comment.find({ "teamId": ctx.params.id })
+        console.log(comments)
         await ctx.render("project", {
             title: "畢業專題交流平台",
             name: ctx.session.name ? ctx.session.name : "訪客",

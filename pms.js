@@ -210,6 +210,7 @@ router
     };
   })
   .post("/api/team/newSchedule", async (ctx) => {
+    console.log(ctx.request.body)
     let [user] = await db.user.find({ _id: { $eq: ctx.session.id } });
     data = ctx.request.body;
     let Sid;
@@ -224,7 +225,7 @@ router
     };
   })
   .post("/api/team/deleteSchedule", async (ctx) => {
-    //console.log(ctx.request.body)
+    console.log(ctx.request.body)
     deleteData = ctx.request.body;
     for (i in deleteData) {
       await db.schedule.remove({ _id: deleteData[i] });

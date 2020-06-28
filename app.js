@@ -78,8 +78,11 @@ pms.io(koa)
 koa.server.listen(3000, async (e) => {
     if (e) console.error(e)
     else console.log("Koa server run on http://localhost:3000/")
-    if(await db.reminder.find({}) === undefined);
-    else{
+    let k=await db.reminder.find({})
+    if(k.length == 0){
+
+    }else{
+        
         var today = new Date();
         var notify = new Date();
         var email_arr = []
