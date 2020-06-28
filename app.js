@@ -120,7 +120,7 @@ koa.server = http.createServer(koa.callback())
 koa.http = http
 
 
-server.listen(3000, async (e) => {
+koa.server.listen(3000, async (e) => {
     sendEmail();
 
     console.log("Koa server run on http://localhost:3000/")
