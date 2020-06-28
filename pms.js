@@ -243,13 +243,13 @@ router
     };
   });
 
-function io(server, koa) {
-  koa.io = socketIO(server, {});
+function io(koa) {
+  koa.io = socketIO(koa.server, {});
 
   koa.io.use(async (socket, next) => {
     let error = null;
     try {
-      let ctx = koa.createContext(socket.request, new http.OutgoingMessage());
+      let ctx = koa.createContext(socket.request, new koa.http.OutgoingMessage());
       await ctx.session._sessCtx.initFromExternal();
       socket.session = ctx.session;
     } catch (err) {
