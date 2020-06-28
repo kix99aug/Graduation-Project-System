@@ -208,8 +208,6 @@ router
     .delete('/api/admin/projectTeam/:id', async function (ctx) {
         let res = await db.team.remove({ _id: { '$eq': ctx.params.id } })
         let member=await db.user.find({ team: { '$eq': ctx.params.id } })
-        console.log('member.lengthlengthlengthlengthlengthlengthlengthlengthlengthlengthlength')
-        console.log(member.length)
         for(i in member){
             await db.user.modify({ team: { '$eq': ctx.params.id }},{team:null} )
         }
