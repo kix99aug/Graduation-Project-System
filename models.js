@@ -63,6 +63,7 @@ const storageSchema = new Schema({
     filename: String,
     path:String,
     owner:Schema.Types.ObjectId,          //team._id
+    public:Boolean,          //team._id
 })
 
 const scheduleSchema = new Schema({

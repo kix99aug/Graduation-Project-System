@@ -248,8 +248,19 @@ router
     await db.comment.new(data.content, ctx.session.id, new Date(), data.teamId);
     ctx.body = {
       result: true,
-    };
-  });
+    }
+  })
+  .get("/api/team/info/poster/:id",async ctx=>{
+    let [team] = await db.team.find({_id:{$eq:ctx.session.team}})
+    let [new_image] = await db.storage.find({_id:{$eq:ctx.params.id}})
+    let [old_image] = await db.storage.find({_id:{$eq:team.poster}})
+    if(old_image) await old_image.update({public:false})
+    await new_image.update({public:true})
+    await team.update({poster:new_image._id})
+    ctx.body = {
+      result: true,
+    }
+  })
 
 function io(server, koa) {
   koa.io = socketIO(server, {});

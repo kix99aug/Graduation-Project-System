@@ -18,11 +18,16 @@ function makeCard(ele, div) {
                     <i class="fas fa-${fa} mr-3"></i>
                     <h6>${ele.filename}</h6>
                 </div>
-                <div class="h-100 w-100 position-absolute selection" style="display: none;">
-                    <div class="download h-100 w-50 d-flex justify-content-center align-items-center"><i
-                            class="fas fa-download"></i></div>
-                    <div class="delete h-100 w-50 d-flex justify-content-center align-items-center"><i
-                            class="fas fa-trash"></i></div>
+                <div class="h-100 w-100 row position-absolute selection  m-0" style="display: none;">
+                    <div class="download h-100 col d-flex justify-content-center align-items-center">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <div class="setting h-100 col d-flex justify-content-center align-items-center">
+                        <i class="fas fa-cogs " ></i>
+                    </div>
+                    <div class="delete h-100 col d-flex justify-content-center align-items-center">
+                        <i class="fas fa-trash"></i>
+                    </div>
                 </div>
             `)
     } else if (fa == "file-video") {
@@ -32,11 +37,13 @@ function makeCard(ele, div) {
                 <i class="fas fa-${fa} mr-3"></i>
                 <h6>${ele.filename}</h6>
             </div>
-            <div class="h-100 w-100 position-absolute selection" style="display: none;">
-                <div class="download h-100 w-50 d-flex justify-content-center align-items-center"><i
-                        class="fas fa-download"></i></div>
-                <div class="delete h-100 w-50 d-flex justify-content-center align-items-center"><i
-                        class="fas fa-trash"></i></div>
+            <div class="h-100 w-100 row position-absolute selection  m-0" style="display: none;">
+                <div class="download h-100 col d-flex justify-content-center align-items-center">
+                    <i class="fas fa-download"></i>
+                </div>
+                <div class="delete h-100 col d-flex justify-content-center align-items-center">
+                    <i class="fas fa-trash"></i>
+                </div>
             </div>
         `)
     } else {
@@ -45,10 +52,12 @@ function makeCard(ele, div) {
                 <i class="fas fa-${fa} mr-3"></i>
                 <h6>${ele.filename}</h6>
             </div>
-            <div class="h-100 w-100 position-absolute selection" style="display: none;">
-                <div class="download h-100 w-50 d-flex justify-content-center align-items-center"><i
+            <div class="h-100 w-100 row position-absolute selection m-0" style="display: none;">
+                <div class="download h-100 col d-flex justify-content-center align-items-center"><i
                         class="fas fa-download"></i></div>
-                <div class="delete h-100 w-50 d-flex justify-content-center align-items-center"><i
+                        <div class="delete h-100 col d-flex justify-content-center align-items-center"><i
+                                class="fas fa-trash"></i></div>
+                <div class="delete h-100 col d-flex justify-content-center align-items-center"><i
                         class="fas fa-trash"></i></div>
             </div>
         `)
@@ -64,6 +73,10 @@ function makeCard(ele, div) {
         a.href = "/api/team/storage/" + ele.id;
         a.download = filename;
         a.click();
+    })
+    $(div).find(".selection > .setting").click(e => {
+        $(".modal").modal()
+        $("button.confirm").data("id",ele.id)
     })
     $(div).find(".selection > .delete").click(e => {
         $.ajax({
@@ -82,6 +95,10 @@ $(".card").each(function () {
     }, function () {
         $(this).find(".selection").fadeOut(100)
     })
+})
+
+$("button.confirm").click(function(){
+    $.get(`/api/team/info/poster/${$(this).data("id")}`)
 })
 
 $(".content")
