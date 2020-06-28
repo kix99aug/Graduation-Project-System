@@ -61,6 +61,7 @@ router
             canFix: false,
             group:user.group,
             link:user.link,
+            gender:user.gender,
         })
     })
     .get('/projects', async ctx => {
