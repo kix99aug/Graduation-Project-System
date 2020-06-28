@@ -273,7 +273,6 @@ function io(server, koa) {
       teamId: { $eq: client.session.team },
     });
     for (let i in history) {
-      console.log(history[i]);
       client.emit("message", {
         id: history[i].sender._id,
         picture: history[i].sender.avatar
