@@ -1,5 +1,7 @@
+const socketIO = require("socket.io")
 const router = new (require('koa-router'))();
 const db = require("./db");
+const http = require("http")
 const send = require("koa-send");
 const { unlink } = require("fs");
 
@@ -230,4 +232,47 @@ router
         }
     })
 
-module.exports = router.routes()
+function io(server,koa) {
+    koa.io = socketIO(server, {})
+
+    koa.io.use(async (socket, next) => {
+        let error = null
+        try {
+            let ctx = koa.createContext(socket.request, new http.OutgoingMessage())
+            await ctx.session._sessCtx.initFromExternal()
+            socket.session = ctx.session
+        } catch (err) {
+            error = err
+        }
+        return next(error)
+    })
+    
+    koa.io.on("connection", (client) => {
+        client.join(client.session.team)
+        client.room = client.session.team
+        koa.io.in(client.room).emit("userin", {
+            id: client.session.id,
+            name: client.session.name,
+        })
+        client.on("message", async function (message) {
+            koa.io.in(client.room).emit("message", {
+                id: client.session.id,
+                picture: client.session.image,
+                name: client.session.name,
+                message: message,
+            })
+        })
+        client.on("disconnect", async function () {
+            koa.io.in(client.room).emit("userout", {
+                id: client.session.id,
+                name: client.session.name,
+            })
+        })
+    })
+    
+}
+
+module.exports = {
+    routes: router.routes(),
+    io:io
+}
