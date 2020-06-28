@@ -34,3 +34,48 @@ $("input.search").on('input', function () {
         }
     })
 });
+$("button#select").click(function () {
+    let allchecked = true
+    $(`input[type="checkbox"]`).each(function () {
+      if (!$(this).prop(`checked`)) allchecked = false
+    })
+    $(`input[type="checkbox"]`).prop(`checked`, !allchecked)
+})
+$('.newTeam').click(evt=>{
+    var membersObject = document.getElementById("addingMembers").querySelectorAll(".form-control");
+    var members = [];
+    var teacher = document.querySelector('.teacher').value;
+    var projectName = document.querySelector('.projectName').value;
+    membersObject.forEach(item=>members.push(item.value))
+    members.splice(members.indexOf(""),1)
+    $.ajax({
+      method:'POST',
+      url:'/api/admin/newTeam',
+      type:'json',
+      cache:true,
+      data:{
+        name:projectName,
+        teacher:teacher,
+        members:members
+      },
+      success:msg=>{
+        console.log(msg)
+      if(msg.result){
+        $('#addingTeam').modal('hide');
+        $( ".alert-light.success" ).show( "slow" );
+        setTimeout(()=>$(".alert-light.success").slideUp(),1500)
+        setTimeout(()=>window.location.reload(),2000)
+      }
+      else{
+        $('#addingTeam').modal('hide');
+        $(".alert-light.danger").show( "slow" );
+        setTimeout(()=>{
+          $(".alert-light.danger").slideUp();
+        },1500)
+        setTimeout(()=>{
+          window.location.href = "/admin/managePT";
+        },2000)
+      }
+    }
+    })
+})
