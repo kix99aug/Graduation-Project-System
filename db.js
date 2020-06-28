@@ -148,7 +148,6 @@ let team = {
 let reminder = {
     new: async function (message,time) {
         let model = new Models.reminder({
-            message: message,
             time:time,
         })
         return model.save()

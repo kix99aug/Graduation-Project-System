@@ -26,5 +26,11 @@ btn.addEventListener("click",function(){
     ma[mA.length] = lA
     ele.mas = ma
     $.post(`/api/admin/editPI${window.location.pathname.substr(window.location.pathname.lastIndexOf("/"))
-    }`, ele, (res) => window.location.reload());
+    }`, ele, (res) =>{
+        if(res.result){
+            $( ".alert-light.success" ).show( "slow" );
+            setTimeout(()=>$(".alert-light.success").slideUp(),1500)
+            setTimeout(()=>window.location.reload(),2000)
+          }
+    });
 })
