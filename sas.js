@@ -221,10 +221,11 @@ router
         ctx.body = users
     })
 
-    .post('/api/admin/backupTimeSetting', async function (ctx) {
+    .post('/api/admin/projecTimeSetting', async function (ctx) {
         if ((await db.systemSet.find()).length == 0) {
             await db.systemSet.new(null);
         }
+        console.log(ctx.request.body)
         let [timeSet] = await db.systemSet.find({})
         console.log('0000000000000000000.0000' + ctx.request.body.year)
         await timeSet.update({ 'year': ctx.request.body.year })
@@ -235,7 +236,7 @@ router
         }
     })
 
-    .post('/api/admin/projecTimeSetting', async function (ctx) {
+    .post('/api/admin/backupTimeSetting', async function (ctx) {
         await db.backup.new(Date(ctx.request.body.date))
         console.log(' 有new 了喔')
         let lastestBack = await db.backup.find({})

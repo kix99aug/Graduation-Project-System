@@ -63,7 +63,7 @@ let comment = {
         return model.save()
     },
     find: async function (obj) {
-        let query = await Models.comment.find(obj).populate("sender","name").exec()
+        let query = await Models.comment.find(obj).populate("sender","name avatar").exec()
         return query
     },
     modify: async function (objWhere, objUpdate) {

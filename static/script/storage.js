@@ -1,5 +1,6 @@
 $(function () {
     $.get("/api/team/storage", res => {
+        if (res.length == 0) $("#empty").show()
         res.forEach(ele => {
             let div = document.createElement('div')
             $(div).attr("class", "card")
@@ -10,6 +11,7 @@ $(function () {
 })
 
 function makeCard(ele, div) {
+    $("#empty").hide()
     let fa = mimetype2fa(mime.getType(ele.filename.substr(ele.filename.lastIndexOf("."))))
     if (fa == "file-image") {
         $(div).html(`
@@ -70,7 +72,10 @@ function makeCard(ele, div) {
             url: `/api/team/storage/${ele.id}`,
             type: 'DELETE',
             success: function () {
-                $(div).fadeOut(300, () => $(div).remove())
+                $(div).fadeOut(300, () => {
+                    $(div).remove()
+                    if ($("div.card").length == 0) $("#empty").show()
+                })
             }
         });
     })
@@ -89,6 +94,10 @@ $(".content")
         e.preventDefault();
         e.stopPropagation();
         $(".drop-prompt").fadeOut(100)
+    })
+    .on('dragover', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
     })
     .on('dragenter', function (e) {
         e.preventDefault();

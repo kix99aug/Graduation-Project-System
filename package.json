@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon --ignore static/ --no-deprecation app.js"
+    "start": "node --no-deprecation app.js",
+    "test": "nodemon --ignore static/ --no-deprecation app.js"
   },
   "repository": {
     "type": "git",

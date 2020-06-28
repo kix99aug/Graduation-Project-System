@@ -5,9 +5,15 @@ $(() => {
                 $("#forum_content").animate({ scrollTop: $("#forum_content").height() }, 500)
                 clearInterval(int);
             }
-
         }, 100);
     })
+    let handleEnter = (event) => {
+        if (event.keyCode == 13 && !event.shiftKey) {
+          document.querySelector("#submit").click();
+          event.preventDefault();
+        }
+      };
+      $("#message").on("keydown", handleEnter).on("keypress", handleEnter);
 })
 
 start = location.href.lastIndexOf("ject/")

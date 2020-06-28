@@ -81,7 +81,7 @@ koa.use(async (ctx, next) => {
         }
     } catch (err) {
         ctx.status = err.status || 500
-        console.error(err)
+        if(ctx.status != 404) console.error(err)
         if (ctx.status != 200) {
             if (ctx.method == "GET")
                 await ctx.render("error", { code: ctx.status, server: "Koa 2.12.0" })
@@ -116,6 +116,8 @@ koa.use(pms.routes)
 koa.use(sas.routes)
 
 koa.server = http.createServer(koa.callback())
+
+pms.io(koa)
 
 koa.http = http
 

@@ -11,7 +11,7 @@ $(function () {
       <a href="/profile/${e.id}">${e.name}</a> 已加入會議
     </div>
     `)
-    $("#messages").animate({"scrollTop":$("#messages").prop("scrollHeight")},500)
+    $("#messages-container").animate({"scrollTop":$("#messages-container").prop("scrollHeight")},500)
   });
 
   socket.on("userout", (e) => {
@@ -20,7 +20,7 @@ $(function () {
         <a href="/profile/${e.id}">${e.name}</a> 已離開會議
       </div>
       `)
-    $("#messages").animate({"scrollTop":$("#messages").prop("scrollHeight")},500)
+    $("#messages-container").animate({"scrollTop":$("#messages-container").prop("scrollHeight")},500)
   });
   socket.on("history", (me) => {
     me.forEach((m) => {
@@ -92,7 +92,7 @@ $(function () {
           </div>
     `)
     }
-    $("#messages").animate({"scrollTop":$("#messages").prop("scrollHeight")},500)
+    $("#messages-container").animate({"scrollTop":$("#messages-container").prop("scrollHeight")},500)
   });
 
   let handleEnter = (event) => {
