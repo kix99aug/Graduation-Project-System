@@ -38,14 +38,29 @@
                                     <h4>專題成員</h4>
                                     <ul class="my-3 list-group list-group-flush">
                                         <% for(var i=0; i<members.length; i++) {%>
-                                            <li class="list-group-item"><a href="/profile/<%= members[i]['id']%>">學號: <%= members[i].account%> &nbsp&nbsp 姓名:<%= members[i].name%></a></li>
+                                            <li class="list-group-item"><a href="/profile/<%= members[i]['id']%>"><%= members[i].account%> <%= members[i].name%></a></li>
+                                        <% } %>
+                                    </ul>
+                                </div>
+                                <div class="col">
+                                    <h4>獲獎紀錄</h4>
+                                    <ul class="my-3 list-group list-group-flush">
+                                        <% let rank = ["第一名","第二名","第三名","佳作"] %>
+                                        <% if (project.rank) { %>
+                                            <li class="list-group-item"><%= rank[project.rank] %></li>
+                                        <% } %>
+                                        <% for(let i in project.reward) {%>
+                                            <li class="list-group-item"><%=project.reward[i]%></li>
+                                        <% } %>
+                                        <% if (!project.rank && !project.reward) { %>
+                                            <li class="list-group-item">無</li>
                                         <% } %>
                                     </ul>
                                 </div>
                                 <div class="col">
                                     <h4>指導老師</h4>
                                     <ul class="my-3 list-group list-group-flush">
-                                        <li class="list-group-item"><a href="/profile/<%= teahcer.id%>"><%= teahcer.name%> 老師</a></li>
+                                        <li class="list-group-item"><a href="/profile/<%= project.teacher.id%>"><%= project.teacher.name%> 老師</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -55,19 +70,23 @@
                             </div>
                             
                         </div>
-                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                            <img src="/api/storage/<%= project.poster %>" class="img-fluid" alt="">
+                        <div class="tab-pane fade h-100" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <% if (project.poster) { %> 
+                                <img src="/api/storage/<%= project.poster %>" class="img-fluid" alt="">
+                            <% } else { %> 
+                                <h3 class="d-flex justify-content-center align-items-center h-100 w-100">此團隊尚未上傳海報</h3>
+                            <% } %> 
                         </div>
                         <div class="tab-pane fade w-100 h-100" id="forum" role="tabpanel" aria-labelledby="contact-tab">
-                            <div class="d-flex flex-column justify-content-between rounded w-100 h-100">
-                                <div id="forum_content" class="w-100 overflow-auto h-75">
+                            <div class="d-flex flex-column justify-content-between rounded w-100 h-100 shadow rounded border p-3">
+                                <div id="forum_content" class="w-100 overflow-auto flex-grow-1">
                                     <% for(var i=0; i<comments.length; i++) {%>
                                         <div class="content">
                                             <div class="media m-3">
                                                 <a ><img src="<%= comments[i].sender.avatar %>" class="mr-3 messageicon"
                                                         alt="avatar"></a>
                                                 <div class="media-body">
-                                                    <h5 class="m-0"><a href="/profile/<%= comments[i].SenderID %>"><%= comments[i].sender.name %></a></h5>
+                                                    <h5 class="m-0"><a href="/profile/<%= comments[i].sender._id %>"><%= comments[i].sender.name %></a></h5>
                                                     <div id='time' style="font-size:0.2rem"><%= new Date(comments[i].time).toLocaleString() %></div>
                                                     <span><%= comments[i].content %></span>
                                                 </div>
@@ -75,6 +94,7 @@
                                         </div>
                                     <% } %>
                                 </div>
+                                <% if (login) { %>
                                 <div class="input-group mt-3 w-100">
                                     <input class="form-control" id="message"></input>
                                     <div class="input-group-append" onclick="commentBtn()">
@@ -83,6 +103,7 @@
                                                 style="width: 1rem;" ></button>
                                     </div>
                                 </div>
+                                <% } %>
                             </div>
                         </div>
                     </div>

@@ -97,6 +97,7 @@ router
             memberAccount: members,
             teacherName: teacher.name,
             projectInfo: team.info,
+            grade: team.grade,
             teamId: ctx.params.id,
             result: true
         })
@@ -286,7 +287,7 @@ router
         let [team] = await db.team.find({ '_id': { '$eq': ctx.params.id } })
         let [leader] = await db.user.find({ '_id': { '$eq': team.leader } })
         let [teacher] = await db.user.find({ '_id': { '$eq': team.teacher } })
-        await team.update({ 'name': ctx.request.body.pN, 'info': ctx.request.body.pI, 'leader': leader._id, teacher: teacher._id })
+        await team.update({ 'name': ctx.request.body.pN, 'info': ctx.request.body.pI,'grade': ctx.request.body.grade, 'leader': leader._id, teacher: teacher._id })
 
         ctx.body = {
             result: true

@@ -17,6 +17,7 @@ btn.addEventListener("click",function(){
     ele.pI = pI
     ele.pN = pN
     ele.lA = lA
+    ele.grade = $("input[name='grade']").val()
 
     for(var i = 0; i < mA.length; i++){
         ma[i] = mA[i].value

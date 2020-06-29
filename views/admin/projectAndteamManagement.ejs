@@ -60,12 +60,13 @@
                         <i class="fas fa-arrow-right py-2"></i>
                       </div>
                       <div class="col-3 mt-1">
-                        <h5>專題名稱</h5>
+                        <h5>系級</h5>
                       </div>
                       <div class="col-3">
-                        <input class="form-control projectName" type="text" placeholder="專題名稱" style="width: 150px;">
+                        <input class="form-control" type="number" placeholder="系級" name="grade" style="width: 150px;" value="<%= new Date().getFullYear()-1911+2 %>">
                       </div>
                     </div>
+
                     <div class="row mt-2">
                       <div class="nav col-3 justify-content-end">
                         <i class="fas fa-arrow-right py-2"></i>
@@ -73,13 +74,9 @@
                       <div class="col-3 mt-1">
                         <h5>專題成員</h5>
                       </div>
-                    </div>
-                    <div class="row mt-2" id="addingMembers">
-                      <div class="col-3 pb-2" style="margin-left: 119px;">
-                        <input type="text" style="width: 150px;" placeholder="隊長學號" class="form-control ">
-                      </div>
-                      <div class="col-3 pb-2 mem" style="margin-left: 119px;">
-                        <input type="text" style="width: 150px;" placeholder="成員學號" class="form-control">
+                      <div class="col-3 mem">
+                        <input type="text" style="width: 150px;" placeholder="隊長學號" class="form-control">
+                        <input type="text" style="width: 150px;" placeholder="成員學號" class="form-control mt-1">
                         <script src="/static/script/addingGroup.js"></script>
                       </div>
                     </div>

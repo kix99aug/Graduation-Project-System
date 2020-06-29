@@ -50,6 +50,7 @@ router
         ? ctx.session.image
         : "/static/images/favicon_sad.png",
       teamGrade: team.score ? team.score : "尚未評",
+      group:user.group
     });
   })
   .get("/team/info", async (ctx) => {

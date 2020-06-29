@@ -34,8 +34,8 @@ let user = {
     },
     find: async function (obj, col) {
         let query
-        if (col) query = await Models.user.find(obj, col)
-        else query = await Models.user.find(obj)
+        if (col) query = await Models.user.find(obj, col).populate("team").exec()
+        else query = await Models.user.find(obj).populate("team").exec()
         return query
     },
     modify: async function (objWhere, objUpdate) {
@@ -129,7 +129,7 @@ let team = {
         return model.save()
     },
     find: async function (obj) {
-        let query = await Models.team.find(obj)
+        let query = await Models.team.find(obj).populate("teacher").exec()
         return query
     },
     modify: async function (objWhere, objUpdate) {
@@ -143,7 +143,8 @@ let team = {
             if (err) console.error(err)
             else console.log(res)
         })
-    }
+    },
+    model:Models.team
 }
 
 let reminder = {

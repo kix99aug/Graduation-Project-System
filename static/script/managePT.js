@@ -42,20 +42,19 @@ $("button#select").click(function () {
     $(`input[type="checkbox"]`).prop(`checked`, !allchecked)
 })
 $('.newTeam').click(evt=>{
-    var membersObject = document.getElementById("addingMembers").querySelectorAll(".form-control");
     var members = [];
-    var teacher = document.querySelector('.teacher').value;
-    var projectName = document.querySelector('.projectName').value;
-    membersObject.forEach(item=>members.push(item.value))
-    members.splice(members.indexOf(""),1)
+    $(".mem input").each(function(){
+      if($(this).val() != "") members.push($(this).val())
+    })
     $.ajax({
       method:'POST',
       url:'/api/admin/newTeam',
       type:'json',
       cache:true,
       data:{
-        name:projectName,
-        teacher:teacher,
+        name:`${$("input[name='grade']").val()} ${$("input.teacher").val()} ${members}`,
+        grade:$("input[name='grade']").val(),
+        teacher:$("input.teacher").val(),
         members:members
       },
       success:msg=>{

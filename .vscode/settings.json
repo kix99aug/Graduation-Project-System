@@ -1,6 +1,0 @@
-{
-  "code-runner.defaultLanguage": "javascript",
-  "code-runner.executorMap": {
-    "javascript": "npm start"
-  }
-}

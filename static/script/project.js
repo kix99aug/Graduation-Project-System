@@ -2,7 +2,7 @@ $(() => {
     $('a[href="#forum"]').click(() => {
         let int = setInterval(() => {
             if ($('#forum_content').is(':visible')) {
-                $("#forum_content").animate({ scrollTop: $("#forum_content").height() }, 500)
+                $("#forum_content").animate({ scrollTop: $("#forum_content").prop("scrollHeight") }, 500)
                 clearInterval(int);
             }
         }, 100);
@@ -52,5 +52,5 @@ function commentBtn() {
     </div>
     `)
 
-    $("#forum_content").animate({ scrollTop: $("#forum_content").height() }, 100);
+    $("#forum_content").animate({ scrollTop: $("#forum_content").prop("scrollHeight") }, 100);
 }

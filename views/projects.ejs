@@ -8,8 +8,24 @@
 <body>
   <%- include('nav') -%>
   <div class="wrapper mt-n5 py-5">
-    
   <div class="container">
+    <div class="dropdown mb-3">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        選擇系級
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item <% if (!query) {%> disabled <% } %>" href="/projects" <% if (!query) {%> tabindex="-1" aria-disabled="true" <% } %> >全部顯示</a>
+        <% for(let i in grade) {%>
+        <a class="dropdown-item <% if (grade[i]==query) {%> disabled <% } %>" href="/projects?grade=<%= grade[i] %>" <% if (grade[i]==query) {%> tabindex="-1" aria-disabled="true" <% } %> ><%= grade[i] %></a>
+        <% } %>
+    </div>
+  </div>
+    <script>
+      $("select").change(function(){
+        if(this.value != -1) window.location.href = window.location.pathname + "?grade=" + this.value
+        else window.location.href = window.location.pathname
+      })
+    </script>
     <% if(data.length!=0) for(var i=0; i<data.length; i++) {%>
       <div class="media bg-light p-3 mb-5 border rounded">
         <div class="media-body">
@@ -29,6 +45,5 @@
 
   </div>
   </div>
-  <script src="/static/script/projects.js"></script>
   <%- include('footer'); -%>
 </body>

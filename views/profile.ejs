@@ -24,59 +24,117 @@
     <div class="container">
         <div class="row">
             <div class="col d-flex align-items-center h-100 justify-content-center">
-                <img class="profileicon rounded-circle border border-dark" src="<%= image %>">
+                <img class="profileicon rounded-circle border border-dark" src="<%= user.avatar %>">
             </div>
-            <% if(group==3){ %>
-                <div class="col d-flex flex-column align-items-left justify-content-around">
-                    <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
-                        姓名：<span class=""><%= name %></span>同學
-                    </h3>
-                    <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
-                        系級：<span><%= grade %></span>級
-                    </h3>
-                    <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
-                        指導教授：<span><%= professor %> </span>教授
-                    </h3>
-                    <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
-                        性別：<span><%= gender%> </span>性
-                    </h3>
-                </div>
-            <%}%>
-            <% if(group==2){ %>
-                <div class="col d-flex flex-column align-items-left justify-content-around">
-                    <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
-                        姓名：<span class=""><%= name %></span>教授
-                    </h3>
-                    <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
-                        性別：<span class=""><%= gender %></span>性
-                    </h3>
-                    <h3 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
-                        個人網站:<div class=""  onclick="javascript:window.location.href='<%= link %>'">點此前往 </div>
-                    </h3>
-                </div>
+            <% if(group==1){ %>
+            <div class="col d-flex flex-column align-items-left justify-content-around">
+                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    <span class=""><%= user.name %> 管理員</span>
+                </h4>
+                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    性別：<span class=""><%= gender %></span>
+                </h4>
+            </div>
+            <%} else if(group==2){ %>
+            <div class="col d-flex flex-column align-items-left justify-content-around">
+                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    <span class=""><%= user.name %> 老師</span>
+                </h4>
+                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    性別：<span class=""><%= gender %></span>
+                </h4>
+                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    <% if(canFix==true){ %>
+                        <% if (email!="無") { %>
+                        Email：<input name="email" class="form-control w-50   " value="<%= email %>"></input>
+                        <% } else { %>
+                        Email：<input name="email" class="form-control w-50" value=""></input>
+                        <%}%>
+                    <% } else { %>
+                        Email：<span class=""><%= email %></span>
+                        <% if (email!="無") { %>
+                        <a href="mailto:<%= email %>"><i class="fas fa-paper-plane"></i></a>
+                        <% } %>
+                    <% } %>
+                </h4>
+                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    <% if(canFix==true){ %>
+                        個人網站: <input name="link" class="form-control w-50" value="<%= link %>"></input>
+                    <% } else { %>
+                        個人網站: <a href="<%= link %>">點此前往</a>
+                    <% } %>
+                </h4>
+            </div>
+            <%} else if(group==3){ %>
+            <div class="col d-flex flex-column align-items-left justify-content-around">
+                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    <span class=""><%= user.name %></span>
+                </h4>
+                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    系級：<span><%= grade %>級</span>
+                </h4>
+                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    指導老師：<span><%= professor %> 老師</span>
+                </h4>
+                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    性別：<span><%= gender%></span>
+                </h4>
+                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    <% if(canFix==true){ %>
+                        <% if (email!="無") { %>
+                        Email：<input name="email" class="form-control w-50" value="<%= email %>"></input>
+                        <% } else { %>
+                        Email：<input name="email" class="form-control w-50" value=""></input>
+                        <%}%>
+                    <% } else { %>
+                        Email：<span class=""><%= email %></span>
+                        <% if (email!="無") { %>
+                        <a href="mailto:<%= email %>"><i class="fas fa-paper-plane"></i></a>
+                        <% } %>
+                    <% } %>
+                </h4>
+            </div>
+            <%} else if(group==4){ %>
+            <div class="col d-flex flex-column align-items-left justify-content-around">
+                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    <span class=""><%= user.name %></span>
+                </h4>
+                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    系級：<span><%= grade %>級</span>
+                </h4>
+                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    性別：<span><%= gender%></span>
+                </h4>
+                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                    <% if(canFix==true){ %>
+                        Email：<input name="email" class="form-control w-50" value="<%= email %>"></input>
+                    <% } else { %>
+                        Email：<span class=""><%= email %></span>
+                        <% if (email!="無") { %>
+                        <a href="mailto:<%= email %>"><i class="fas fa-paper-plane"></i></a>
+                        <% } %>
+                    <% } %>
+                </h4>
+            </div>
             <%}%>
         </div>
         <div class="row">
             <div class="col p-0 mt-5">
                 <div class="row">
-                    <h3 class="row post-row ml-3">個人簡介：
-                    <% if(canFix==true){ %>
-                        <!-- <button
-                        type="button"
-                        class="btn btn-light"
-                        id="edit"
-                        > -->
-                        <i class="far fa-edit" id="edit" style="font-size: 35px; margin-left: 5px;"></i>
-                        <!-- </button> -->
-                    <% } %>
-                    </h3>
+                    <h4 class="row post-row ml-3">個人簡介：</h4>
                 </div>
                 <div class="form-group " >
-                    <textarea disabled class="form-control" id="textarea" rows="5" ><%= introduction %></textarea>
+                    <% if(canFix==true){ %>
+                        <textarea class="form-control" id="textarea" rows="5" name="intro"><%= introduction %></textarea>
+                    <% } else { %>
+                        <h5 class="m-3"><%= introduction %></h5>
+                    <% } %>
                 </div>
             </div>
         </div>
     </div>
-    <script src="/static/script/profile.js"></script>
+    <% if(canFix==true){ %>
+        <script src="/static/script/profile.js"></script>
+    <% } %>
     <%-include('footer'); -%>
 </body>
