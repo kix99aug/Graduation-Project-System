@@ -52,7 +52,7 @@ const reminderSchema = new Schema({
     time: Date,             //要提醒user(老師)的時間
 })
 
-const backupSchema = Schema({
+const backupSchema = new Schema({
     time: Date,
 })
 

@@ -49,23 +49,25 @@
                   <div class="row justify-content-center">
                     <div class='col-sm-6' style="text-align: center;">
                       <h5>日期選擇</h5>
-                      <input type="text" name="date" class="form-control datepicker" id="dateArchive">
+                      <input type="text" name="date" class="form-control datepicker" id="dateArchive"
+                        autocomplete="off">
                       </span>
                       <script>
-                        $('.datepicker').datepicker({
+                        $('#dateArchive').datepicker({
                           autoclose: true,
                           format: "yyyy-mm-dd",
                           startDate: "today",
-                          clearBtn: true,
                           calendarWeeks: true,
                           todayHighlight: true,
                           language: 'zh-TW',
-                          onSelect: (d, i) => console.log(d, i)
                         }).on("changeDate", function (e) {
-                          $(this).data("date",e.date)
+                          $(this).data("date", e.date)
                           console.log($(this).data("date"))
-                        });
-                    </script>
+                        })
+                        <% if (dateArchive!="") { %>
+                        $('#dateArchive').datepicker('update', new Date(<%= dateArchive.getTime() %>))
+                        <%}%>
+                      </script>
                     </div>
                   </div>
                 </div>
@@ -73,7 +75,8 @@
               <div class="modal-footer">
                 <div class="container">
                   <div class="row justify-content-center">
-                    <button type="button" class="btn btn-primary rounded" id="projecTimeSetting">設定！</button>
+                    <button type="button" class="btn btn-primary rounded" data-dismiss="modal"
+                      id="projecTimeSetting">設定！</button>
                     <script>
                       var edit = document.getElementById("projecTimeSetting");
 
@@ -82,8 +85,8 @@
                         var date = $("#dateArchive").data("date");
 
                         $.post(`/api/admin/projecTimeSetting`, {
-                          "date":date.toDateString()
-                        }, (res) => window.location.reload());
+                          "date": date.toDateString()
+                        });
                       }
                     </script>
                   </div>
@@ -114,24 +117,25 @@
                   <div class="row justify-content-center">
                     <div class='col-sm-6' style="text-align: center;">
                       <h5>日期選擇</h5>
-                      <input type="text" name="date" class="form-control datepicker" id = "reminder">
+                      <input type="text" name="date" class="form-control datepicker" id="reminder" autocomplete="off">
                       </span>
                       <script>
-                        $('.datepicker').datepicker({
+                        $('#reminder').datepicker({
                           autoclose: true,
                           format: "yyyy-mm-dd",
                           startDate: "today",
-                          clearBtn: true,
                           calendarWeeks: true,
                           todayHighlight: true,
                           language: 'zh-TW',
-                          onSelect: (d, i) => console.log(d, i)
                         }).on("changeDate", function (e) {
-                          $(this).data("date",e.date)
+                          $(this).data("date", e.date)
                           console.log($(this).data("date"))
-                        });
-
-                    </script>
+                        })
+                        
+                        <% if (reminder!="") { %>
+                        $('#reminder').datepicker('update', new Date(<%= reminder.getTime() %>))
+                        <%}%>
+                      </script>
                     </div>
                   </div>
                 </div>
@@ -148,8 +152,8 @@
                         var date = $("#reminder").data("date");
 
                         $.post(`/api/admin/reminderTimeSetting`, {
-                          "date":date.toDateString()
-                        }, (res) => window.location.reload());
+                          "date": date.toDateString()
+                        });
                       }
 
                     </script>
@@ -161,8 +165,9 @@
           </div>
         </div>
         <div class=" d-flex flex-row mt-3 mb-3">
-          <p class="ml-5 mb-0" style="font-size: 24px;">備份時程：</p>
-          <p class="ml-1 mb-0 font-weight-bold" style="font-size: 24px;" id="showBackUpTime"><%= year %>年<%= month %>月<%= day %>日</p>
+          <p class="ml-5 mb-0" style="font-size: 24px;">下次備份：</p>
+          <p class="ml-1 mb-0 font-weight-bold" style="font-size: 24px;" id="showBackUpTime">
+            <%= nextBackupDay.toLocaleDateString() %></p>
           <button type="button" class="btn btn-warning ml-4" data-toggle="modal" data-target="#backup">設置</button>
         </div>
         <div class="modal fade" id="backup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
@@ -186,8 +191,9 @@
                 <div class="container">
                   <div class="row justify-content-center">
                     <div class='col-sm-6' style="text-align: center;">
-                      <h5>日期選擇</h5>
-                      <input type="text" id="dateBackup" name="date" class="form-control datepicker">
+                      <h5>備份週期</h5>
+                      <input type="number" id="dateBackup" name="date" class="form-control datepicker"
+                        value="<%= routine %>" autocomplete="off">
                     </div>
                   </div>
                 </div>
@@ -195,50 +201,26 @@
               <div class="modal-footer">
                 <div class="container">
                   <div class="row justify-content-center">
-                    <button type="button" class="btn btn-primary rounded" id="backupTimeSetting" onclick="backUpTime()">設定！</button>
+                    <button type="button" class="btn btn-primary rounded" data-dismiss="modal" id="backupTimeSetting"
+                      onclick="backUpTime()">設定！</button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="selectBtn d-flex flex-row mr-5">
-          <div class="input-group w-75 mb-3 mr-auto ml-5">
-            <input class="form-control text-dark " type="text" placeholder="搜尋" aria-label="Search">
-            <div class="input-group-append bg-transparent ">
-              <button class="btn  border mb-1" type="button">
-                <i class="fas fa-search "></i>
-              </button>
-            </div>
-          </div>
-          <button type="button" class="btn btn-light btn-sm mb-3" id="select"> 全選</button>
-          <script>
-            $("button#select").click(function () {
-              let allchecked = true
-              $(`input[type="checkbox"]`).each(function () {
-                if (!$(this).prop(`checked`)) allchecked = false
-              })
-              $(`input[type="checkbox"]`).prop(`checked`, !allchecked)
-            })
-          </script>
-          <button type="button" class="btn btn-light mr-0 mb-3" id="delete">
-            <i class="fas fa-trash"> </i>
-          </button>
-        </div>
-        <div class="project-list mb-4 ml-5 mr-5 overflow-auto">
-          <form role="form">
-            <% for(var i=0; i<data.length; i++) {%>
-              <div class="checkbox">
-                <label class="projects-item" style="color: black;">
-                  <input type="checkbox" class="m-2 " id="<%= data[i]._id %>">
-                  <p style="font-size: 20px;" class="mt-3">備份紀錄</p>
-                  <div class="mt-3 ml-4">
-                    <p style="font-size: 20px;"><%= data[i].time %></p>
-                  </div>
-                </label>
+        <div class="project-list mb-4 ml-5 mr-5 overflow-auto flex-grow-1">
+          <% for(var i=0; i<data.length; i++) {%>
+          <div class="checkbox">
+            <label class="projects-item" style="color: black;">
+              <input type="checkbox" class="m-2 " id="<%= data[i]._id %>" autocomplete="off">
+              <p style="font-size: 20px;" class="mt-3">備份紀錄</p>
+              <div class="mt-3 ml-4">
+                <p style="font-size: 20px;"><%= data[i].date.toLocaleDateString() %></p>
               </div>
-            <% } %>
-          </form>
+            </label>
+          </div>
+          <% } %>
         </div>
       </div>
     </div>

@@ -1,5 +1,8 @@
 const router = new (require('koa-router'))();
 const db = require("./db");
+const exec = require('child_process').exec;
+const nodemailer = require('nodemailer');
+const credentials = require("./credentials")
 
 router
     .get('/admin', async ctx => {
@@ -46,11 +49,18 @@ router
         });
     })
     .get('/admin/timeSetting', async ctx => {
-        // if ((await db.systemSet.find()).length == 0) {
-        //     await db.systemSet.new(new Date());
-        // }
-        let [timeset] = await db.systemSet.find({})
-        let backUpData = await db.backup.find({})
+        let timeset = await db.systemSet.find({})
+        let routine = await db.routine.find({})
+        let reminder = await db.reminder.find({})
+        let backup = await db.backup.find({})
+        let lastreminder
+        if (reminder.length != 0) lastreminder = reminder[reminder.length - 1].time
+        let lastbackup
+        if (backup.length != 0) lastbackup = backup[backup.length - 1].time
+        let lastroutine = routine[routine.length - 1]
+        let lastest = timeset[timeset.length - 1]
+        let nextBackupDay = new Date()
+        nextBackupDay.setTime(lastest.date.getTime() + lastroutine.time * 24 * 3600 * 1000)
         await ctx.render('admin/time', {
             title: '畢業專題交流平台',
             subtitle: '系統時程設定',
@@ -58,11 +68,11 @@ router
             image: ctx.session.image
                 ? ctx.session.image
                 : '/static/images/favicon_sad.png',
-            recordtime: ctx.session.recordtime ? ctx.session.recordtime : '109/06/09',
-            year: timeset.year ? timeset.year : '00',
-            month: timeset.month ? timeset.month : '00',
-            day: timeset.day ? timeset.day : '00',
-            data: backUpData
+            routine: lastroutine.time,
+            nextBackupDay: nextBackupDay,
+            data: timeset,
+            reminder: lastreminder ? lastreminder : "",
+            dateArchive: lastbackup ? lastbackup : ""
         })
     })
     .get('/admin/index', async ctx => {
@@ -221,42 +231,36 @@ router
         let users = await db.user.find({}, 'account name')
         ctx.body = users
     })
-
-    .post('/api/admin/backupTimeSetting', async function (ctx) {
-        let routine = parseInt(ctx.request.body.routine)
-        await db.routine.new(routine)
-        let now = new Date()
-        let year=now.getFullYear()
-        let month=now.getMonth()
-        let day=now.getDate()
-        let latest = await db.systemSet.find({})
-        if(now.getTime()+routine*24*60*60 < latest[latest.length-1].date.getTime()){
-           await latest[latest.length-1].update({date:new Date(year,month,day+parseInt(routine))})
-           console.log("update 成功")
-        }
-        else{
-            await db.systemSet.new(new Date(year,month,day+parseInt(routine)))
-        }
+    .post('/api/admin/projecTimeSetting', async function (ctx) {
+        await db.backup.new(new Date(ctx.request.body.date))
         ctx.body = {
             result: true
         }
     })
 
-    // .post('/api/admin/backupTimeSetting', async function (ctx) {
-    //     await db.backup.new(Date(ctx.request.body.date))
-
-    //     let lastestBack = await db.backup.find({})
-    //     let backupLength = (await db.backup.find({})).length
-    //     ctx.body = {
-    //         result: true
-    //     }
-    // })
+    .post('/api/admin/backupTimeSetting', async function (ctx) {
+        let routine = parseInt(ctx.request.body.routine)
+        await db.routine.new(routine)
+        let history = await db.systemSet.find({})
+        let today = new Date()
+        let nextBackupDay = history[history.length - 1]
+        if ((today.getTime() - nextBackupDay.date.getTime()) / 1000 / 3600 / 24 > routine) {
+            nextBackupDay = await backup()
+        }
+        nextBackupDay = nextBackupDay.date
+        nextBackupDay.setDate(nextBackupDay.getDate() + routine)
+        console.log(nextBackupDay)
+        ctx.body = {
+            result: true,
+            nextBackupDay: nextBackupDay
+        }
+    })
 
     .post('/api/admin/reminderTimeSetting', async function (ctx) {
         let date = new Date(ctx.request.body.date)
         let message = "導師繳交期限於 " + date.getFullYear() + " 年 "
             + (date.getMonth() + 1) + " 月 "
-            + date.getDate() + " 日 ! <br>記得繳交喔~";
+            + date.getDate() + " 日 ! \n記得繳交喔~";
         await db.reminder.new(message, new Date(ctx.request.body.date))
         ctx.body = {
             result: true
@@ -287,7 +291,7 @@ router
         let [team] = await db.team.find({ '_id': { '$eq': ctx.params.id } })
         let [leader] = await db.user.find({ '_id': { '$eq': team.leader } })
         let [teacher] = await db.user.find({ '_id': { '$eq': team.teacher } })
-        await team.update({ 'name': ctx.request.body.pN, 'info': ctx.request.body.pI,'grade': ctx.request.body.grade, 'leader': leader._id, teacher: teacher._id })
+        await team.update({ 'name': ctx.request.body.pN, 'info': ctx.request.body.pI, 'grade': ctx.request.body.grade, 'leader': leader._id, teacher: teacher._id })
 
         ctx.body = {
             result: true
@@ -315,6 +319,89 @@ router
             result: res > 0
         }
     })
+
+async function backup() {
+    var { stdout, stderr } = await exec(`mongodump -d gps -o ./backups/${new Date().toLocaleDateString().replace(new RegExp("/", "g"), "-")}`)
+    return db.systemSet.new(new Date())
+}
+
+async function check() {
+    //backup
+    let timeset = await db.systemSet.find({})
+    let routine = await db.routine.find({})
+    if (routine.length == 0) routine = [await db.routine.new(7)]
+    if (timeset.length == 0) timeset = [await backup()]
+    let lastroutine = routine[routine.length - 1]
+    let lastest = timeset[timeset.length - 1]
+
+    if ((new Date().getTime() - lastest.date.getTime()) / 1000 / 3600 / 24 > parseInt(lastroutine.time)) {
+        await backup()
+    }
+
+    //archive
+    let backups = await db.backup.find({})
+
+    if (backups.length != 0) {
+        let lastbackup = backups[backups.length - 1].time
+        if ((lastbackup.getTime() - new Date().getTime()) < 0) {
+            backups[0].db.dropCollection("backups")
+            let teams = await db.team.find({ grade: { $eq: parseInt(new Date().getFullYear() - 1911 + 1) } })
+            teams.forEach(async ele => {
+                console.log(ele)
+                await ele.update({ archived: true })
+            })
+        }
+    }
+
+    //sendmail
+    var valid = await db.reminder.find({});
+    if (valid.length != 0) {
+        var today = new Date();
+        var notify = new Date();
+        var email_arr = [];
+        var remind = await db.reminder.find({})
+        notify = remind[remind.length - 1].time;
+        let message = remind[remind.length - 1].message;
+        let emails = await db.user.find({ "group": { $eq: 2 } }) //teachers
+        for (var i = 0; i < emails.length; i++) {
+            if (emails[i].email == null) {
+                continue;
+            }
+            else email_arr.push(emails[i].email);
+        }
+        var smtpTransport = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false, // true for 465, false for other ports
+            auth: {
+                user: credentials.gmail.user, // generated gmail user
+                pass: credentials.gmail.pass // generated gmail account password
+            }
+        });
+        if (today.getFullYear() === notify.getFullYear() &&
+            (today.getMonth() + 1) === (notify.getMonth() + 1) &&
+            today.getDate() === (notify.getDate() - 7)) {
+            let mailOptions = {
+                from: "a1065510@mail.nuk.edu.tw", // sender address 
+                subject: "導師文件繳交期限提醒", // Subject line 
+                html: message + "test for 軟工", // plaintext body 
+                to: email_arr
+            }
+
+            // send mail with defined transport object 
+            smtpTransport.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return console.log(error);
+                }
+                console.log('Message %s sent: %s', info.messageId, info.response);
+            });
+        }
+    }
+}
+
+check()
+setInterval(check, 300000)
+
 module.exports = {
     routes: router.routes()
 }

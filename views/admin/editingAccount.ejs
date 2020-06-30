@@ -18,12 +18,19 @@
                         </div>
                         <p class="mx-2 my-2" style="font-size: 2rem;">編輯使用者資料<a href="/profile/<%= user._id %>" class="ml-3" target="_blank" rel="noopener noreferrer">查看</a></p>
                     </div>
-                    <form class="container" method="POST">
+                    <form class="container h-100 overflow-auto" method="POST">
                         <div class="row d-flex flex-row px-5 pb-0">
                             <i class="fas fa-arrow-right mt-2"></i>
                             <p class="px-3" style="font-size: 24px;">學號/帳號</p>
                             <input type="text" style="width: 25%;" class="form-control" value="<%= user.account %>" name="account">
                         </div>
+                        <% if (user.group == 3 || user.group == 4) { %>
+                        <div class="row d-flex flex-row px-5 pb-0">
+                            <i class="fas fa-arrow-right mt-2"></i>
+                            <p class="px-3" style="font-size: 24px;">系級</p>
+                            <input type="number" style="width: 25%;" class="form-control" value="<%= user.grade %>" name="grade">
+                        </div>
+                        <% } %>
                         <div class="row d-flex flex-row px-5 pb-0">
                           <i class="fas fa-arrow-right mt-2"></i>
                           <p class="px-3" style="font-size: 24px;">姓名</p>
@@ -42,9 +49,9 @@
                             <option value="女" <% if (user.gender == "女") { %> selected <% } %>   >女</option>
                           </select>
                         </div>
-                        <div class="row d-flex flex-row px-5 pb-0">
+                        <div class="row d-flex flex-row px-5 pb-0 mt-2">
                           <i class="fas fa-arrow-right mt-2"></i>
-                          <p class="px-3" style="font-size: 24px;">聯絡資訊</p>
+                          <p class="px-3" style="font-size: 24px;">個人網站</p>
                           <input type="text" style="width: 50%;" class="form-control" value="<%= user.link %>" name="link">
                         </div>
                         <div class="row d-flex flex-row px-5 pb-0">
@@ -64,10 +71,10 @@
                                 <textarea name="" id="" cols="50" rows="4" class="form-control" name="intro"> <%= user.intro %></textarea>
                             </div>
                         </div>
-                        <div class="row w-100 justify-content-right ml-0">
-                            <button class="btn btn-primary  ml-auto mr-0 my-2">更新！</button>
-                        </div>
                     </form>
+                    <div class="row w-100 justify-content-right ml-0 mt-3">
+                        <button class="btn btn-primary  ml-auto mr-0 my-2" type="submit" onclick="$('form').submit()">更新！</button>
+                    </div>
                 </div>
             </div>
         </div>

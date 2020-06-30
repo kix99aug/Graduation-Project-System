@@ -28,22 +28,22 @@
             </div>
             <% if(group==1){ %>
             <div class="col d-flex flex-column align-items-left justify-content-around">
-                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                <h4 class="row border-bottom d-flex flex-row align-items-center py-3 justify-content-between list-row">
                     <span class=""><%= user.name %> 管理員</span>
                 </h4>
-                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                <h4 class="row border-bottom d-flex flex-row align-items-center py-3 justify-content-between list-row">
                     性別：<span class=""><%= gender %></span>
                 </h4>
             </div>
             <%} else if(group==2){ %>
             <div class="col d-flex flex-column align-items-left justify-content-around">
-                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                <h4 class="row border-bottom d-flex flex-row align-items-center py-3 justify-content-between list-row">
                     <span class=""><%= user.name %> 老師</span>
                 </h4>
-                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                <h4 class="row border-bottom d-flex flex-row align-items-center py-3 justify-content-between list-row">
                     性別：<span class=""><%= gender %></span>
                 </h4>
-                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                <h4 class="row border-bottom d-flex flex-row align-items-center py-3 justify-content-between list-row">
                     <% if(canFix==true){ %>
                         <% if (email!="無") { %>
                         Email：<input name="email" class="form-control w-50   " value="<%= email %>"></input>
@@ -57,7 +57,7 @@
                         <% } %>
                     <% } %>
                 </h4>
-                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                <h4 class="row border-bottom d-flex flex-row align-items-center py-3 justify-content-between list-row">
                     <% if(canFix==true){ %>
                         個人網站: <input name="link" class="form-control w-50" value="<%= link %>"></input>
                     <% } else { %>
@@ -67,19 +67,19 @@
             </div>
             <%} else if(group==3){ %>
             <div class="col d-flex flex-column align-items-left justify-content-around">
-                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                <h4 class="row border-bottom d-flex flex-row align-items-center py-3 justify-content-between list-row">
                     <span class=""><%= user.name %></span>
                 </h4>
-                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                <h4 class="row border-bottom d-flex flex-row align-items-center py-3 justify-content-between list-row">
                     系級：<span><%= grade %>級</span>
                 </h4>
-                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                <h4 class="row border-bottom d-flex flex-row align-items-center py-3 justify-content-between list-row">
                     指導老師：<span><%= professor %> 老師</span>
                 </h4>
-                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                <h4 class="row border-bottom d-flex flex-row align-items-center py-3 justify-content-between list-row">
                     性別：<span><%= gender%></span>
                 </h4>
-                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                <h4 class="row border-bottom d-flex flex-row align-items-center py-3 justify-content-between list-row">
                     <% if(canFix==true){ %>
                         <% if (email!="無") { %>
                         Email：<input name="email" class="form-control w-50" value="<%= email %>"></input>
@@ -96,16 +96,16 @@
             </div>
             <%} else if(group==4){ %>
             <div class="col d-flex flex-column align-items-left justify-content-around">
-                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                <h4 class="row border-bottom d-flex flex-row align-items-center py-3 justify-content-between list-row">
                     <span class=""><%= user.name %></span>
                 </h4>
-                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                <h4 class="row border-bottom d-flex flex-row align-items-center py-3 justify-content-between list-row">
                     系級：<span><%= grade %>級</span>
                 </h4>
-                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                <h4 class="row border-bottom d-flex flex-row align-items-center py-3 justify-content-between list-row">
                     性別：<span><%= gender%></span>
                 </h4>
-                <h4 class="row border-bottom d-flex flex-row align-items-left justify-content-between list-row">
+                <h4 class="row border-bottom d-flex flex-row align-items-center py-3 justify-content-between list-row">
                     <% if(canFix==true){ %>
                         Email：<input name="email" class="form-control w-50" value="<%= email %>"></input>
                     <% } else { %>
